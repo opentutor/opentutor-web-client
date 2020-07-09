@@ -1,22 +1,18 @@
 # opentutor-web-client
+
 react/gatsby web client for opentutor
 
-Usage
------
+## Usage
 
 A docker image that serves a web client for grading opentutor sessions .
 
-
-Variables
----------
+## Variables
 
 In order to function properly the client generally requires these environment variables defined:
 
-- TODO: vars here
+- DIALOG_ENDPOINT
 
-
-Development
------------
+## Development
 
 To just run the gatsby client in locally do:
 
@@ -62,9 +58,7 @@ cd client && npm run cy:open
 
 ...then in the cypress browser window, click a spec to run it.
 
-
-Releases
---------
+## Releases
 
 Currently, this image is semantically versioned. When making changes that you want to test in another project, create a branch and PR and then you can release a test tag one of two ways:
 
@@ -80,8 +74,6 @@ To build/push a pre-release semver tag of `opentutor-web-client` for the current
 - find the `docker_tag_release` workflow for your git tag in [circleci](https://circleci.com/gh/ICTLearningSciences/workflows/opentutor-web-client)
 - approve the workflow
 - this will create a tag like `uscictdocker/opentutor-web-client:1.0.0-alpha.1`
-
-
 
 Once your changes are approved and merged to master, you should create a release tag in semver format as follows:
 
