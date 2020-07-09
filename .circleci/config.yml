@@ -1,0 +1,175 @@
+version: 2.1
+aliases:
+  - &only-tagged-releases
+    tags:
+      only: /^\d+\.\d+\.\d+(-[a-z\d\-.]+)?$/
+    branches:
+      ignore: /.*/
+  - &only-untagged
+    tags:
+      ignore: /.*/
+orbs:
+  cypress: cypress-io/cypress@1
+  docker: circleci/docker@0.5.17
+executors:
+  node:
+    docker:
+      - image: circleci/node:12.16.1
+  python:
+    docker:
+      - image: circleci/python:3.6.9
+jobs:
+  client-format:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install client
+          command: cd client && npm ci
+      - run:
+          name: Client test format
+          command: cd client && npm run test:format
+  # client-audit:
+  #   executor: node
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Audit js
+  #         command: cd client && npm audit --production --level=moderate
+  client-lint:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install client
+          command: cd client && npm ci
+      - run:
+          name: Client test lint
+          command: cd client && npm run test:lint
+  client-types:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install client
+          command: cd client && npm ci
+      - run:
+          name: Client test types
+          command: cd client && npm run test:types
+  client-test:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install client
+          command: cd client && npm ci
+      - run:
+          name: Client test
+          command: cd client && npm run test
+  build-and-push:
+    parameters:
+      is-release-tag:
+        type: boolean
+        default: false
+    executor: docker/docker
+    steps:
+      - unless:
+          condition: <<parameters.is-release-tag>>
+          steps:
+            - run:
+                name: "set image tag to commit sha"
+                command: |
+                  echo 'export IMAGE_TAG="$CIRCLE_SHA1"' >> $BASH_ENV
+      - when:
+          condition: <<parameters.is-release-tag>>
+          steps:
+            - run:
+                name: "override image tag to release tag"
+                command: |
+                  echo 'export IMAGE_TAG="$CIRCLE_TAG"' >> $BASH_ENV
+      - run:
+          name: report tag
+          command: echo "building tag uscictdocker/opentutor-web-client:${IMAGE_TAG}..."
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - run:
+          name: Build setup
+          command: |
+            sudo apt-get update \
+            && sudo apt-get install -y rsync \
+            && cd docker \
+            && make clean build
+      - docker/build:
+          path: docker
+          image: uscictdocker/opentutor-web-client
+          tag: ${IMAGE_TAG}
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: uscictdocker/opentutor-web-client
+          tag: ${IMAGE_TAG}
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+workflows:
+  test-build-deploy:
+    jobs:
+      - client-format:
+          filters: *only-untagged
+      # - client-audit:
+      #     filters: *only-untagged
+      - client-lint:
+          filters: *only-untagged
+      - client-types:
+          filters: *only-untagged
+      # - client-test:
+      #     filters: *only-untagged
+      - cypress/run:
+          start: npm start
+          wait-on: "http://localhost:8000"
+          filters: *only-untagged
+          working_directory: client
+          cache-key: 'npm-packages-{{ arch }}-{{ checksum "client/package-lock.json" }}'
+      - approve-build-and-push:
+          filters: *only-untagged
+          type: approval
+          requires:
+            - client-format
+            # - client-audit
+            - client-lint
+            - client-types
+            - cypress/run
+            # - client-test
+      - build-and-push:
+          is-release-tag: false
+          filters: *only-untagged
+          requires:
+            - approve-build-and-push
+  test-build-deploy-release:
+    jobs:
+      - client-format:
+          filters: *only-tagged-releases
+      # - client-audit:
+      #     filters: *only-tagged-releases
+      - client-lint:
+          filters: *only-tagged-releases
+      - client-types:
+          filters: *only-tagged-releases
+      # - client-test:
+      #     filters: *only-tagged-releases
+      - cypress/run:
+          start: npm start
+          wait-on: "http://localhost:8000"
+          filters: *only-tagged-releases
+          working_directory: client
+          cache-key: 'npm-packages-{{ arch }}-{{ checksum "client/package-lock.json" }}'
+      - build-and-push:
+          is-release-tag: true
+          filters: *only-tagged-releases
+          requires:
+            - client-format
+            # - client-audit
+            - client-lint
+            - client-types
+            - cypress/run
+            # - client-test
