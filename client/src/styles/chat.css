@@ -11,10 +11,14 @@ ul{
     display:inline-block;
     clear: both;
     padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     border-radius: 30px;
     margin-bottom: 2px;
     font-family: Helvetica, Arial, sans-serif;
-    max-width: 80%;
+    max-width: 70%;
+    word-wrap: break-word;
+    text-align: left;
   }
   
   .system{
@@ -34,10 +38,10 @@ ul{
   }
 
   .user + .system{
-    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 5px;
     margin-top: 10px;
   }
-  
+
   .user + .user{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -47,7 +51,7 @@ ul{
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
   }
-  
+
   .user:last-of-type {
     border-bottom-right-radius: 30px;
   }

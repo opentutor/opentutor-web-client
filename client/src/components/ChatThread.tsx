@@ -12,10 +12,9 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
     body: {
-        //backgroundColor: "#808080",
         width: "90%",
         maxWidth: 400,
-        height: "40%",
+        height: "35%",
         marginLeft: "50%",
         marginBottom: 8,
         transform: "translateX(-50%)",
