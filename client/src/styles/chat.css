@@ -24,12 +24,14 @@ ul{
   .system{
     background: #e6e6e6;
     float: left;
+    border-bottom-left-radius: 5px;
   }
   
   .user{
     float: right;
     background: #0084ff;
     color: #fff;
+    border-bottom-right-radius: 5px;
   }
   
   .system + .user{
@@ -52,10 +54,11 @@ ul{
     border-bottom-left-radius: 5px;
   }
 
-  .user:last-of-type {
+  /* Round Last Bubble */
+  /* .user:last-of-type {
     border-bottom-right-radius: 30px;
   }
 
   .system:last-of-type {
     border-bottom-left-radius: 30px;
-  }
+  } */

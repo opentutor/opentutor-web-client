@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ChatForm(props:{messages: { timeSent: string, senderId: string, text: string }[], setMessages:any}) {
+export default function ChatForm(props:{messages: { timeSent: string, senderId: string, text: string }[], setMessages:any, setTargetCount:any}) {
     const styles = useStyles();
     const [chat, setChat] = useState("");
 

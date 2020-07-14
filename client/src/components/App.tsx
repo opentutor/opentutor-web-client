@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
     const styles = useStyles();
     const [open, setOpen] = React.useState(false);
-
+    const [targetCount, setTargetCount] = React.useState(0);
 
     const handleSummaryOpen = () => {
         setOpen(true);
@@ -51,7 +51,7 @@ export default function App() {
     const DUMMY_DATA = [
         {
             timeSent: "23io2i3o12i3op",
-            senderId: "user",
+            senderId: "system",
             text: "Welcome to OpenTutor!"
         }
     ]
@@ -77,18 +77,15 @@ export default function App() {
         fetchData();
     }, []);//Watches for vars in array to make updates. If none only updates on comp. mount
 
-
-
-
     return (
         <div className={styles.foreground}>
 
             <img src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip" className={styles.image}></img>
             <br />
-            <TargetIndicator count={0} />
+            <TargetIndicator count={targetCount} />
             <ChatThread messages={messages} />
-            <ChatForm messages={messages} setMessages={setMessages} />
-            <SummaryPopup open={open} setOpen={setOpen} message={"That's a wrap! Let's see how you did on this lesson!"} buttonText={"OK"} targetCount={0} />
+            <ChatForm messages={messages} setMessages={setMessages} setTargetCount={setTargetCount}/>
+            <SummaryPopup open={open} setOpen={setOpen} message={"That's a wrap! Let's see how you did on this lesson!"} buttonText={"OK"} targetCount={targetCount} />
             <Button onClick={handleSummaryOpen}>Quit</Button>
         </div>
     )
