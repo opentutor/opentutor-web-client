@@ -1,5 +1,5 @@
 describe("The Home Page", () => {
-  it("successfully loads", () => {
+  it("shows closing messages with awesome answer", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/"); // change URL to match your dev URLs
