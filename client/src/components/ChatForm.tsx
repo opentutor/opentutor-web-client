@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
-import { MuiThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from 'react'
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
+import axios from 'axios';
 
 const theme = createMuiTheme({
     palette: {
@@ -22,20 +23,45 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ChatForm(props:{messages: { timeSent: string, senderId: string, text: string }[], setMessages:any, setTargetCount:any}) {
+export default function ChatForm(props: { messages: { senderId: string, text: string }[], setMessages: any, setTargetCount: any, session: any, setSession: any }) {
     const styles = useStyles();
     const [chat, setChat] = useState("");
+    const [outboundChat, setOutboundChat] = useState("");
 
-    function handleClick(e:any) {
+    useEffect(() => {
+        console.log("Calling OpenTutor")
+        const fetchData = async () => {
+
+            if (props.session != null) {
+                const response = await axios.post(
+                    'http://dev-opentutor.pal3.org/dialog/q1/session', { sessionInfo: props.session, message: outboundChat }
+                );
+
+                let newMessages = props.messages.slice();
+
+                //Add Messages
+                console.log(response.data.response);
+                response.data.response.forEach((msg: any) => {
+                    newMessages.push({ senderId: "system", text: msg.data.text });
+                });
+
+                props.setMessages(newMessages);
+                props.setSession(response.data.sessionInfo)
+            }
+        };
+        fetchData();
+    }, [outboundChat]);//Watches for vars in array to make updates. If none only updates on comp. mount
+
+    function handleClick(e: any) {
         e.preventDefault();
         console.log(`User typed: ${chat}\n`);
         let newMessages = props.messages.slice();
-        newMessages.push({timeSent: "value", senderId: "user", text: chat});
+        newMessages.push({ senderId: "user", text: chat });
         props.setMessages(newMessages);
+        setOutboundChat(chat);
         setChat("");
-        console.log(props.messages.length);
     }
-    
+
     return (
         <form noValidate autoComplete="off">
             <TextField
@@ -46,10 +72,11 @@ export default function ChatForm(props:{messages: { timeSent: string, senderId: 
                 variant="outlined"
                 className={styles.chatbox}
                 value={chat}
-                onChange={(e) => {setChat(e.target.value)}}
+                onChange={(e) => { setChat(e.target.value) }}
             />
-            <br/>
+            <br />
             <Button
+                id="submit-button"
                 variant="contained"
                 color="primary"
                 className={styles.button}

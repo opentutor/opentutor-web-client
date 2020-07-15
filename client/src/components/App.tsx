@@ -3,7 +3,7 @@ import ChatThread from '../components/ChatThread';
 import ChatForm from '../components/ChatForm';
 import TargetIndicator from '../components/TargetIndicator';
 import SummaryPopup from '../components/SummaryPopup';
-import { MuiThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import "styles/layout.css";
 import { Button } from '@material-ui/core';
 
@@ -43,6 +43,7 @@ export default function App() {
     const styles = useStyles();
     const [open, setOpen] = React.useState(false);
     const [targetCount, setTargetCount] = React.useState(0);
+    const [session, setSession] = React.useState(null);
 
     const handleSummaryOpen = () => {
         setOpen(true);
@@ -50,7 +51,6 @@ export default function App() {
 
     const DUMMY_DATA = [
         {
-            timeSent: "23io2i3o12i3op",
             senderId: "system",
             text: "Welcome to OpenTutor!"
         }
@@ -69,10 +69,11 @@ export default function App() {
             //Add Messages
             console.log(response.data.response);
             response.data.response.forEach((msg:any) => {
-                newMessages.push({ timeSent: msg.type, senderId: "system", text: msg.data.text });
+                newMessages.push({ senderId: "system", text: msg.data.text });
             });
-
+        
             setMessages(newMessages);
+            setSession(response.data.sessionInfo);
         };
         fetchData();
     }, []);//Watches for vars in array to make updates. If none only updates on comp. mount
@@ -84,7 +85,7 @@ export default function App() {
             <br />
             <TargetIndicator count={targetCount} />
             <ChatThread messages={messages} />
-            <ChatForm messages={messages} setMessages={setMessages} setTargetCount={setTargetCount}/>
+            <ChatForm messages={messages} setMessages={setMessages} setTargetCount={setTargetCount} session={session} setSession={setSession}/>
             <SummaryPopup open={open} setOpen={setOpen} message={"That's a wrap! Let's see how you did on this lesson!"} buttonText={"OK"} targetCount={targetCount} />
             <Button onClick={handleSummaryOpen}>Quit</Button>
         </div>

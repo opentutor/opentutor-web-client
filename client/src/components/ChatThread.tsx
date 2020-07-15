@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
-import { MuiThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import '../styles/chat.css';
+import { animateScroll } from "react-scroll";
 
 const theme = createMuiTheme({
     palette: {
@@ -21,21 +22,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ChatThread(props: { messages: { timeSent: string, senderId: string, text: string }[] }) {
+export default function ChatThread(props: { messages: { senderId: string, text: string }[] }) {
     console.log("Printing Messages");
     console.log(props.messages);
     const styles = useStyles();
 
     useEffect(() => {
         document.title = `New Msg: ${props.messages[props.messages.length-1].text}`;
+        //var list = document.getElementById("thread");
+        //list.scrollTop = list.offsetHeight;
+        animateScroll.scrollToBottom({
+            containerId: "thread"
+        });
     });
 
     return (
         <div className={styles.body}>
-            <ul>
-                {props.messages.map(message => {
+            <ul id="thread">
+                {props.messages.map((message, i) => {
                     return (
-                        <li key={message.timeSent} className={message.senderId}>
+                        <li id={`chat-msg-${i}`} key={`chat-msg-${i}`} className={message.senderId}>
                             {message.text}
                         </li>
                     )
