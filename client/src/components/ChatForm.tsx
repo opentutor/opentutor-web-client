@@ -3,7 +3,8 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import axios from "axios";
+import {continueSession} from "../api";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -38,10 +39,7 @@ export default function ChatForm(props: {
     console.log("Calling OpenTutor");
     const fetchData = async () => {
       if (props.session != null) {
-        const response = await axios.post(
-          "http://dev-opentutor.pal3.org/dialog/q1/session",
-          { sessionInfo: props.session, message: outboundChat }
-        );
+        const response = await continueSession({session: props.session, outboundChat: outboundChat});
 
         const newMessages = props.messages.slice();
 

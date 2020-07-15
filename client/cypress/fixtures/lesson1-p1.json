@@ -20,14 +20,14 @@
       "author": "them",
       "type": "opening",
       "data": {
-        "text": "TEST: Here is a question about integrity, a key Navy attribute."
+        "text": "Here is a question about integrity, a key Navy attribute."
       }
     },
     {
       "author": "them",
       "type": "mainQuestion",
       "data": {
-        "text": "TEST: What are the challenges to demonstrating integrity in a group?"
+        "text": "What are the challenges to demonstrating integrity in a group?"
       }
     }
   ]

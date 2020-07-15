@@ -6,6 +6,7 @@ import SummaryPopup from "../components/SummaryPopup";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import "styles/layout.css";
 import { Button } from "@material-ui/core";
+import {createSession} from "../api"
 
 import axios from "axios";
 
@@ -60,10 +61,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.post(
-        "http://dev-opentutor.pal3.org/dialog/q1",
-        {}
-      );
+      const response = await createSession();
 
       const newMessages = messages.slice();
 

@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   target: {
