@@ -10,11 +10,7 @@
       "What are the challenges to demonstrating integrity in a group?"
     ],
     "dialogState": {
-      "expectationsCompleted": [
-        false,
-        false,
-        false
-      ],
+      "expectationsCompleted": [false, false, false],
       "hints": false
     },
     "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"

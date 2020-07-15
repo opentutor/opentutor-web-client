@@ -1,7 +1,7 @@
 module.exports = {
-  pathPrefix: `/grading`,
+  pathPrefix: `/tutor`,
   siteMetadata: {
-    title: `Open Tutor Grading`,
+    title: `Open Tutor Client`,
     description: ``,
   },
   plugins: [
@@ -19,7 +19,10 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        whitelist: ["GRADING_GRAPHQL_ENDPOINT"],
+        whitelist: [
+          "DIALOG_ENDPOINT",
+          "https://dev-opentutor.pal3.org/dialog/",
+        ],
       },
     },
     `gatsby-plugin-typescript`,

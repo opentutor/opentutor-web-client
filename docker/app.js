@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
-app.use("/", express.static(path.join(__dirname, "public", "grading")));
+app.use("/", express.static(path.join(__dirname, "public", "tutor")));
 const port = process.env.NODE_PORT || 3000;
 server.listen(port, function() {
   console.log(`node listening on port ${port}`);
