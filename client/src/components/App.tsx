@@ -6,7 +6,7 @@ import SummaryPopup from "../components/SummaryPopup";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import "styles/layout.css";
 import { Button } from "@material-ui/core";
-import {createSession} from "../api"
+import { createSession } from "../api";
 
 import axios from "axios";
 

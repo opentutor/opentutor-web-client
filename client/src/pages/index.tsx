@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import App from "../components/App";
-import { MuiThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  makeStyles,
+} from "@material-ui/core/styles";
 import logo from "../assets/logo.png";
 
 const theme = createMuiTheme({
