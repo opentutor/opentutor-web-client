@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const IndexPage: React.FC = () => {
-
   const styles = useStyles();
   return (
     <MuiThemeProvider theme={theme}>

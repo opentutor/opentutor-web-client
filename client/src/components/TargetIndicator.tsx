@@ -20,18 +20,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TargetIndicator(props: { count: number }) {
-  const targets = [{achieved:false}, {achieved:false}, {achieved:true}, {achieved:false}, {achieved:false}]
+  const targets = [
+    { achieved: false },
+    { achieved: false },
+    { achieved: true },
+    { achieved: false },
+    { achieved: false },
+  ];
   const styles = useStyles();
   return (
     <>
-      {
-        targets.map((target)=> {
-          return (
+      {targets.map((target) => {
+        return (
           <TrackChangesIcon
             className={target.achieved ? styles.targetComplete : styles.target}
-          />)
-        })
-      }
+          />
+        );
+      })}
     </>
   );
 }
