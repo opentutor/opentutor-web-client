@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatForm(props: {
+  lesson: string;
   messages: { senderId: string; text: string }[];
   setMessages: any;
   setTargetCount: any;
@@ -40,6 +41,7 @@ export default function ChatForm(props: {
     const fetchData = async () => {
       if (props.session != null) {
         const response = await continueSession({
+          lesson: props.lesson,
           session: props.session,
           outboundChat: outboundChat,
         });

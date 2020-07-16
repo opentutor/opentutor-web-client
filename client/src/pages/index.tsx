@@ -39,11 +39,6 @@ const IndexPage: React.FC = () => {
     <MuiThemeProvider theme={theme}>
       <img src={String(logo)} className={styles.logo}></img>
       <App />
-      {/* <div className={styles.footer}>
-                <p>
-                    OpenTutor Client Version 0.0.1
-                </p>
-            </div> */}
     </MuiThemeProvider>
   );
 };

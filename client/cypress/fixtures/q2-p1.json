@@ -1,0 +1,34 @@
+{
+  "status": "ok",
+  "lessonId": "q2",
+  "sessionInfo": {
+    "sessionId": "1d9586f9-ff47-45c2-a32e-937348eda2d6",
+    "sessionHistory": "{\"userResponses\":[],\"systemResponses\":[[\"_user_, this is a warm up question on the behavior of P-N junction diodes.\",\"With a DC input source, does current flow in the same or the opposite direction of the diode arrow?\"]],\"userScores\":[],\"classifierGrades\":[]}",
+    "previousUserResponse": "",
+    "previousSystemResponse": [
+      "_user_, this is a warm up question on the behavior of P-N junction diodes.",
+      "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
+    ],
+    "dialogState": {
+      "expectationsCompleted": [false],
+      "hints": false
+    },
+    "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"
+  },
+  "response": [
+    {
+      "author": "them",
+      "type": "opening",
+      "data": {
+        "text": "_user_, this is a warm up question on the behavior of P-N junction diodes."
+      }
+    },
+    {
+      "author": "them",
+      "type": "mainQuestion",
+      "data": {
+        "text": "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
+      }
+    }
+  ]
+}

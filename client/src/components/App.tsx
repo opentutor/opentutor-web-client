@@ -7,6 +7,7 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import "styles/layout.css";
 import { Button } from "@material-ui/core";
 import { createSession } from "../api";
+import withLocation from "wrap-with-location";
 
 import axios from "axios";
 
@@ -48,8 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function App() {
+const App = ({ search }: { search: any }) => {
   const styles = useStyles();
+  const { lesson } = search;
   const [open, setOpen] = React.useState(false);
   const [targetCount, setTargetCount] = React.useState(0);
   const [session, setSession] = React.useState(null);
@@ -69,8 +71,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await createSession();
-
+      const response = await createSession(lesson);
       const newMessages = messages.slice();
 
       //Add Messages
@@ -96,6 +97,7 @@ export default function App() {
         <TargetIndicator count={targetCount} />
         <ChatThread messages={messages} />
         <ChatForm
+          lesson={lesson}
           messages={messages}
           setMessages={setMessages}
           setTargetCount={setTargetCount}
