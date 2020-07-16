@@ -30,15 +30,15 @@ describe("Lesson query parameter", () => {
       cy.get("#submit-button").click();
 
       cy.get("#chat-msg-3").contains(reply);
-      // cy.get("#chat-msg-4").contains(
-      //   desiredServerResponse.response[0].data.text
-      // );
-      // cy.get("#chat-msg-5").contains(
-      //   desiredServerResponse.response[1].data.text
-      // );
-      // cy.get("#chat-msg-6").contains(
-      //   desiredServerResponse.response[2].data.text
-      // );
+      cy.get("#chat-msg-4").contains(
+        desiredServerResponse.response[0].data.text
+      );
+      cy.get("#chat-msg-5").contains(
+        desiredServerResponse.response[1].data.text
+      );
+      cy.get("#chat-msg-6").contains(
+        desiredServerResponse.response[2].data.text
+      );
     });
   });
 
@@ -72,12 +72,12 @@ describe("Lesson query parameter", () => {
       cy.get("#submit-button").click();
 
       cy.get("#chat-msg-3").contains(reply);
-      // cy.get("#chat-msg-4").contains(
-      //   desiredServerResponse.response[0].data.text
-      // );
-      // cy.get("#chat-msg-5").contains(
-      //   desiredServerResponse.response[1].data.text
-      // );
+      cy.get("#chat-msg-4").contains(
+        desiredServerResponse.response[0].data.text
+      );
+      cy.get("#chat-msg-5").contains(
+        desiredServerResponse.response[1].data.text
+      );
     });
   });
 });

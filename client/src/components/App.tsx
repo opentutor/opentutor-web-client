@@ -23,13 +23,12 @@ const useStyles = makeStyles((theme) => ({
   foreground: {
     backgroundColor: theme.palette.primary.main,
     width: "100%",
-    height: "85%",
+    height: "calc(100% - 75px)",
     minHeight: 750,
     position: "absolute",
     left: "50%",
     transform: "translate(-50%, 0%)",
     marginTop: 15,
-    marginBottom: 15,
   },
   image: {
     width: "100%",

@@ -35,6 +35,7 @@ export default function ChatForm(props: {
   const styles = useStyles();
   const [chat, setChat] = useState("");
   const [outboundChat, setOutboundChat] = useState("");
+  const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
     console.log("Calling OpenTutor");
@@ -46,19 +47,20 @@ export default function ChatForm(props: {
           outboundChat: outboundChat,
         });
 
+        const newMessages = props.messages.slice();
+
+        //Add Messages
+        console.log(response.data.response);
+        response.data.response.forEach((msg: any) => {
+          newMessages.push({ senderId: "system", text: msg.data.text });
+        });
+
+        props.setMessages(newMessages);
+
         //TODO: Remove null check in future
-        if (response.data.completed == null || response.data.alive == true) {
-          const newMessages = props.messages.slice();
-
-          //Add Messages
-          console.log(response.data.response);
-          response.data.response.forEach((msg: any) => {
-            newMessages.push({ senderId: "system", text: msg.data.text });
-          });
-
-          props.setMessages(newMessages);
-        } else {
+        if (response.data.completed != null || response.data.completed == true) {
           //Session ending. Show Summary
+          setSessionAlive(false);
           props.handleSummaryOpen();
         }
 
@@ -70,24 +72,28 @@ export default function ChatForm(props: {
 
   function handleClick(e: any) {
     e.preventDefault();
-    console.log(`User typed: ${chat}\n`);
-    const newMessages = props.messages.slice();
-    newMessages.push({ senderId: "user", text: chat });
-    props.setMessages(newMessages);
-    setOutboundChat(chat);
-    setChat("");
+    
+    if(chat.length > 0) {
+      console.log(`User typed: ${chat}\n`);
+      const newMessages = props.messages.slice();
+      newMessages.push({ senderId: "user", text: chat });
+      props.setMessages(newMessages);
+      setOutboundChat(chat);
+      setChat("");
+    }
   }
 
   return (
     <form noValidate autoComplete="off">
       <TextField
         id="outlined-multiline-static"
-        label="Chat with OpenTutor"
+        label={sessionAlive ? "Chat with OpenTutor" : "Thanks for chatting with OpenTutor!"}
         multiline
         rows={4}
         variant="outlined"
         className={styles.chatbox}
         value={chat}
+        disabled={!sessionAlive}
         onChange={(e) => {
           setChat(e.target.value);
         }}
@@ -100,6 +106,7 @@ export default function ChatForm(props: {
         className={styles.button}
         endIcon={<SendIcon />}
         onClick={handleClick}
+        disabled={chat.length==0 || !sessionAlive}
       >
         Send
       </Button>
