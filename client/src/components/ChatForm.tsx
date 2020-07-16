@@ -29,6 +29,7 @@ export default function ChatForm(props: {
   setTargetCount: any;
   session: any;
   setSession: any;
+  handleSummaryOpen: any;
 }) {
   const styles = useStyles();
   const [chat, setChat] = useState("");
@@ -43,15 +44,21 @@ export default function ChatForm(props: {
           outboundChat: outboundChat,
         });
 
-        const newMessages = props.messages.slice();
+        if (response.data.alive == null || response.data.alive == true) {
+          const newMessages = props.messages.slice();
 
-        //Add Messages
-        console.log(response.data.response);
-        response.data.response.forEach((msg: any) => {
-          newMessages.push({ senderId: "system", text: msg.data.text });
-        });
+          //Add Messages
+          console.log(response.data.response);
+          response.data.response.forEach((msg: any) => {
+            newMessages.push({ senderId: "system", text: msg.data.text });
+          });
 
-        props.setMessages(newMessages);
+          props.setMessages(newMessages);
+        } else {
+          //Session ending. Show Summary
+          props.handleSummaryOpen();
+        }
+
         props.setSession(response.data.sessionInfo);
       }
     };

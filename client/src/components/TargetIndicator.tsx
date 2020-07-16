@@ -20,18 +20,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TargetIndicator(props: { count: number }) {
+  const targets = [{achieved:false}, {achieved:false}, {achieved:true}, {achieved:false}, {achieved:false}]
   const styles = useStyles();
   return (
     <>
-      <TrackChangesIcon
-        className={props.count >= 1 ? styles.targetComplete : styles.target}
-      />
-      <TrackChangesIcon
-        className={props.count >= 2 ? styles.targetComplete : styles.target}
-      />
-      <TrackChangesIcon
-        className={props.count >= 3 ? styles.targetComplete : styles.target}
-      />
+      {
+        targets.map((target)=> {
+          return (
+          <TrackChangesIcon
+            className={target.achieved ? styles.targetComplete : styles.target}
+          />)
+        })
+      }
     </>
   );
 }

@@ -101,6 +101,7 @@ export default function App() {
                     setTargetCount={setTargetCount}
                     session={session}
                     setSession={setSession}
+                    handleSummaryOpen={handleSummaryOpen}
                 />
                 <SummaryPopup
                     open={open}
@@ -109,7 +110,7 @@ export default function App() {
                     buttonText={"OK"}
                     targetCount={targetCount}
                 />
-                <Button onClick={handleSummaryOpen}>Quit</Button>
+                <Button onClick={handleSummaryOpen}>View Summary</Button>
             </div>
         </div>
     );
