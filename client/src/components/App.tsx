@@ -116,4 +116,6 @@ const App = ({ search }: { search: any }) => {
       </div>
     </div>
   );
-}
+};
+
+export default withLocation(App);
