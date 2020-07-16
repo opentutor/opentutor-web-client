@@ -71,9 +71,9 @@ export default function SummaryPopup(props: {
   setOpen: any;
   message: any;
   buttonText: any;
-  targetCount: any;
+  targets: any;
 }) {
-  const { open, setOpen, message, buttonText, targetCount } = props;
+  const { open, setOpen, message, buttonText, targets } = props;
 
   const handleClose = () => {
     setOpen(false);
@@ -92,7 +92,7 @@ export default function SummaryPopup(props: {
         <DialogContent dividers>
           <Typography gutterBottom>{message}</Typography>
         </DialogContent>
-        <TargetIndicator count={targetCount} />
+        <TargetIndicator targets={targets} />
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             {buttonText}

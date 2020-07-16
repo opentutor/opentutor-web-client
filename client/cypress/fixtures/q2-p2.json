@@ -1,5 +1,6 @@
 {
   "status": "ok",
+  "completed": false,
   "sessionInfo": {
     "sessionId": "8c13c9e0-8b4e-4a6d-b650-f41d82ebe454",
     "sessionHistory": "{\"userResponses\":[\"Current flows in the same direction as the arrow\"]],\"userScores\":[],\"classifierGrades\":[{\"expectationResults\":[{\"evaluation\":\"Good\",\"expectation\":0,\"score\":0.7877823480773107}]}]}",

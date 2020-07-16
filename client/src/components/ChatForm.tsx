@@ -27,7 +27,7 @@ export default function ChatForm(props: {
   lesson: string;
   messages: { senderId: string; text: string }[];
   setMessages: any;
-  setTargetCount: any;
+  setTargets: any;
   session: any;
   setSession: any;
   handleSummaryOpen: any;
@@ -46,7 +46,8 @@ export default function ChatForm(props: {
           outboundChat: outboundChat,
         });
 
-        if (response.data.alive == null || response.data.alive == true) {
+        //TODO: Remove null check in future
+        if (response.data.completed == null || response.data.alive == true) {
           const newMessages = props.messages.slice();
 
           //Add Messages

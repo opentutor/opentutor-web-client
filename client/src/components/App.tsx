@@ -53,21 +53,21 @@ const App = ({ search }: { search: any }) => {
   const styles = useStyles();
   const { lesson } = search;
   const [open, setOpen] = React.useState(false);
-  const [targetCount, setTargetCount] = React.useState(0);
+  const [targets, setTargets] = React.useState<any[]>([])
   const [session, setSession] = React.useState(null);
 
   const handleSummaryOpen = () => {
     setOpen(true);
   };
 
-  const DUMMY_DATA = [
+  const INITIAL_DATA = [
     {
       senderId: "system",
       text: "Welcome to OpenTutor!",
     },
   ];
 
-  const [messages, setMessages] = useState(DUMMY_DATA);
+  const [messages, setMessages] = useState(INITIAL_DATA);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +79,14 @@ const App = ({ search }: { search: any }) => {
       response.data.response.forEach((msg: any) => {
         newMessages.push({ senderId: "system", text: msg.data.text });
       });
+
+      console.log(response.data.sessionInfo.dialogState.expectationsCompleted);
+
+      const newTargets:any[] = [];
+      response.data.sessionInfo.dialogState.expectationsCompleted.forEach(() => {
+        newTargets.push({ achieved: false });
+      })
+      setTargets(newTargets);
 
       setMessages(newMessages);
       setSession(response.data.sessionInfo);
@@ -94,13 +102,13 @@ const App = ({ search }: { search: any }) => {
       ></img>
       <br />
       <div className={styles.chatWindow}>
-        <TargetIndicator count={targetCount} />
+        <TargetIndicator targets={targets} />
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
           messages={messages}
           setMessages={setMessages}
-          setTargetCount={setTargetCount}
+          setTargets={setTargets}
           session={session}
           setSession={setSession}
           handleSummaryOpen={handleSummaryOpen}
@@ -110,7 +118,7 @@ const App = ({ search }: { search: any }) => {
           setOpen={setOpen}
           message={"That's a wrap! Let's see how you did on this lesson!"}
           buttonText={"OK"}
-          targetCount={targetCount}
+          targets={targets}
         />
         <Button onClick={handleSummaryOpen}>View Summary</Button>
       </div>

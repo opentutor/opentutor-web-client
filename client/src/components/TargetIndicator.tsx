@@ -17,23 +17,37 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 10,
     color: "#3CB371",
   },
+  placeholder: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingTop: 10,
+    color: "#FFF",
+  },
 }));
 
-export default function TargetIndicator(props: { count: number }) {
-  const targets = [
-    { achieved: false },
-    { achieved: false },
-    { achieved: true },
-    { achieved: false },
-    { achieved: false },
-  ];
+export default function TargetIndicator(props: { targets: any[] }) {
   const styles = useStyles();
+
+  if (props.targets.length == 0) {
+    return (
+      <>
+        <TrackChangesIcon
+          id={`placeholder`}
+          key={`placeholder`}
+          className={styles.placeholder}
+        />
+      </>
+    )
+  }
+
   return (
     <>
-      {targets.map((target, index) => {
+      {props.targets.map((target, index) => {
         return (
           <TrackChangesIcon
-            key={index}
+            id={`target-${index}`}
+            key={`target-${index}`}
             className={target.achieved ? styles.targetComplete : styles.target}
           />
         );
