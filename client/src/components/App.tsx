@@ -53,7 +53,7 @@ const App = ({ search }: { search: any }) => {
   const styles = useStyles();
   const { lesson } = search;
   const [open, setOpen] = React.useState(false);
-  const [targets, setTargets] = React.useState<any[]>([])
+  const [targets, setTargets] = React.useState<any[]>([]);
   const [session, setSession] = React.useState(null);
 
   const handleSummaryOpen = () => {
@@ -82,10 +82,12 @@ const App = ({ search }: { search: any }) => {
 
       console.log(response.data.sessionInfo.dialogState.expectationsCompleted);
 
-      const newTargets:any[] = [];
-      response.data.sessionInfo.dialogState.expectationsCompleted.forEach(() => {
-        newTargets.push({ achieved: false });
-      })
+      const newTargets: any[] = [];
+      response.data.sessionInfo.dialogState.expectationsCompleted.forEach(
+        () => {
+          newTargets.push({ achieved: false });
+        }
+      );
       setTargets(newTargets);
 
       setMessages(newMessages);

@@ -38,7 +38,7 @@ export default function TargetIndicator(props: { targets: any[] }) {
           className={styles.placeholder}
         />
       </>
-    )
+    );
   }
 
   return (
