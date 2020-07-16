@@ -30,9 +30,10 @@ export default function TargetIndicator(props: { count: number }) {
   const styles = useStyles();
   return (
     <>
-      {targets.map((target) => {
+      {targets.map((target, index) => {
         return (
           <TrackChangesIcon
+            key={index}
             className={target.achieved ? styles.targetComplete : styles.target}
           />
         );
