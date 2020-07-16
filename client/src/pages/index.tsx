@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import App from "../components/App";
 import {
   MuiThemeProvider,
@@ -17,7 +17,6 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   logo: {
-    backgroundColor: theme.palette.background.default,
     width: 200,
     height: 75,
     marginTop: 15,
@@ -35,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const IndexPage: React.FC = () => {
-  useEffect(() => {
-    document.body.style.backgroundColor = theme.palette.primary.main;
-  }, []);
 
   const styles = useStyles();
   return (

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   body: {
     width: "90%",
     maxWidth: 400,
-    height: "35%",
+    height: "calc(100% - 265px)",
     marginLeft: "50%",
     marginBottom: 8,
     transform: "translateX(-50%)",
@@ -33,8 +33,6 @@ export default function ChatThread(props: {
     document.title = `New Msg: ${
       props.messages[props.messages.length - 1].text
     }`;
-    //var list = document.getElementById("thread");
-    //list.scrollTop = list.offsetHeight;
     animateScroll.scrollToBottom({
       containerId: "thread",
     });
