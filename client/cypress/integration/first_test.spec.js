@@ -18,9 +18,9 @@ describe("The Home Page", () => {
     });
 
     //Part 2
-    cy.fixture("lesson1-p2.json").then((desiredServerResponse) => {
-      cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
-
+    //cy.fixture("lesson1-p2.json").then((desiredServerResponse) => {
+    //   cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
+    /*
       const reply1 =
         "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.";
 
@@ -37,6 +37,6 @@ describe("The Home Page", () => {
       cy.get("#chat-msg-6").contains(
         desiredServerResponse.response[2].data.text
       );
-    });
+    });*/
   });
 });
