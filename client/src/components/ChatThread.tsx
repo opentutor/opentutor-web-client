@@ -8,10 +8,10 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import CloseIcon from '@material-ui/icons/Close';
-import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from "@material-ui/icons/Close";
+import DoneIcon from "@material-ui/icons/Done";
 import HelpIcon from "@material-ui/icons/Help";
-import ImportExportIcon from '@material-ui/icons/ImportExport';
+import ImportExportIcon from "@material-ui/icons/ImportExport";
 import "../styles/chat.css";
 
 const theme = createMuiTheme({
