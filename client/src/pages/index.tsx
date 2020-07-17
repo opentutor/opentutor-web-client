@@ -19,17 +19,6 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: 200,
     height: 75,
-    marginTop: 15,
-  },
-  footer: {
-    marginTop: 15,
-    backgroundColor: "#808080",
-    width: "90%",
-    maxWidth: 800,
-    height: 30,
-    position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, 0%)",
   },
 }));
 

@@ -1,7 +1,18 @@
 import React, { useEffect } from "react";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import "../styles/chat.css";
 import { animateScroll } from "react-scroll";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@material-ui/core";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import CloseIcon from '@material-ui/icons/Close';
+import DoneIcon from '@material-ui/icons/Done';
+import HelpIcon from "@material-ui/icons/Help";
+import ImportExportIcon from '@material-ui/icons/ImportExport';
+import "../styles/chat.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -15,19 +26,53 @@ const useStyles = makeStyles((theme) => ({
   body: {
     width: "90%",
     maxWidth: 400,
-    height: "calc(100% - 265px)",
+    height: "calc(100% - 275px)",
     marginLeft: "50%",
     marginBottom: 8,
     transform: "translateX(-50%)",
   },
+  icon: {
+    position: "absolute",
+    zIndex: 1000,
+    right: -35,
+  },
+  avatar: {
+    color: "#fff",
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
 }));
 
 export default function ChatThread(props: {
-  messages: { senderId: string; text: string }[];
+  messages: { senderId: string; type: string; text: string }[];
 }) {
   console.log("Printing Messages");
   console.log(props.messages);
   const styles = useStyles();
+
+  const chatIcon = (type: string) => {
+    let icon = undefined;
+    if (type === "mainQuestion" || type === "hint") {
+      icon = <HelpIcon />;
+    } else if (type === "feedbackPositive") {
+      icon = <DoneIcon />;
+    } else if (type === "feedbackNegative") {
+      icon = <CloseIcon />;
+    } else if (type === "feedbackNeutral") {
+      icon = <ImportExportIcon />;
+    }
+
+    if (!icon) {
+      return undefined;
+    }
+    return (
+      <div className={styles.icon}>
+        <ListItemAvatar>
+          <Avatar className={styles.avatar}>{icon}</Avatar>
+        </ListItemAvatar>
+      </div>
+    );
+  };
 
   useEffect(() => {
     document.title = `New Msg: ${
@@ -40,19 +85,20 @@ export default function ChatThread(props: {
 
   return (
     <div className={styles.body}>
-      <ul id="thread">
+      <List id="thread" disablePadding>
         {props.messages.map((message, i) => {
           return (
-            <li
+            <ListItem
               id={`chat-msg-${i}`}
               key={`chat-msg-${i}`}
               className={message.senderId}
             >
-              {message.text}
-            </li>
+              <ListItemText primary={message.text} />
+              {chatIcon(message.type)}
+            </ListItem>
           );
         })}
-      </ul>
+      </List>
     </div>
   );
 }

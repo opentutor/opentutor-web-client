@@ -9,8 +9,6 @@ import { Button } from "@material-ui/core";
 import { createSession } from "../api";
 import withLocation from "wrap-with-location";
 
-import axios from "axios";
-
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -28,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: "50%",
     transform: "translate(-50%, 0%)",
-    marginTop: 15,
   },
   image: {
     width: "100%",
@@ -48,47 +45,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = ({ search }: { search: any }) => {
+const App = (props: { search: any }) => {
   const styles = useStyles();
-  const { lesson } = search;
+  const { lesson } = props.search;
   const [open, setOpen] = React.useState(false);
   const [targets, setTargets] = React.useState<any[]>([]);
   const [session, setSession] = React.useState(null);
 
-  const handleSummaryOpen = () => {
-    setOpen(true);
-  };
-
   const INITIAL_DATA = [
     {
       senderId: "system",
+      type: "opening",
       text: "Welcome to OpenTutor!",
     },
   ];
-
   const [messages, setMessages] = useState(INITIAL_DATA);
+
+  const handleSummaryOpen = () => {
+    setOpen(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await createSession(lesson);
       const newMessages = messages.slice();
 
-      //Add Messages
       console.log(response.data.response);
+      // Add Messages
       response.data.response.forEach((msg: any) => {
-        newMessages.push({ senderId: "system", text: msg.data.text });
+        newMessages.push({
+          senderId: "system",
+          type: msg.type,
+          text: msg.data.text,
+        });
       });
 
-      console.log(response.data.sessionInfo.dialogState.expectationsCompleted);
-
+      // Add expectations
       const newTargets: any[] = [];
       response.data.sessionInfo.dialogState.expectationsCompleted.forEach(
-        () => {
-          newTargets.push({ achieved: false });
+        (exp: boolean) => {
+          newTargets.push({ achieved: exp });
         }
       );
-      setTargets(newTargets);
 
+      setTargets(newTargets);
       setMessages(newMessages);
       setSession(response.data.sessionInfo);
     };
