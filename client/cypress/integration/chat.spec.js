@@ -15,8 +15,8 @@ describe("The Home Page", () => {
       cy.get("#chat-msg-2").contains(
         desiredServerResponse.response[1].data.text
       );
-      cy.get("#outlined-multiline-static").should('not.be.disabled');
-      cy.get("#submit-button").should('be.disabled');
+      cy.get("#outlined-multiline-static").should("not.be.disabled");
+      cy.get("#submit-button").should("be.disabled");
     });
 
     //Part 2
@@ -27,9 +27,9 @@ describe("The Home Page", () => {
         "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.";
 
       cy.get("#outlined-multiline-static").type(reply1);
-      cy.get("#submit-button").should('not.be.disabled');
+      cy.get("#submit-button").should("not.be.disabled");
       cy.get("#submit-button").click();
-      cy.get("#submit-button").should('be.disabled');
+      cy.get("#submit-button").should("be.disabled");
 
       cy.get("#chat-msg-3").contains(reply1);
       cy.get("#chat-msg-4").contains(
@@ -41,8 +41,8 @@ describe("The Home Page", () => {
       cy.get("#chat-msg-6").contains(
         desiredServerResponse.response[2].data.text
       );
-      cy.get("#outlined-multiline-static").should('be.disabled');
-      cy.get("#summary-popup").contains('Lesson Summary');
+      cy.get("#outlined-multiline-static").should("be.disabled");
+      cy.get("#summary-popup").contains("Lesson Summary");
     });
   });
 });

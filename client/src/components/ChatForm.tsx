@@ -58,7 +58,10 @@ export default function ChatForm(props: {
         props.setMessages(newMessages);
 
         //TODO: Remove null check in future
-        if (response.data.completed != null || response.data.completed == true) {
+        if (
+          response.data.completed != null ||
+          response.data.completed == true
+        ) {
           //Session ending. Show Summary
           setSessionAlive(false);
           props.handleSummaryOpen();
@@ -72,8 +75,8 @@ export default function ChatForm(props: {
 
   function handleClick(e: any) {
     e.preventDefault();
-    
-    if(chat.length > 0) {
+
+    if (chat.length > 0) {
       console.log(`User typed: ${chat}\n`);
       const newMessages = props.messages.slice();
       newMessages.push({ senderId: "user", text: chat });
@@ -87,7 +90,11 @@ export default function ChatForm(props: {
     <form noValidate autoComplete="off">
       <TextField
         id="outlined-multiline-static"
-        label={sessionAlive ? "Chat with OpenTutor" : "Thanks for chatting with OpenTutor!"}
+        label={
+          sessionAlive
+            ? "Chat with OpenTutor"
+            : "Thanks for chatting with OpenTutor!"
+        }
         multiline
         rows={4}
         variant="outlined"
@@ -106,7 +113,7 @@ export default function ChatForm(props: {
         className={styles.button}
         endIcon={<SendIcon />}
         onClick={handleClick}
-        disabled={chat.length==0 || !sessionAlive}
+        disabled={chat.length == 0 || !sessionAlive}
       >
         Send
       </Button>
