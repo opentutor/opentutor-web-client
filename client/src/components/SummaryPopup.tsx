@@ -82,6 +82,7 @@ export default function SummaryPopup(props: {
   return (
     <div>
       <Dialog
+        id="summary-popup"
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
