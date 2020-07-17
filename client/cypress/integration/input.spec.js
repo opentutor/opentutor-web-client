@@ -7,7 +7,7 @@ describe("The Home Page", () => {
     //Part 1
     cy.fixture("q1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
-      
+
       cy.get("#outlined-multiline-static").should("not.be.disabled");
       cy.get("#submit-button").should("be.disabled");
     });
