@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatForm(props: {
   lesson: string;
-  messages: { senderId: string; text: string }[];
+  messages: { senderId: string; type: string; text: string }[];
   setMessages: any;
   setTargets: any;
   session: any;
@@ -46,13 +46,18 @@ export default function ChatForm(props: {
           session: props.session,
           outboundChat: outboundChat,
         });
+        console.log(response);
 
         const newMessages = props.messages.slice();
 
         //Add Messages
         console.log(response.data.response);
         response.data.response.forEach((msg: any) => {
-          newMessages.push({ senderId: "system", text: msg.data.text });
+          newMessages.push({
+            senderId: "system",
+            type: msg.type,
+            text: msg.data.text,
+          });
         });
 
         props.setMessages(newMessages);
@@ -79,7 +84,7 @@ export default function ChatForm(props: {
     if (chat.length > 0) {
       console.log(`User typed: ${chat}\n`);
       const newMessages = props.messages.slice();
-      newMessages.push({ senderId: "user", text: chat });
+      newMessages.push({ senderId: "user", type: "", text: chat });
       props.setMessages(newMessages);
       setOutboundChat(chat);
       setChat("");
