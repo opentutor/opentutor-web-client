@@ -1,5 +1,5 @@
 describe("The Home Page", () => {
-  it("shows closing messages with awesome answer", () => {
+  it("accepts inputs when allowed and disables inputs when not allowed", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
@@ -7,14 +7,7 @@ describe("The Home Page", () => {
     //Part 1
     cy.fixture("q1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
-
-      cy.get("#chat-msg-0").contains("Welcome to OpenTutor");
-      cy.get("#chat-msg-1").contains(
-        desiredServerResponse.response[0].data.text
-      );
-      cy.get("#chat-msg-2").contains(
-        desiredServerResponse.response[1].data.text
-      );
+      
       cy.get("#outlined-multiline-static").should("not.be.disabled");
       cy.get("#submit-button").should("be.disabled");
     });
@@ -31,16 +24,6 @@ describe("The Home Page", () => {
       cy.get("#submit-button").click();
       cy.get("#submit-button").should("be.disabled");
 
-      cy.get("#chat-msg-3").contains(reply1);
-      cy.get("#chat-msg-4").contains(
-        desiredServerResponse.response[0].data.text
-      );
-      cy.get("#chat-msg-5").contains(
-        desiredServerResponse.response[1].data.text
-      );
-      cy.get("#chat-msg-6").contains(
-        desiredServerResponse.response[2].data.text
-      );
       cy.get("#outlined-multiline-static").should("be.disabled");
       cy.get("#summary-popup").contains("Lesson Summary");
     });
