@@ -46,12 +46,10 @@ export default function ChatForm(props: {
           session: props.session,
           outboundChat: outboundChat,
         });
-        console.log(response);
-
-        const newMessages = props.messages.slice();
 
         //Add Messages
         console.log(response.data.response);
+        const newMessages = props.messages.slice();
         response.data.response.forEach((msg: any) => {
           newMessages.push({
             senderId: "system",
@@ -59,8 +57,16 @@ export default function ChatForm(props: {
             text: msg.data.text,
           });
         });
-
         props.setMessages(newMessages);
+
+        // Add expectations
+        const newTargets: any[] = [];
+        response.data.sessionInfo.dialogState.expectationData.forEach(
+          (exp: any) => {
+            newTargets.push({ achieved: exp.score });
+          }
+        );
+        props.setTargets(newTargets);
 
         //TODO: Remove null check in future
         if (

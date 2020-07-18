@@ -94,6 +94,7 @@ export default function SummaryPopup(props: {
           <Typography gutterBottom>{message}</Typography>
         </DialogContent>
         <TargetIndicator targets={targets} />
+        <
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             {buttonText}

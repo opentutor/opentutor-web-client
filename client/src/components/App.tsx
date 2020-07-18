@@ -70,7 +70,6 @@ const App = (props: { search: any }) => {
       const response = await createSession(lesson);
       const newMessages = messages.slice();
 
-      console.log(response.data.response);
       // Add Messages
       response.data.response.forEach((msg: any) => {
         newMessages.push({
@@ -82,9 +81,9 @@ const App = (props: { search: any }) => {
 
       // Add expectations
       const newTargets: any[] = [];
-      response.data.sessionInfo.dialogState.expectationsCompleted.forEach(
-        (exp: boolean) => {
-          newTargets.push({ achieved: exp });
+      response.data.sessionInfo.dialogState.expectationData.forEach(
+        (exp: any) => {
+          newTargets.push({ achieved: exp.score });
         }
       );
 
@@ -121,7 +120,9 @@ const App = (props: { search: any }) => {
           buttonText={"OK"}
           targets={targets}
         />
-        <Button onClick={handleSummaryOpen}>View Summary</Button>
+        <Button id="view-summary-btn" onClick={handleSummaryOpen}>
+          View Summary
+        </Button>
       </div>
     </div>
   );

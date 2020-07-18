@@ -42,7 +42,7 @@ export default function TargetIndicator(props: { targets: any[] }) {
   }
 
   return (
-    <>
+    <div id="targets">
       {props.targets.map((target, index) => {
         return (
           <TrackChangesIcon
@@ -52,6 +52,6 @@ export default function TargetIndicator(props: { targets: any[] }) {
           />
         );
       })}
-    </>
+    </div>
   );
 }

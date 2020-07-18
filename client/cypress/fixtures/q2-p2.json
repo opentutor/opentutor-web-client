@@ -1,6 +1,5 @@
 {
   "status": "ok",
-  "completed": true,
   "sessionInfo": {
     "sessionId": "8c13c9e0-8b4e-4a6d-b650-f41d82ebe454",
     "sessionHistory": "{\"userResponses\":[\"Current flows in the same direction as the arrow\"]],\"userScores\":[],\"classifierGrades\":[{\"expectationResults\":[{\"evaluation\":\"Good\",\"expectation\":0,\"score\":0.7877823480773107}]}]}",
@@ -11,9 +10,15 @@
     ],
     "dialogState": {
       "expectationsCompleted": [true],
+      "expectationData": {
+        "ideal": "Current flows in the same direction as the arrow.",
+        "score": 1,
+        "satisfied": true,
+        "status": "complete"
+      },
       "hints": false
     },
-    "hash": "9a05963a53adf55bfa319a527c36e04b155478a2fa24450b1abc8b8d2820398e"
+    "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"
   },
   "response": [
     {
@@ -31,6 +36,8 @@
       }
     }
   ],
-  "sentToGrader": {},
-  "score": 1
+  "sentToGrader": true,
+  "completed": true,
+  "score": 1,
+  "expectationActive": -1
 }
