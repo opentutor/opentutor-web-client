@@ -2,36 +2,34 @@ import React from "react";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import TargetIcon from "../components/TargetIcon";
 
 const useStyles = makeStyles((theme) => ({
-  target: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 10,
-    paddingTop: 10,
-    color: "#DC143C",
-  },
-  targetComplete: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 10,
-    paddingTop: 10,
-    color: "#3CB371",
-  },
   placeholder: {
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 10,
-    paddingTop: 10,
+    paddingTop: 22,
+    color: "#FFF",
   },
   censored: {
     color: "black",
     background: "black",
   },
+  inProgress: {
+    color: "#DC143C",
+  },
+  complete: {
+    color: "#3CB371",
+  },
 }));
 
-export function TargetIndicator(props: { targets: any[] }) {
+export function TargetIndicator(props: {
+  targets: { achieved: number }[];
+}) {
   const styles = useStyles();
+
+  console.log(props.targets);
 
   if (props.targets.length == 0) {
     return (
@@ -47,10 +45,11 @@ export function TargetIndicator(props: { targets: any[] }) {
     <div id="targets">
       {props.targets.map((target, index) => {
         return (
-          <TrackChangesIcon
-            id={`target-${index}`}
+          <TargetIcon
+            //id={`target-${index}`}
             key={`target-${index}`}
-            className={target.achieved ? styles.targetComplete : styles.target}
+            //className={target.achieved ? styles.targetComplete : styles.target}
+            target={target}
           />
         );
       })}
@@ -69,7 +68,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
             <ListItemIcon id={`target-${index}`} key={`target-${index}`}>
               <TrackChangesIcon
                 className={
-                  target.achieved ? styles.targetComplete : styles.target
+                  target.achieved ? styles.complete : styles.inProgress
                 }
               />
             </ListItemIcon>

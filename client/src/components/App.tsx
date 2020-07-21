@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
 import { createSession } from "api";
+import "styles/layout.css";
+import { Button, Typography } from "@material-ui/core";
 import withLocation from "wrap-with-location";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
@@ -37,11 +38,19 @@ const useStyles = makeStyles((theme) => ({
   chatWindow: {
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    height: "65%",
+    height: "67%",
     position: "absolute",
     left: "50%",
     transform: "translate(-50%, 0%)",
     marginBottom: 15,
+  },
+  buildInfo: {
+    position: "fixed",
+    bottom: 4,
+    marginLeft: 8,
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "70%",
   },
 }));
 
@@ -92,9 +101,10 @@ const App = (props: { search: any }) => {
           });
         }
       );
+
       setTargets(newTargets);
-      console.log("targets: " + newTargets);
-    };
+      console.log(newTargets);
+    }
     fetchData();
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
 
@@ -128,6 +138,9 @@ const App = (props: { search: any }) => {
           View Summary
         </Button>
       </div>
+      <Typography className={styles.buildInfo}>
+        OpenTutor Client V1.0.0-alpha.5
+      </Typography>
     </div>
   );
 };
