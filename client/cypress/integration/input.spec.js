@@ -5,7 +5,7 @@ describe("The Home Page", () => {
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
 
     //Part 1
-    cy.fixture("q1-p1.json").then((desiredServerResponse) => {
+    cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
 
       cy.get("#outlined-multiline-static").should("not.be.disabled");
@@ -13,7 +13,7 @@ describe("The Home Page", () => {
     });
 
     //Part 2
-    cy.fixture("q1-p2.json").then((desiredServerResponse) => {
+    cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
 
       const reply1 =

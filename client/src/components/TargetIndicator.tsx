@@ -3,6 +3,7 @@ import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import TargetIcon from "../components/TargetIcon";
+import LockIcon from '@material-ui/icons/Lock';
 
 const useStyles = makeStyles((theme) => ({
   placeholder: {
@@ -12,9 +13,16 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 22,
     color: "#FFF",
   },
+  centerIcon: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
   censored: {
     color: "black",
     background: "black",
+    cornerRadius: 10,
   },
   inProgress: {
     color: "#DC143C",
@@ -63,7 +71,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
       {props.targets.map((target: any, index: number) => {
         return (
           <ListItem key={`summary-${index}`}>
-            <ListItemIcon id={`target-${index}`} key={`target-${index}`}>
+            <ListItemIcon id={`target-${index}-${Number(target.achieved).toFixed()}`} key={`target-${index}`}>
               <TargetIcon key={`summary-target-${index}`} target={target} />
             </ListItemIcon>
             <ListItemText

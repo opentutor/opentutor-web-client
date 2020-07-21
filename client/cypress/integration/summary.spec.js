@@ -3,7 +3,7 @@ describe("Expectation summary pop-up", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
@@ -13,7 +13,7 @@ describe("Expectation summary pop-up", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q1", "fixture:q1-p1.json");
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
@@ -27,7 +27,7 @@ describe("Expectation summary pop-up", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
@@ -40,8 +40,8 @@ describe("Expectation summary pop-up", () => {
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
 
-    cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-p2.json");
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
     const reply = "Current flows in the same direction as the arrow";
     cy.get("#outlined-multiline-static").type(reply);
@@ -53,7 +53,7 @@ describe("Expectation summary pop-up", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
@@ -65,8 +65,8 @@ describe("Expectation summary pop-up", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-p2.json");
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
     const reply = "Current flows in the same direction as the arrow";
     cy.get("#outlined-multiline-static").type(reply);

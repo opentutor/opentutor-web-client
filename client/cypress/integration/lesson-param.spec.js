@@ -4,7 +4,7 @@ describe("Lesson query parameter", () => {
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
 
-    cy.fixture("q1-p1.json").then((desiredServerResponse) => {
+    cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
       cy.get("#chat-msg-0").contains("Welcome to OpenTutor");
       cy.get("#chat-msg-1").contains(
@@ -22,7 +22,7 @@ describe("Lesson query parameter", () => {
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-p1.json");
 
-    cy.fixture("q1-p2.json").then((desiredServerResponse) => {
+    cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
       const reply =
         "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.";
@@ -48,7 +48,7 @@ describe("Lesson query parameter", () => {
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
 
-    cy.fixture("q2-p1.json").then((desiredServerResponse) => {
+    cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2", desiredServerResponse);
       cy.get("#chat-msg-0").contains("Welcome to OpenTutor");
       cy.get("#chat-msg-1").contains(
@@ -66,7 +66,7 @@ describe("Lesson query parameter", () => {
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-p1.json");
 
-    cy.fixture("q2-p2.json").then((desiredServerResponse) => {
+    cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2/session", desiredServerResponse);
       const reply = "Current flows in the same direction as the arrow";
 

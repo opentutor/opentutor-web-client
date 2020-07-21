@@ -8,8 +8,8 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import CloseIcon from "@material-ui/icons/Close";
-import DoneIcon from "@material-ui/icons/Done";
+import CancelIcon from '@material-ui/icons/Cancel';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import "styles/chat.css";
@@ -55,9 +55,9 @@ export default function ChatThread(props: {
     if (type === "mainQuestion" || type === "hint") {
       icon = <HelpIcon />;
     } else if (type === "feedbackPositive") {
-      icon = <DoneIcon />;
+      icon = <CheckCircleIcon />;
     } else if (type === "feedbackNegative") {
-      icon = <CloseIcon />;
+      icon = <CancelIcon />;
     } else if (type === "feedbackNeutral") {
       icon = <ImportExportIcon />;
     }
