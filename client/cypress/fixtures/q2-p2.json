@@ -10,12 +10,14 @@
     ],
     "dialogState": {
       "expectationsCompleted": [true],
-      "expectationData": {
-        "ideal": "Current flows in the same direction as the arrow.",
-        "score": 1,
-        "satisfied": true,
-        "status": "complete"
-      },
+      "expectationData": [
+        {
+          "ideal": "Current flows in the same direction as the arrow.",
+          "score": 1,
+          "satisfied": true,
+          "status": "complete"
+        }
+      ],
       "hints": false
     },
     "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"

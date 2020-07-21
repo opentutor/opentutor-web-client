@@ -13,7 +13,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import TargetIndicator from "./TargetIndicator";
+import { SummaryIndicator } from "components/TargetIndicator";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -80,27 +80,24 @@ export default function SummaryPopup(props: {
   };
 
   return (
-    <div>
-      <Dialog
-        id="summary-popup"
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Lesson Summary
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>{message}</Typography>
-        </DialogContent>
-        <TargetIndicator targets={targets} />
-        <
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            {buttonText}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      id="summary-popup"
+      onClose={handleClose}
+      aria-labelledby="customized-dialog-title"
+      open={open}
+    >
+      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        Lesson Summary
+      </DialogTitle>
+      <DialogContent dividers>
+        <Typography gutterBottom>{message}</Typography>
+      </DialogContent>
+      <SummaryIndicator targets={targets} />
+      <DialogActions>
+        <Button autoFocus onClick={handleClose} color="primary">
+          {buttonText}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

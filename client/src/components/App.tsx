@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ChatThread from "../components/ChatThread";
-import ChatForm from "../components/ChatForm";
-import TargetIndicator from "../components/TargetIndicator";
-import SummaryPopup from "../components/SummaryPopup";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import "styles/layout.css";
 import { Button } from "@material-ui/core";
-import { createSession } from "../api";
+import { createSession } from "api";
 import withLocation from "wrap-with-location";
+import ChatThread from "components/ChatThread";
+import ChatForm from "components/ChatForm";
+import { TargetIndicator } from "components/TargetIndicator";
+import SummaryPopup from "components/SummaryPopup";
+import "styles/layout.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -68,9 +68,10 @@ const App = (props: { search: any }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await createSession(lesson);
-      const newMessages = messages.slice();
+      setSession(response.data.sessionInfo);
 
       // Add Messages
+      const newMessages = messages.slice();
       response.data.response.forEach((msg: any) => {
         newMessages.push({
           senderId: "system",
@@ -78,18 +79,20 @@ const App = (props: { search: any }) => {
           text: msg.data.text,
         });
       });
+      setMessages(newMessages);
 
       // Add expectations
       const newTargets: any[] = [];
       response.data.sessionInfo.dialogState.expectationData.forEach(
         (exp: any) => {
-          newTargets.push({ achieved: exp.score });
+          newTargets.push({
+            achieved: exp.satisfied,
+            score: exp.score,
+            text: exp.ideal,
+          });
         }
       );
-
       setTargets(newTargets);
-      setMessages(newMessages);
-      setSession(response.data.sessionInfo);
     };
     fetchData();
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
