@@ -24,9 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function TargetIndicator(props: {
-  targets: { achieved: number }[];
-}) {
+export function TargetIndicator(props: { targets: { achieved: number }[] }) {
   const styles = useStyles();
 
   console.log(props.targets);
@@ -66,11 +64,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
         return (
           <ListItem key={`summary-${index}`}>
             <ListItemIcon id={`target-${index}`} key={`target-${index}`}>
-              <TrackChangesIcon
-                className={
-                  target.achieved ? styles.complete : styles.inProgress
-                }
-              />
+              <TargetIcon key={`summary-target-${index}`} target={target} />
             </ListItemIcon>
             <ListItemText
               id={`exp-${index}`}

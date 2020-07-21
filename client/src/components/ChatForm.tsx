@@ -61,7 +61,7 @@ export default function ChatForm(props: {
         const newTargets: any[] = [];
         response.data.sessionInfo.dialogState.expectationData.forEach(
           (exp: any) => {
-            newTargets.push({ 
+            newTargets.push({
               achieved: exp.satisfied ? 1 : exp.score,
               text: exp.ideal,
             });
