@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontWeight: "bold",
     fontSize: "70%",
-  }
+  },
 }));
 
 const App = (props: { search: any }) => {
@@ -94,6 +94,8 @@ const App = (props: { search: any }) => {
           newTargets.push({ achieved: exp.score });
         }
       );
+
+      console.log(newTargets);
 
       setTargets(newTargets);
       setMessages(newMessages);

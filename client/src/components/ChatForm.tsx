@@ -63,16 +63,12 @@ export default function ChatForm(props: {
         const newTargets: any[] = [];
         response.data.sessionInfo.dialogState.expectationData.forEach(
           (exp: any) => {
-            newTargets.push({ achieved: exp.score });
+            newTargets.push({ achieved: exp.satisfied ? 1 : exp.score });
           }
         );
         props.setTargets(newTargets);
 
-        //TODO: Remove null check in future
-        if (
-          response.data.completed != null ||
-          response.data.completed == true
-        ) {
+        if (response.data.completed == true) {
           //Session ending. Show Summary
           setSessionAlive(false);
           props.handleSummaryOpen();

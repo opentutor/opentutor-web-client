@@ -29,7 +29,7 @@ describe("Expectation summary pop-up", () => {
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
-    cy.get("#targets").children().should('have.length', 3);
+    cy.get("#targets").children().should("have.length", 3);
     cy.get("#target-0");
     cy.get("#target-1");
     cy.get("#target-2");
@@ -42,11 +42,9 @@ describe("Expectation summary pop-up", () => {
 
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
-    cy.get("#targets").children().should('have.length', 1);
+    cy.get("#targets").children().should("have.length", 1);
     cy.get("#target-0");
   });
 
-  it("hides text for expectations that have not been completed", () => {
-    
-  });
+  it("hides text for expectations that have not been completed", () => {});
 });

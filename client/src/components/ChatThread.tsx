@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   body: {
     width: "90%",
     maxWidth: 400,
-    height: "calc(100% - 285px)",
+    height: "calc(100% - 295px)",
     marginLeft: "50%",
     marginBottom: 25,
     transform: "translateX(-50%)",
