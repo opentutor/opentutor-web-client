@@ -1,0 +1,69 @@
+{
+    "status": "ok",
+    "sessionInfo": {
+        "sessionId": "83308825-1041-4b4d-809d-fa4003e66d50",
+        "sessionHistory": "{\"userResponses\":[\"Enforcing the rules can make you unpopular.\"],\"systemResponses\":[[\"Here is a question about integrity, a key Navy attribute.\",\"What are the challenges to demonstrating integrity in a group?\"],[\"Great\",\"Consider this.\",\"Why might you allow bad behavior in a group that you normally would not allow yourself to do?\"]],\"userScores\":[],\"classifierGrades\":[{\"expectationResults\":[{\"evaluation\":\"Bad\",\"expectation\":0,\"score\":0.037002370328942547},{\"evaluation\":\"Good\",\"expectation\":1,\"score\":0.6804309304473546},{\"evaluation\":\"Good\",\"expectation\":2,\"score\":0.9253419032049854}]}]}",
+        "previousUserResponse": "Enforcing the rules can make you unpopular.",
+        "previousSystemResponse": [
+            "Great",
+            "Consider this.",
+            "Why might you allow bad behavior in a group that you normally would not allow yourself to do?"
+        ],
+        "dialogState": {
+            "expectationsCompleted": [
+                false,
+                false,
+                true
+            ],
+            "expectationData": [
+                {
+                    "ideal": "",
+                    "score": 0.5,
+                    "satisfied": false,
+                    "status": "active"
+                },
+                {
+                    "ideal": "",
+                    "score": 0,
+                    "satisfied": false,
+                    "status": "none"
+                },
+                {
+                    "ideal": "Enforcing the rules can make you unpopular.",
+                    "score": 0.9253419032049854,
+                    "satisfied": true,
+                    "status": "complete"
+                }
+            ],
+            "hints": true
+        },
+        "hash": "d96f7fe0c40406f3a44eae9184d74874a3b77b4408d7307a55e5bf742596a728"
+    },
+    "response": [
+        {
+            "author": "them",
+            "type": "feedbackPositive",
+            "data": {
+                "text": "Great"
+            }
+        },
+        {
+            "author": "them",
+            "type": "text",
+            "data": {
+                "text": "Consider this."
+            }
+        },
+        {
+            "author": "them",
+            "type": "hint",
+            "data": {
+                "text": "Why might you allow bad behavior in a group that you normally would not allow yourself to do?"
+            }
+        }
+    ],
+    "sentToGrader": true,
+    "completed": false,
+    "score": 1,
+    "expectationActive": 0
+}
