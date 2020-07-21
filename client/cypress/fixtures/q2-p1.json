@@ -1,6 +1,5 @@
 {
   "status": "ok",
-  "completed": false,
   "lessonId": "q2",
   "sessionInfo": {
     "sessionId": "1d9586f9-ff47-45c2-a32e-937348eda2d6",
@@ -12,6 +11,14 @@
     ],
     "dialogState": {
       "expectationsCompleted": [false],
+      "expectationData": [
+        {
+          "ideal": "",
+          "score": 0,
+          "satisfied": false,
+          "status": ""
+        }
+      ],
       "hints": false
     },
     "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"
@@ -31,5 +38,9 @@
         "text": "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
       }
     }
-  ]
+  ],
+  "sentToGrader": false,
+  "completed": false,
+  "score": null,
+  "expectationActive": -1
 }

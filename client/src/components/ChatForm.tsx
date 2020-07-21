@@ -3,7 +3,7 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession } from "../api";
+import { continueSession } from "api";
 
 const theme = createMuiTheme({
   palette: {
@@ -38,7 +38,6 @@ export default function ChatForm(props: {
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
-    console.log("Calling OpenTutor");
     const fetchData = async () => {
       if (props.session != null) {
         const response = await continueSession({
@@ -48,7 +47,6 @@ export default function ChatForm(props: {
         });
 
         //Add Messages
-        console.log(response.data.response);
         const newMessages = props.messages.slice();
         response.data.response.forEach((msg: any) => {
           newMessages.push({
@@ -63,15 +61,22 @@ export default function ChatForm(props: {
         const newTargets: any[] = [];
         response.data.sessionInfo.dialogState.expectationData.forEach(
           (exp: any) => {
-            newTargets.push({ achieved: exp.score });
+            newTargets.push({
+              achieved: exp.satisfied,
+              score: exp.score,
+              text: exp.ideal,
+            });
           }
         );
         props.setTargets(newTargets);
 
+        console.log("targets:");
+        console.log(JSON.stringify(newTargets));
+
         //TODO: Remove null check in future
         if (
-          response.data.completed != null ||
-          response.data.completed == true
+          response.data.completed !== null &&
+          response.data.completed === true
         ) {
           //Session ending. Show Summary
           setSessionAlive(false);
