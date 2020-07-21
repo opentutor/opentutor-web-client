@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 20,
     paddingBottom: 10,
     paddingTop: 10,
-    height: 24,
   },
   censored: {
     color: "black",
@@ -35,17 +34,25 @@ export function TargetIndicator(props: { targets: any[] }) {
   const styles = useStyles();
 
   if (props.targets.length == 0) {
-    return <TrackChangesIcon className={styles.placeholder} />;
+    return (
+      <TrackChangesIcon
+        id={`placeholder`}
+        key={`placeholder`}
+        className={styles.placeholder}
+      />
+    );
   }
 
   return (
     <div id="targets">
-      {props.targets.map((target: any, index: number) => {
-        <TrackChangesIcon
-          id={`target-${index}`}
-          key={`target-${index}`}
-          className={target.achieved ? styles.targetComplete : styles.target}
-        />;
+      {props.targets.map((target, index) => {
+        return (
+          <TrackChangesIcon
+            id={`target-${index}`}
+            key={`target-${index}`}
+            className={target.achieved ? styles.targetComplete : styles.target}
+          />
+        );
       })}
     </div>
   );

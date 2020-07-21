@@ -93,6 +93,7 @@ const App = (props: { search: any }) => {
         }
       );
       setTargets(newTargets);
+      console.log("targets: " + newTargets);
     };
     fetchData();
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount

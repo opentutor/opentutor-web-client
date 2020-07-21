@@ -102,6 +102,14 @@ export default function ChatForm(props: {
     }
   }
 
+  function onKeyPress(e: any) {
+    if (e.key !== "Enter") {
+      return;
+    }
+    e.preventDefault();
+    handleClick(e);
+  }
+
   return (
     <form noValidate autoComplete="off">
       <TextField
@@ -120,6 +128,7 @@ export default function ChatForm(props: {
         onChange={(e) => {
           setChat(e.target.value);
         }}
+        onKeyPress={onKeyPress}
       />
       <br />
       <Button
