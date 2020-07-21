@@ -5,7 +5,7 @@ import TargetIndicator from "../components/TargetIndicator";
 import SummaryPopup from "../components/SummaryPopup";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import "styles/layout.css";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { createSession } from "../api";
 import withLocation from "wrap-with-location";
 
@@ -37,12 +37,20 @@ const useStyles = makeStyles((theme) => ({
   chatWindow: {
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    height: "65%",
+    height: "67%",
     position: "absolute",
     left: "50%",
     transform: "translate(-50%, 0%)",
     marginBottom: 15,
   },
+  buildInfo: {
+    position: "fixed",
+    bottom: 4,
+    marginLeft: 8,
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "70%",
+  }
 }));
 
 const App = (props: { search: any }) => {
@@ -124,6 +132,9 @@ const App = (props: { search: any }) => {
           View Summary
         </Button>
       </div>
+      <Typography className={styles.buildInfo}>
+        OpenTutor Client V1.0.0-alpha.5
+      </Typography>
     </div>
   );
 };

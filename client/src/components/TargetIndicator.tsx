@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import { makeStyles } from "@material-ui/core/styles";
+import TargetIcon from "../components/TargetIcon";
 
 const useStyles = makeStyles((theme) => ({
   target: {
@@ -45,7 +46,7 @@ export default function TargetIndicator(props: { targets: any[] }) {
     <div id="targets">
       {props.targets.map((target, index) => {
         return (
-          <TrackChangesIcon
+          <TargetIcon
             id={`target-${index}`}
             key={`target-${index}`}
             className={target.achieved ? styles.targetComplete : styles.target}
