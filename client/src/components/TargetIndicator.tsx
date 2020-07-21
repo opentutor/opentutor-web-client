@@ -52,10 +52,9 @@ export function TargetIndicator(props: { targets: { achieved: number }[] }) {
       {props.targets.map((target, index) => {
         return (
           <TargetIcon
-            //id={`target-${index}`}
             key={`target-${index}`}
-            //className={target.achieved ? styles.targetComplete : styles.target}
             target={target}
+            index={index}
           />
         );
       })}
@@ -72,7 +71,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
         return (
           <ListItem key={`summary-${index}`}>
             <ListItemIcon id={`target-${index}-${Number(target.achieved).toFixed()}`} key={`target-${index}`}>
-              <TargetIcon key={`summary-target-${index}`} target={target} />
+              <TargetIcon key={`summary-target-${index}`} target={target} index={index+props.targets.length} />
             </ListItemIcon>
             <ListItemText
               id={`exp-${index}`}
