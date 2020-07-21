@@ -23,6 +23,11 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "auto",
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
   body: {
     width: "90%",
     maxWidth: 400,
@@ -85,13 +90,17 @@ export default function ChatThread(props: {
 
   return (
     <div className={styles.body}>
-      <List id="thread">
+      <List id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (
             <ListItem
               id={`chat-msg-${i}`}
               key={`chat-msg-${i}`}
+              disableGutters={false}
               className={message.senderId}
+              classes={{
+                root: styles.root,
+              }}
             >
               <ListItemText primary={message.text} />
               {chatIcon(message.type)}
