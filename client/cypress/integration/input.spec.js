@@ -1,31 +1,63 @@
-describe("The Home Page", () => {
-  it("accepts inputs when allowed and disables inputs when not allowed", () => {
+describe("Input field", () => {
+  it("disables send button when no input", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
-    //Part 1
-    cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
-      cy.route("POST", "**/dialog/q1", desiredServerResponse);
+    cy.get("#outlined-multiline-static").should("not.be.disabled");
+    cy.get("#submit-button").should("be.disabled");
+  });
 
-      cy.get("#outlined-multiline-static").should("not.be.disabled");
-      cy.get("#submit-button").should("be.disabled");
-    });
+  it("disables send button when session finished", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cy.route("POST", "**/dialog/q1/session", "fixture:q1-1-p2.json");
 
-    //Part 2
-    cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
-      cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
+    const reply1 =
+      "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.";
+    cy.get("#outlined-multiline-static").type(reply1);
+    cy.get("#submit-button").click();
+    cy.get("#submit-button").should("be.disabled");
+    cy.get("#outlined-multiline-static").should("be.disabled");
+  });
 
-      const reply1 =
-        "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.";
+  it("enables send button when input and session not finished", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
-      cy.get("#outlined-multiline-static").type(reply1);
-      cy.get("#submit-button").should("not.be.disabled");
-      cy.get("#submit-button").click();
-      cy.get("#submit-button").should("be.disabled");
+    cy.get("#outlined-multiline-static").type("hi");
+    cy.get("#outlined-multiline-static").should("not.be.disabled");
+    cy.get("#submit-button").should("not.be.disabled");
+  });
 
-      cy.get("#outlined-multiline-static").should("be.disabled");
-      cy.get("#summary-popup").contains("Lesson Summary");
-    });
+  it("can send input with button", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+
+    const reply = "Current flows in the same direction as the arrow";
+    cy.get("#outlined-multiline-static").type(reply);
+    cy.get("#submit-button").click();
+    cy.get("#chat-msg-3").contains(reply);
+  });
+
+  it("can send input with enter", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+
+    const reply = "Current flows in the same direction as the arrow";
+    cy.get("#outlined-multiline-static").type(reply);
+    cy.get("#outlined-multiline-static").type("{enter}");
+    cy.get("#chat-msg-3").contains(reply);
   });
 });

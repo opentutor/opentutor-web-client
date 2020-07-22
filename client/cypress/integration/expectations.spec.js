@@ -6,9 +6,6 @@ describe("Expectation indicators", () => {
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.get("#targets").children().should("have.length", 3);
-    cy.get("#target-0");
-    cy.get("#target-1");
-    cy.get("#target-2");
   });
 
   it("shows icons for each expectation for lesson q2", () => {
@@ -18,6 +15,5 @@ describe("Expectation indicators", () => {
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#targets").children().should("have.length", 1);
-    cy.get("#target-0");
   });
 });

@@ -36,11 +36,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TargetIcon(props: { target: { achieved: number }, index: number }) {
+export default function TargetIcon(props: {
+  target: { achieved: number };
+  index: number;
+}) {
   const styles = useStyles();
 
   return (
-    <Box id={`target-${props.index}-${Number(props.target.achieved).toFixed()}`} position="relative" display="inline-flex">
+    <Box
+      id={`target-${props.index}-${Number(props.target.achieved).toFixed()}`}
+      position="relative"
+      display="inline-flex"
+    >
       <CircularProgress
         className={[
           styles.circleProgress,

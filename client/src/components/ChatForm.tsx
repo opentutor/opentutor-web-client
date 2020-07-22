@@ -98,6 +98,10 @@ export default function ChatForm(props: {
     if (e.key !== "Enter") {
       return;
     }
+    if (chat.length === 0 || !sessionAlive) {
+      return;
+    }
+
     e.preventDefault();
     handleClick(e);
   }
