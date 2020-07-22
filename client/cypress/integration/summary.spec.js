@@ -54,7 +54,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
-    cy.get("#exp-0").contains("_");
+    cy.get("#exp-locked-0");
   });
 
   it("shows no progress for expectations that have not been completed", () => {

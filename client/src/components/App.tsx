@@ -133,7 +133,7 @@ const App = (props: { search: any }) => {
           open={open}
           setOpen={setOpen}
           message={summaryMessage}
-          buttonText={"OK"}
+          buttonText={"Close"}
           targets={targets}
         />
         <Button id="view-summary-btn" onClick={handleSummaryOpen}>
