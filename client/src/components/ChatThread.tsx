@@ -36,15 +36,24 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
     transform: "translateX(-50%)",
   },
-  icon: {
-    position: "absolute",
-    zIndex: 1000,
-    right: -35,
-  },
   avatar: {
     color: "#fff",
     width: theme.spacing(4),
     height: theme.spacing(4),
+  },
+  icon: {
+    position: "absolute",
+    right: -40,
+  },
+  gray: {},
+  red: {
+    background: "#DC143C",
+  },
+  green: {
+    background: "#3CB371",
+  },
+  yellow: {
+    background: "yellow",
   },
 }));
 
@@ -57,14 +66,19 @@ export default function ChatThread(props: {
 
   const chatIcon = (type: string) => {
     let icon = undefined;
+    let color = styles.gray;
+
     if (type === "mainQuestion" || type === "hint") {
       icon = <HelpIcon />;
     } else if (type === "feedbackPositive") {
       icon = <CheckCircleIcon />;
+      color = styles.green;
     } else if (type === "feedbackNegative") {
       icon = <CancelIcon />;
+      color = styles.red;
     } else if (type === "feedbackNeutral") {
       icon = <ImportExportIcon />;
+      color = styles.yellow;
     }
 
     if (!icon) {
@@ -73,7 +87,7 @@ export default function ChatThread(props: {
     return (
       <div className={styles.icon}>
         <ListItemAvatar>
-          <Avatar className={styles.avatar}>{icon}</Avatar>
+          <Avatar className={[styles.avatar, color].join(" ")}>{icon}</Avatar>
         </ListItemAvatar>
       </div>
     );
@@ -101,6 +115,7 @@ export default function ChatThread(props: {
               classes={{
                 root: styles.root,
               }}
+              style={{ paddingRight: chatIcon(message.type) ? 24 : 16 }}
             >
               <ListItemText primary={message.text} />
               {chatIcon(message.type)}
