@@ -58,6 +58,7 @@ const App = (props: { search: any }) => {
   const styles = useStyles();
   const { lesson } = props.search;
   const [open, setOpen] = React.useState(false);
+  const [summaryMessage, setSummaryMessage] = React.useState("Let's see how you're doing so far!");
   const [targets, setTargets] = React.useState<any[]>([]);
   const [session, setSession] = React.useState(null);
 
@@ -116,7 +117,7 @@ const App = (props: { search: any }) => {
       ></img>
       <br />
       <div className={styles.chatWindow}>
-        <TargetIndicator targets={targets} />
+        <TargetIndicator targets={targets} showSummary={handleSummaryOpen}/>
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
@@ -126,11 +127,12 @@ const App = (props: { search: any }) => {
           session={session}
           setSession={setSession}
           handleSummaryOpen={handleSummaryOpen}
+          setSummaryMessage={setSummaryMessage}
         />
         <SummaryPopup
           open={open}
           setOpen={setOpen}
-          message={"That's a wrap! Let's see how you did on this lesson!"}
+          message={summaryMessage}
           buttonText={"OK"}
           targets={targets}
         />

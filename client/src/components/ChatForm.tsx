@@ -31,6 +31,7 @@ export default function ChatForm(props: {
   session: any;
   setSession: any;
   handleSummaryOpen: any;
+  setSummaryMessage: any;
 }) {
   const styles = useStyles();
   const [chat, setChat] = useState("");
@@ -72,6 +73,7 @@ export default function ChatForm(props: {
         if (response.data.completed == true) {
           //Session ending. Show Summary
           setSessionAlive(false);
+          props.setSummaryMessage("That's a wrap! Let's see how you did on this lesson!");
           props.handleSummaryOpen();
         }
 

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
   },
   inProgress: {
-    color: "#DC143C",
+    color: theme.palette.primary.main,
   },
   complete: {
     color: "#3CB371",
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TargetIcon(props: {
   target: { achieved: number };
   index: number;
+  showSummary: any;
 }) {
   const styles = useStyles();
 
@@ -66,11 +67,10 @@ export default function TargetIcon(props: {
         alignItems="center"
         justifyContent="center"
       >
-        <Button className={styles.button}>
+        <Button className={styles.button}
+        onClick={props.showSummary}
+        >
           <TrackChangesIcon
-            //className={styles.centerIcon}
-            //id={`target-${index}`}
-            //key={`target-${index}`}s
             className={[
               props.target.achieved == 1 ? styles.complete : styles.inProgress,
               styles.centerIcon,

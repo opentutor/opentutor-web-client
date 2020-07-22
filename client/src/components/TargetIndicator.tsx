@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function TargetIndicator(props: { targets: { achieved: number }[] }) {
+export function TargetIndicator(props: { targets: { achieved: number }[], showSummary:any }) {
   const styles = useStyles();
 
   console.log(props.targets);
@@ -46,7 +46,7 @@ export function TargetIndicator(props: { targets: { achieved: number }[] }) {
     <div id="targets">
       {props.targets.map((target, index) => {
         return (
-          <TargetIcon key={`target-${index}`} target={target} index={index} />
+          <TargetIcon key={`target-${index}`} target={target} index={index} showSummary={props.showSummary} />
         );
       })}
     </div>
@@ -66,7 +66,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
                 target.achieved
               ).toFixed()}`}
             >
-              <TargetIcon target={target} index={index} />
+              <TargetIcon target={target} index={index} showSummary={null}/>
             </ListItemIcon>
             <ListItemText
               id={`exp-${index}`}
