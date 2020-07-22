@@ -31,6 +31,22 @@ describe("Expectation summary pop-up", () => {
     cy.get("#summary-targets").children().should("have.length", 1);
   });
 
+  it("appears when clicking target indicators", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
+      cy.get(
+        `#target-0-${Number(
+          desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
+        ).toFixed()}`
+      ).click();
+      cy.get("#summary-popup");
+      cy.get("#summary-targets").children().should("have.length", 1);
+    });
+  });
+
   it("appears at end of conversation", () => {
     cy.server();
     cy.viewport(660, 1000);
