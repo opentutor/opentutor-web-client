@@ -58,7 +58,9 @@ const App = (props: { search: any }) => {
   const styles = useStyles();
   const { lesson } = props.search;
   const [open, setOpen] = React.useState(false);
-  const [summaryMessage, setSummaryMessage] = React.useState("Let's see how you're doing so far!");
+  const [summaryMessage, setSummaryMessage] = React.useState(
+    "Let's see how you're doing so far!"
+  );
   const [targets, setTargets] = React.useState<any[]>([]);
   const [session, setSession] = React.useState(null);
 
@@ -99,6 +101,7 @@ const App = (props: { search: any }) => {
             achieved: exp.satisfied,
             score: exp.score,
             text: exp.ideal,
+            status: exp.status,
           });
         }
       );
@@ -117,7 +120,7 @@ const App = (props: { search: any }) => {
       ></img>
       <br />
       <div className={styles.chatWindow}>
-        <TargetIndicator targets={targets} showSummary={handleSummaryOpen}/>
+        <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}

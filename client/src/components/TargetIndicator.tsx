@@ -3,7 +3,7 @@ import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import TargetIcon from "components/TargetIcon";
-import LockIcon from '@material-ui/icons/Lock';
+import LockIcon from "@material-ui/icons/Lock";
 
 const useStyles = makeStyles((theme) => ({
   placeholder: {
@@ -41,7 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function TargetIndicator(props: { targets: { achieved: number }[], showSummary: any }) {
+export function TargetIndicator(props: {
+  targets: { achieved: number; status: any }[];
+  showSummary: any;
+}) {
   const styles = useStyles();
 
   console.log(props.targets);
@@ -56,7 +59,12 @@ export function TargetIndicator(props: { targets: { achieved: number }[], showSu
     <div id="targets">
       {props.targets.map((target, index) => {
         return (
-          <TargetIcon key={`target-${index}`} target={target} index={index} showSummary={props.showSummary} />
+          <TargetIcon
+            key={`target-${index}`}
+            target={target}
+            index={index}
+            showSummary={props.showSummary}
+          />
         );
       })}
     </div>
@@ -70,7 +78,7 @@ export function SummaryIndicator(props: { targets: any[] }) {
     <List id="summary-targets">
       {props.targets.map((target: any, index: number) => {
         return (
-          <ListItem key={`summary-target-${index}`} >
+          <ListItem key={`summary-target-${index}`}>
             <ListItemIcon
               id={`summary-target-${index}-${Number(
                 target.achieved
@@ -78,17 +86,20 @@ export function SummaryIndicator(props: { targets: any[] }) {
             >
               <TargetIcon target={target} index={index} showSummary={null} />
             </ListItemIcon>
-            <ListItemText
-              id={`exp-${index}`}
-              key={`exp-${index}`}
-            >
+            <ListItemText id={`exp-${index}`} key={`exp-${index}`}>
               <div className={target.text ? styles.released : styles.censored}>
-                {target.text ? target.text : <LockIcon className={styles.centerLock} id={`exp-locked-${index}`}/>}   
+                {target.text ? (
+                  target.text
+                ) : (
+                  <LockIcon
+                    className={styles.centerLock}
+                    id={`exp-locked-${index}`}
+                  />
+                )}
               </div>
             </ListItemText>
           </ListItem>
-        )
-
+        );
       })}
     </List>
   );

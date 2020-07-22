@@ -65,6 +65,7 @@ export default function ChatForm(props: {
             newTargets.push({
               achieved: exp.satisfied ? 1 : exp.score,
               text: exp.ideal,
+              status: exp.status,
             });
           }
         );
@@ -73,7 +74,9 @@ export default function ChatForm(props: {
         if (response.data.completed == true) {
           //Session ending. Show Summary
           setSessionAlive(false);
-          props.setSummaryMessage("That's a wrap! Let's see how you did on this lesson!");
+          props.setSummaryMessage(
+            "That's a wrap! Let's see how you did on this lesson!"
+          );
           props.handleSummaryOpen();
         }
 

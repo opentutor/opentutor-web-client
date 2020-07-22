@@ -6,6 +6,7 @@ import CircularProgress, {
   CircularProgressProps,
 } from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
+import "styles/animations.css";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -34,14 +35,17 @@ const useStyles = makeStyles((theme) => ({
   complete: {
     color: "#3CB371",
   },
+  pulse: {},
 }));
 
 export default function TargetIcon(props: {
-  target: { achieved: number };
+  target: { achieved: number; status: any };
   index: number;
   showSummary: any;
 }) {
   const styles = useStyles();
+
+  console.log(`Goal Status: ${props.target.status}`);
 
   return (
     <Box
@@ -67,8 +71,12 @@ export default function TargetIcon(props: {
         alignItems="center"
         justifyContent="center"
       >
-        <Button className={styles.button}
-        onClick={props.showSummary}
+        <Button
+          className={[
+            styles.button,
+            props.target.status == "active" ? "pulse" : "",
+          ].join(" ")}
+          onClick={props.showSummary}
         >
           <TrackChangesIcon
             className={[
