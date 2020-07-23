@@ -144,7 +144,7 @@ const App = (props: { search: any }) => {
         </Button>
       </div>
       <Typography className={styles.buildInfo}>
-        OpenTutor Client V1.0.0-alpha.6
+        OpenTutor Client V1.0.0-alpha.8
       </Typography>
     </div>
   );
