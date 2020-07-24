@@ -79,7 +79,7 @@ const E404Page: React.FC = () => {
         <div className={styles.mainWindow}>
           <Typography className={styles.errorHeaderInfo}>404</Typography>
           <Typography className={styles.errorSubtitleInfo}>
-            We couldn't find the page you were looking for.
+            {"We couldn't find the page you were looking for."}
           </Typography>
           <Button
             className={styles.backButton}
