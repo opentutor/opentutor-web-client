@@ -18,14 +18,17 @@ describe("Error popup", () => {
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
 
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.route({
       method: "POST",
       url: "**/dialog/q1/session",
       status: 403,
       response: "fixture:e403.json",
     });
+
     cy.get("#outlined-multiline-static").type("PLACEHOLDER");
     cy.get("#submit-button").click();
+
     cy.get("#error-popup").contains("Nice Try!");
   });
 
@@ -34,6 +37,7 @@ describe("Error popup", () => {
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
 
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route({
       method: "POST",
       url: "**/dialog/q2/session",
