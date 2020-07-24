@@ -16,8 +16,12 @@ export async function continueSession(props: {
   session: any;
   outboundChat: any;
 }) {
-  return await axios.post(`${DIALOG_ENDPOINT}/${props.lesson}/session`, {
-    sessionInfo: props.session,
-    message: props.outboundChat,
-  });
+  try {
+    return await axios.post(`${DIALOG_ENDPOINT}/${props.lesson}/session`, {
+      sessionInfo: props.session,
+      message: props.outboundChat,
+    });
+  } catch (error) {
+    return error.response;
+  }
 }

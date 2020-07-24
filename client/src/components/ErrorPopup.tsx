@@ -18,6 +18,7 @@ export default function ErrorPopup(props: {
   return (
     <div>
       <Dialog
+        id="error-popup"
         open={props.open}
         onClose={handleErrorClose}
         aria-labelledby="alert-dialog-title"
