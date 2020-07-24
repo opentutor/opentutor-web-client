@@ -32,6 +32,8 @@ export default function ChatForm(props: {
   setSession: any;
   handleSummaryOpen: any;
   setSummaryMessage: any;
+  setErrorProps: any;
+  handleErrorOpen: any;
 }) {
   const styles = useStyles();
   const [chat, setChat] = useState("");
@@ -47,40 +49,75 @@ export default function ChatForm(props: {
           outboundChat: outboundChat,
         });
 
-        //Add Messages
-        const newMessages = props.messages.slice();
-        response.data.response.forEach((msg: any) => {
-          newMessages.push({
-            senderId: "system",
-            type: msg.type,
-            text: msg.data.text,
-          });
-        });
-        props.setMessages(newMessages);
-
-        // Add expectations
-        const newTargets: any[] = [];
-        response.data.sessionInfo.dialogState.expectationData.forEach(
-          (exp: any) => {
-            newTargets.push({
-              achieved: exp.satisfied ? 1 : exp.score,
-              text: exp.ideal,
-              status: exp.status,
+        if (response.status != 200) {
+          console.log(response.status); //Get the status code
+          if (response.status == 404) {
+            props.setErrorProps({
+              title: "Could not find lesson",
+              message:
+                "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
+              buttonText: "OK",
+            });
+          } else if (response.status == 403) {
+            props.setErrorProps({
+              title: "Nice Try!",
+              message:
+                "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
+              buttonText: "OK",
+            });
+          } else if (response.status == 410) {
+            props.setErrorProps({
+              title: "Lesson session ended",
+              message:
+                "We're sorry, but like all good things, this tutoring session has ended. The good news is you can always take it again! Just reload this page.",
+              buttonText: "OK",
+            });
+          } else {
+            //Unknown error
+            props.setErrorProps({
+              title: `Server Error (${response.status})`,
+              message:
+                "We don't know what happened. Please try again later or contact a teacher.",
+              buttonText: "OK",
             });
           }
-        );
-        props.setTargets(newTargets);
+          props.handleErrorOpen();
+        } else {
+          //Add Messages
+          const newMessages = props.messages.slice();
+          response.data.response.forEach((msg: any) => {
+            newMessages.push({
+              senderId: "system",
+              type: msg.type,
+              text: msg.data.text,
+            });
+          });
+          props.setMessages(newMessages);
 
-        if (response.data.completed == true) {
-          //Session ending. Show Summary
-          setSessionAlive(false);
-          props.setSummaryMessage(
-            "That's a wrap! Let's see how you did on this lesson!"
+          // Add expectations
+          const newTargets: any[] = [];
+          response.data.sessionInfo.dialogState.expectationData.forEach(
+            (exp: any) => {
+              newTargets.push({
+                achieved: exp.satisfied ? 1 : exp.score,
+                text: exp.ideal,
+                status: exp.status,
+              });
+            }
           );
-          props.handleSummaryOpen();
-        }
+          props.setTargets(newTargets);
 
-        props.setSession(response.data.sessionInfo);
+          if (response.data.completed == true) {
+            //Session ending. Show Summary
+            setSessionAlive(false);
+            props.setSummaryMessage(
+              "That's a wrap! Let's see how you did on this lesson!"
+            );
+            props.handleSummaryOpen();
+          }
+
+          props.setSession(response.data.sessionInfo);
+        }
       }
     };
     fetchData();

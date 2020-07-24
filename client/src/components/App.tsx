@@ -8,6 +8,7 @@ import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
+import ErrorPopup from "components/ErrorPopup";
 import "styles/layout.css";
 
 const theme = createMuiTheme({
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 const App = (props: { search: any }) => {
   const styles = useStyles();
   const { lesson } = props.search;
-  const [open, setOpen] = React.useState(false);
+  const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
   );
@@ -72,42 +73,89 @@ const App = (props: { search: any }) => {
     },
   ];
   const [messages, setMessages] = useState(INITIAL_DATA);
+  const [errorProps, setErrorProps] = useState({
+    title: "",
+    message: "",
+    buttonText: "",
+  });
 
   const handleSummaryOpen = () => {
-    setOpen(true);
+    setSummaryOpen(true);
+  };
+
+  const [errorOpen, setErrorOpen] = React.useState(false);
+
+  const handleErrorOpen = () => {
+    setErrorOpen(true);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await createSession(lesson);
-      setSession(response.data.sessionInfo);
 
-      // Add Messages
-      const newMessages = messages.slice();
-      response.data.response.forEach((msg: any) => {
-        newMessages.push({
-          senderId: "system",
-          type: msg.type,
-          text: msg.data.text,
-        });
-      });
-      setMessages(newMessages);
-
-      // Add expectations
-      const newTargets: any[] = [];
-      response.data.sessionInfo.dialogState.expectationData.forEach(
-        (exp: any) => {
-          newTargets.push({
-            achieved: exp.satisfied,
-            score: exp.score,
-            text: exp.ideal,
-            status: exp.status,
+      if (response.status != 200) {
+        console.log(response.status); //Get the status code
+        if (response.status == 404) {
+          setErrorProps({
+            title: "Could not find lesson",
+            message:
+              "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
+            buttonText: "OK",
+          });
+        } else if (response.status == 403) {
+          setErrorProps({
+            title: "Nice Try!",
+            message:
+              "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
+            buttonText: "OK",
+          });
+        } else if (response.status == 410) {
+          setErrorProps({
+            title: "Lesson session ended",
+            message:
+              "We're sorry, but like all good things, this tutoring session has ended. The good news is you can always take it again! Just reload this page.",
+            buttonText: "OK",
+          });
+        } else {
+          //Unknown error
+          setErrorProps({
+            title: `Server Error (${response.status})`,
+            message:
+              "We don't know what happened. Please try again later or contact a teacher.",
+            buttonText: "OK",
           });
         }
-      );
+        handleErrorOpen();
+      } else {
+        setSession(response.data.sessionInfo);
 
-      setTargets(newTargets);
-      console.log(newTargets);
+        // Add Messages
+        const newMessages = messages.slice();
+        response.data.response.forEach((msg: any) => {
+          newMessages.push({
+            senderId: "system",
+            type: msg.type,
+            text: msg.data.text,
+          });
+        });
+        setMessages(newMessages);
+
+        // Add expectations
+        const newTargets: any[] = [];
+        response.data.sessionInfo.dialogState.expectationData.forEach(
+          (exp: any) => {
+            newTargets.push({
+              achieved: exp.satisfied,
+              score: exp.score,
+              text: exp.ideal,
+              status: exp.status,
+            });
+          }
+        );
+
+        setTargets(newTargets);
+        console.log(newTargets);
+      }
     };
     fetchData();
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
@@ -131,20 +179,27 @@ const App = (props: { search: any }) => {
           setSession={setSession}
           handleSummaryOpen={handleSummaryOpen}
           setSummaryMessage={setSummaryMessage}
+          setErrorProps={setErrorProps}
+          handleErrorOpen={handleErrorOpen}
         />
         <SummaryPopup
-          open={open}
-          setOpen={setOpen}
+          open={summaryOpen}
+          setOpen={setSummaryOpen}
           message={summaryMessage}
           buttonText={"Close"}
           targets={targets}
+        />
+        <ErrorPopup
+          open={errorOpen}
+          setOpen={setErrorOpen}
+          errorProps={errorProps}
         />
         <Button id="view-summary-btn" onClick={handleSummaryOpen}>
           View Summary
         </Button>
       </div>
       <Typography className={styles.buildInfo}>
-        OpenTutor Client V1.0.0-alpha.9
+        OpenTutor Client V1.0.0-alpha.10
       </Typography>
     </div>
   );
