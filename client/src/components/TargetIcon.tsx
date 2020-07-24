@@ -1,5 +1,7 @@
 import React from "react";
-import TrackChangesIcon from "@material-ui/icons/TrackChanges";
+//mport TrackChangesIcon from "@material-ui/icons/TrackChanges";
+import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
+import GpsFixedIcon from "@material-ui/icons/GpsFixed";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress, {
@@ -78,12 +80,25 @@ export default function TargetIcon(props: {
           ].join(" ")}
           onClick={props.showSummary}
         >
-          <TrackChangesIcon
-            className={[
-              props.target.achieved == 1 ? styles.complete : styles.inProgress,
-              styles.centerIcon,
-            ].join(" ")}
-          />
+          {props.target.status != "active" ? (
+            <GpsNotFixedIcon
+              className={[
+                props.target.achieved == 1
+                  ? styles.complete
+                  : styles.inProgress,
+                styles.centerIcon,
+              ].join(" ")}
+            />
+          ) : (
+            <GpsFixedIcon
+              className={[
+                props.target.achieved == 1
+                  ? styles.complete
+                  : styles.inProgress,
+                styles.centerIcon,
+              ].join(" ")}
+            />
+          )}
         </Button>
       </Box>
     </Box>
