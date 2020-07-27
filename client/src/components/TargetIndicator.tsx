@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 20,
     paddingBottom: 10,
     paddingTop: 22,
-    color: "#FFF",
+    color: theme.palette.background.default,
   },
   centerLock: {
     position: "absolute",
