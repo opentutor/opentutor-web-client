@@ -1,4 +1,18 @@
 describe("Error popup", () => {
+  it("shows a 400 error for a missing lesson ID", () => {
+    cy.server();
+    cy.viewport(660, 1000);
+    cy.visit("/"); // change URL to match your dev URLs
+
+    cy.server().route({
+      method: "POST",
+      url: "**/dialog/",
+      status: 400,
+      response: "fixture:e400.json",
+    });
+    cy.get("#error-popup").contains("Missing lesson");
+  });
+
   it("shows a 404 error for an invalid lesson", () => {
     cy.server();
     cy.viewport(660, 1000);

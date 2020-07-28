@@ -89,7 +89,12 @@ const App = (props: { search: any }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await createSession(lesson);
+      let lessonOut = lesson;
+      if (lessonOut == undefined) {
+        lessonOut = "";
+      }
+
+      const response = await createSession(lessonOut);
 
       if (response.status != 200) {
         console.log(response.status); //Get the status code
@@ -105,6 +110,12 @@ const App = (props: { search: any }) => {
             title: "Nice Try!",
             message:
               "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
+            buttonText: "OK",
+          });
+        } else if (response.status == 400) {
+          setErrorProps({
+            title: "Missing lesson ID",
+            message: "Please provide a lesson ID in the URL to begin a lesson.",
             buttonText: "OK",
           });
         } else if (response.status == 410) {
@@ -197,7 +208,7 @@ const App = (props: { search: any }) => {
         </Button>
       </div>
       <Typography className={styles.buildInfo}>
-        OpenTutor Client V1.0.0-alpha.11
+        OpenTutor Client V1.0.0-alpha.12
       </Typography>
     </div>
   );

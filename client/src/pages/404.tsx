@@ -93,7 +93,7 @@ const NotFoundPage: React.FC = () => {
           </Button>
         </div>
         <Typography className={styles.buildInfo}>
-          OpenTutor Client V1.0.0-alpha.10
+          OpenTutor Client V1.0.0-alpha.12
         </Typography>
       </div>
     </MuiThemeProvider>

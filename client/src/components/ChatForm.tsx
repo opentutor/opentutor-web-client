@@ -58,6 +58,13 @@ export default function ChatForm(props: {
                 "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
               buttonText: "OK",
             });
+          } else if (response.status == 400) {
+            props.setErrorProps({
+              title: "Missing Lesson ID",
+              message:
+                "Please provide a lesson ID in the URL to begin a lesson.",
+              buttonText: "OK",
+            });
           } else if (response.status == 403) {
             props.setErrorProps({
               title: "Nice Try!",
