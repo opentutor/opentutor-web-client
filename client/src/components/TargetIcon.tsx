@@ -1,14 +1,11 @@
+import "styles/animations.css";
 import React from "react";
-//mport TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
 import GpsFixedIcon from "@material-ui/icons/GpsFixed";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress, {
-  CircularProgressProps,
-} from "@material-ui/core/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
-import "styles/animations.css";
 
 const useStyles = makeStyles((theme) => ({
   button: {

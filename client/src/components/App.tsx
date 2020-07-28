@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { createSession } from "api";
-import "styles/layout.css";
 import { Button, Typography } from "@material-ui/core";
-import withLocation from "wrap-with-location";
+import { createSession } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
-import "styles/layout.css";
+import withLocation from "wrap-with-location";
 
 const theme = createMuiTheme({
   palette: {

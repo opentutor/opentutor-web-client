@@ -1,11 +1,12 @@
+import "styles/layout.css";
 import React from "react";
-import App from "../components/App";
 import {
   MuiThemeProvider,
   createMuiTheme,
   makeStyles,
 } from "@material-ui/core/styles";
-import logo from "../assets/logo.png";
+import logo from "assets/logo.png";
+import App from "components/App";
 
 const theme = createMuiTheme({
   palette: {

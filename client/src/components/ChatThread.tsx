@@ -1,3 +1,4 @@
+import "styles/chat.css";
 import React, { useEffect } from "react";
 import { animateScroll } from "react-scroll";
 import {
@@ -12,7 +13,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
-import "styles/chat.css";
 
 const theme = createMuiTheme({
   palette: {
