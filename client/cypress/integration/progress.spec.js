@@ -22,6 +22,9 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
 
   it("shows some progress on two targets during lesson 1", () => {
@@ -53,6 +56,9 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
 
   it("shows full progress on three targets with perfect response in lesson 1", () => {
@@ -85,6 +91,9 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
   //Q2
   it("shows no progress on all three targets at start of lesson 2", () => {
@@ -100,6 +109,9 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
 
   it("shows some progress on two targets during lesson 2", () => {
@@ -121,6 +133,9 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
 
   it("shows full progress on three targets with perfect response in lesson 2", () => {
@@ -143,5 +158,8 @@ describe("Target Indicators Work", () => {
         ).toFixed()}`
       );
     });
+    // Take a snapshot for visual diffing
+    await(1500)
+    cy.percySnapshot();
   });
 });

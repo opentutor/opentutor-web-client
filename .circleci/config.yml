@@ -10,6 +10,7 @@ aliases:
       ignore: /.*/
 orbs:
   cypress: cypress-io/cypress@1
+  percy: percy/agent@0.1.3
   docker: circleci/docker@0.5.17
 executors:
   node:
@@ -126,10 +127,12 @@ workflows:
       #     filters: *only-untagged
       - cypress/run:
           start: npm start
-          wait-on: "http://localhost:8000"
+          wait-on: "http://localhost:9000"
           filters: *only-untagged
           working_directory: client
           cache-key: 'npm-packages-{{ arch }}-{{ checksum "client/package-lock.json" }}'
+          steps:
+            - run: percy exec -- cypress run
       - approve-build-and-push:
           filters: *only-untagged
           type: approval
@@ -159,7 +162,7 @@ workflows:
       #     filters: *only-tagged-releases
       - cypress/run:
           start: npm start
-          wait-on: "http://localhost:8000"
+          wait-on: "http://localhost:9000"
           filters: *only-tagged-releases
           working_directory: client
           cache-key: 'npm-packages-{{ arch }}-{{ checksum "client/package-lock.json" }}'
