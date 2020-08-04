@@ -29,7 +29,8 @@ ul{
   
   .user{
     float: right;
-    background: #0084ff;
+    /* background: #0084ff; */
+    background: #0B1F2C;
     color: #fff;
     border-bottom-right-radius: 5px;
   }
