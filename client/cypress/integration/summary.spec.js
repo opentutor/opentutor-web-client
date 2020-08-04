@@ -5,6 +5,7 @@ describe("Expectation summary pop-up", () => {
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
+    cy.wait(500);
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
   });
