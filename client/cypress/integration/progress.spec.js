@@ -23,7 +23,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
 
@@ -57,7 +57,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
 
@@ -92,7 +92,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
   //Q2
@@ -110,7 +110,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
 
@@ -134,7 +134,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
 
@@ -159,7 +159,7 @@ describe("Target Indicators Work", () => {
       );
     });
     // Take a snapshot for visual diffing
-    await(1500);
+    cy.wait(1500);
     cy.percySnapshot();
   });
 });
