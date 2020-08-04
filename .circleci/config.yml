@@ -125,7 +125,7 @@ workflows:
       # - client-test:
       #     filters: *only-untagged
       - cypress/run:
-          start: npm start
+          start: npx gatsby build; npx gatsby serve
           wait-on: "http://localhost:9000"
           filters: *only-untagged
           working_directory: client
@@ -159,10 +159,11 @@ workflows:
       # - client-test:
       #     filters: *only-tagged-releases
       - cypress/run:
-          start: npm start
+          start: npx gatsby build; npx gatsby serve
           wait-on: "http://localhost:9000"
           filters: *only-tagged-releases
           working_directory: client
+          command: npx percy exec -- cypress run
           cache-key: 'npm-packages-{{ arch }}-{{ checksum "client/package-lock.json" }}'
       - build-and-push:
           is-release-tag: true
