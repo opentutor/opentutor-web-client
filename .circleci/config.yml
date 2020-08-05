@@ -46,6 +46,16 @@ jobs:
       - run:
           name: Client test lint
           command: cd client && npm run test:lint
+  client-license:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install client
+          command: cd client && npm ci
+      - run:
+          name: Client test license
+          command: cd client && npm run test:license
   client-types:
     executor: node
     steps:
@@ -120,6 +130,8 @@ workflows:
       #     filters: *only-untagged
       - client-lint:
           filters: *only-untagged
+      - client-license:
+          filters: *only-untagged
       - client-types:
           filters: *only-untagged
       # - client-test:
@@ -137,6 +149,7 @@ workflows:
             - client-format
             # - client-audit
             - client-lint
+            - client-license
             - client-types
             - cypress/run
             # - client-test
@@ -152,6 +165,8 @@ workflows:
       # - client-audit:
       #     filters: *only-tagged-releases
       - client-lint:
+          filters: *only-tagged-releases
+      - client-license:
           filters: *only-tagged-releases
       - client-types:
           filters: *only-tagged-releases
@@ -170,6 +185,7 @@ workflows:
             - client-format
             # - client-audit
             - client-lint
+            - client-license
             - client-types
             - cypress/run
             # - client-test
