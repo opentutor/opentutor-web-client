@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import { continueSession } from "api";
+import { errorForStatus } from "./ErrorConfig"
 
 const theme = createMuiTheme({
   palette: {
@@ -42,52 +43,15 @@ export default function ChatForm(props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.session != null) {
+      if (props.session) {
         const response = await continueSession({
           lesson: props.lesson,
           session: props.session,
           outboundChat: outboundChat,
         });
 
-        if (response.status != 200) {
-          console.log(response.status); //Get the status code
-          if (response.status == 404) {
-            props.setErrorProps({
-              title: "Could not find lesson",
-              message:
-                "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
-              buttonText: "OK",
-            });
-          } else if (response.status == 400) {
-            props.setErrorProps({
-              title: "Missing Lesson ID",
-              message:
-                "Please provide a lesson ID in the URL to begin a lesson.",
-              buttonText: "OK",
-            });
-          } else if (response.status == 403) {
-            props.setErrorProps({
-              title: "Nice Try!",
-              message:
-                "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
-              buttonText: "OK",
-            });
-          } else if (response.status == 410) {
-            props.setErrorProps({
-              title: "Lesson session ended",
-              message:
-                "We're sorry, but like all good things, this tutoring session has ended. The good news is you can always take it again! Just reload this page.",
-              buttonText: "OK",
-            });
-          } else {
-            //Unknown error
-            props.setErrorProps({
-              title: `Server Error (${response.status})`,
-              message:
-                "We don't know what happened. Please try again later or contact a teacher.",
-              buttonText: "OK",
-            });
-          }
+        if (response.status !== 200) {
+          props.setErrorProps(errorForStatus(response.status));
           props.handleErrorOpen();
         } else {
           //Add Messages
@@ -114,7 +78,7 @@ export default function ChatForm(props: {
           );
           props.setTargets(newTargets);
 
-          if (response.data.completed == true) {
+          if (response.data.completed === true) {
             //Session ending. Show Summary
             setSessionAlive(false);
             props.setSummaryMessage(
@@ -134,7 +98,6 @@ export default function ChatForm(props: {
     e.preventDefault();
 
     if (chat.length > 0) {
-      console.log(`User typed: ${chat}\n`);
       const newMessages = props.messages.slice();
       newMessages.push({ senderId: "user", type: "", text: chat });
       props.setMessages(newMessages);
@@ -183,7 +146,7 @@ export default function ChatForm(props: {
         className={styles.button}
         endIcon={<SendIcon />}
         onClick={handleClick}
-        disabled={chat.length == 0 || !sessionAlive}
+        disabled={chat.length === 0 || !sessionAlive}
       >
         Send
       </Button>

@@ -95,7 +95,6 @@ export default function SummaryPopup(props: {
       <SummaryIndicator targets={targets} />
       <DialogActions>
         <Button
-          autoFocus
           onClick={handleClose}
           color="primary"
           variant="contained"

@@ -1,5 +1,5 @@
-describe("Target Indicators Work", () => {
-  it("shows no progress on all three targets at start of lesson 1", () => {
+describe("Expectation-progress Indicators", () => {
+  it("shows no progress on all three targets at start of a lesson", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
@@ -24,7 +24,7 @@ describe("Target Indicators Work", () => {
     });
   });
 
-  it("shows some progress on two targets during lesson 1", () => {
+  it("shows some progress on two targets during a lesson", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
@@ -55,7 +55,7 @@ describe("Target Indicators Work", () => {
     });
   });
 
-  it("shows full progress on three targets with perfect response in lesson 1", () => {
+  it("shows full progress for three targets on perfect response", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q1"); // change URL to match your dev URLs
@@ -87,7 +87,7 @@ describe("Target Indicators Work", () => {
     });
   });
   //Q2
-  it("shows no progress on all three targets at start of lesson 2", () => {
+  it("shows no progress on all three targets at start of another lesson", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
@@ -102,7 +102,7 @@ describe("Target Indicators Work", () => {
     });
   });
 
-  it("shows some progress on two targets during lesson 2", () => {
+  it("shows some progress on two targets during another lesson", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
@@ -123,7 +123,7 @@ describe("Target Indicators Work", () => {
     });
   });
 
-  it("shows full progress on three targets with perfect response in lesson 2", () => {
+  it("shows full progress for three targets on perfect response on another lesson", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs

@@ -44,8 +44,6 @@ export default function TargetIcon(props: {
 }) {
   const styles = useStyles();
 
-  console.log(`Goal Status: ${props.target.status}`);
-
   return (
     <Box
       id={`target-${props.index}-${Number(props.target.achieved).toFixed()}`}
@@ -55,7 +53,7 @@ export default function TargetIcon(props: {
       <CircularProgress
         className={[
           styles.circleProgress,
-          props.target.achieved == 1 ? styles.complete : styles.inProgress,
+          props.target.achieved === 1 ? styles.complete : styles.inProgress,
         ].join(" ")}
         variant="static"
         value={props.target.achieved * 100}
@@ -73,14 +71,14 @@ export default function TargetIcon(props: {
         <Button
           className={[
             styles.button,
-            props.target.status == "active" ? "pulse" : "",
+            props.target.status === "active" ? "pulse" : "",
           ].join(" ")}
           onClick={props.showSummary}
         >
-          {props.target.status != "active" ? (
+          {props.target.status !== "active" ? (
             <GpsNotFixedIcon
               className={[
-                props.target.achieved == 1
+                props.target.achieved === 1
                   ? styles.complete
                   : styles.inProgress,
                 styles.centerIcon,
@@ -89,7 +87,7 @@ export default function TargetIcon(props: {
           ) : (
             <GpsFixedIcon
               className={[
-                props.target.achieved == 1
+                props.target.achieved === 1
                   ? styles.complete
                   : styles.inProgress,
                 styles.centerIcon,
