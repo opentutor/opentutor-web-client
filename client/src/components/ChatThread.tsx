@@ -60,8 +60,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatThread(props: {
   messages: { senderId: string; type: string; text: string }[];
 }) {
-  console.log("Printing Messages");
-  console.log(props.messages);
   const styles = useStyles();
 
   const chatIcon = (type: string) => {

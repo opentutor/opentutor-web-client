@@ -47,9 +47,7 @@ export function TargetIndicator(props: {
 }) {
   const styles = useStyles();
 
-  console.log(props.targets);
-
-  if (props.targets.length == 0) {
+  if (props.targets.length === 0) {
     return (
       <TrackChangesIcon id={`placeholder`} className={styles.placeholder} />
     );

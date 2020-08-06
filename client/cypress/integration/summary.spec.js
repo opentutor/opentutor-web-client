@@ -31,7 +31,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("#summary-targets").children().should("have.length", 1);
   });
 
-  it("appears when clicking target indicators", () => {
+  it("displays on tap any expectation-progress indicator", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
@@ -47,7 +47,7 @@ describe("Expectation summary pop-up", () => {
     });
   });
 
-  it("appears at end of conversation", () => {
+  it("displays at when lesson is completed", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs

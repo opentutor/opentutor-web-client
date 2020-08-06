@@ -8,6 +8,7 @@ import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
+import { errorForStatus, ErrorConfig } from "components/ErrorConfig";
 
 const theme = createMuiTheme({
   palette: {
@@ -63,14 +64,13 @@ const App = (props: { search: any }) => {
   const [targets, setTargets] = React.useState<any[]>([]);
   const [session, setSession] = React.useState(null);
 
-  const INITIAL_DATA = [
+  const [messages, setMessages] = useState([
     {
       senderId: "system",
       type: "opening",
       text: "Welcome to OpenTutor!",
     },
-  ];
-  const [messages, setMessages] = useState(INITIAL_DATA);
+  ]);
   const [errorProps, setErrorProps] = useState({
     title: "",
     message: "",
@@ -95,45 +95,8 @@ const App = (props: { search: any }) => {
       }
 
       const response = await createSession(lessonOut);
-
-      if (response.status != 200) {
-        console.log(response.status); //Get the status code
-        if (response.status == 404) {
-          setErrorProps({
-            title: "Could not find lesson",
-            message:
-              "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
-            buttonText: "OK",
-          });
-        } else if (response.status == 403) {
-          setErrorProps({
-            title: "Nice Try!",
-            message:
-              "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
-            buttonText: "OK",
-          });
-        } else if (response.status == 400) {
-          setErrorProps({
-            title: "Missing lesson ID",
-            message: "Please provide a lesson ID in the URL to begin a lesson.",
-            buttonText: "OK",
-          });
-        } else if (response.status == 410) {
-          setErrorProps({
-            title: "Lesson session ended",
-            message:
-              "We're sorry, but like all good things, this tutoring session has ended. The good news is you can always take it again! Just reload this page.",
-            buttonText: "OK",
-          });
-        } else {
-          //Unknown error
-          setErrorProps({
-            title: `Server Error (${response.status})`,
-            message:
-              "We don't know what happened. Please try again later or contact a teacher.",
-            buttonText: "OK",
-          });
-        }
+      if (response.status !== 200) {
+        setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
       } else {
         setSession(response.data.sessionInfo);
@@ -163,7 +126,6 @@ const App = (props: { search: any }) => {
         );
 
         setTargets(newTargets);
-        console.log(newTargets);
       }
     };
     fetchData();

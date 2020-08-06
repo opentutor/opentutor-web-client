@@ -63,7 +63,7 @@ describe("Error popup", () => {
     cy.get("#error-popup").contains("Lesson session ended");
   });
 
-  it("shows a generic/502 error for all other server errors", () => {
+  it("shows a 5XX error for all server errors", () => {
     cy.server();
     cy.viewport(660, 1000);
     cy.visit("/?lesson=q2"); // change URL to match your dev URLs
