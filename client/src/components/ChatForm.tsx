@@ -3,7 +3,7 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession } from "api";
+import { continueSession, SuccessfulContinuationResponse } from "api";
 import { errorForStatus } from "./ErrorConfig";
 
 const theme = createMuiTheme({
@@ -111,9 +111,10 @@ export default function ChatForm(props: {
           props.setErrorProps(errorForStatus(response.status));
           props.handleErrorOpen();
         } else {
+          const succesfulResponse = response as SuccessfulContinuationResponse;
           //Add Messages
           const newMessages = props.messages.slice();
-          response.data.response.forEach(
+          succesfulResponse.data.response.forEach(
             (msg: {
               author: string;
               type: string;
@@ -137,7 +138,7 @@ export default function ChatForm(props: {
             text: string;
             status: string;
           }[] = [];
-          response.data.sessionInfo.dialogState.expectationData.forEach(
+          succesfulResponse.data.sessionInfo.dialogState.expectationData.forEach(
             (exp: {
               ideal: string;
               score: number;
@@ -154,7 +155,7 @@ export default function ChatForm(props: {
           );
           props.setTargets(newTargets);
 
-          if (response.data.completed === true) {
+          if (succesfulResponse.data.completed === true) {
             //Session ending. Show Summary
             setSessionAlive(false);
             props.setSummaryMessage(
@@ -163,7 +164,7 @@ export default function ChatForm(props: {
             props.handleSummaryOpen();
           }
 
-          props.setSession(response.data.sessionInfo);
+          props.setSession(succesfulResponse.data.sessionInfo);
         }
       }
     };
