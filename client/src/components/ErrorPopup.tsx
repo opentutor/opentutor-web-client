@@ -7,9 +7,13 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function ErrorPopup(props: {
-  open: any;
-  setOpen: any;
-  errorProps: any;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  errorProps: {
+    title: string;
+    message: string;
+    buttonText: string;
+  };
 }) {
   const handleErrorClose = () => {
     props.setOpen(false);

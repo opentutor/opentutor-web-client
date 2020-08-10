@@ -1,8 +1,8 @@
+import { visitOnMobile } from "../support/functions";
+
 describe("Error popup", () => {
   it("shows a 400 error for a missing lesson ID", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/"); // change URL to match your dev URLs
 
     cy.server().route({
       method: "POST",
@@ -14,9 +14,7 @@ describe("Error popup", () => {
   });
 
   it("shows a 404 error for an invalid lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q12312"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q12312"); // change URL to match your dev URLs
 
     cy.server().route({
       method: "POST",
@@ -28,9 +26,7 @@ describe("Error popup", () => {
   });
 
   it("shows a 403 error when cheating", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
 
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.route({
@@ -47,9 +43,7 @@ describe("Error popup", () => {
   });
 
   it("shows a 410 error for ended session", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
 
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route({
@@ -64,9 +58,7 @@ describe("Error popup", () => {
   });
 
   it("shows a 5XX error for all server errors", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
 
     cy.route({
       method: "POST",

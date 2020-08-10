@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import { continueSession } from "api";
-import { errorForStatus } from "./ErrorConfig"
+import { errorForStatus } from "./ErrorConfig";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,14 +27,71 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatForm(props: {
   lesson: string;
   messages: { senderId: string; type: string; text: string }[];
-  setMessages: any;
-  setTargets: any;
-  session: any;
-  setSession: any;
-  handleSummaryOpen: any;
-  setSummaryMessage: any;
-  setErrorProps: any;
-  handleErrorOpen: any;
+  setMessages: React.Dispatch<
+    React.SetStateAction<
+      {
+        senderId: string;
+        type: string;
+        text: string;
+      }[]
+    >
+  >;
+  setTargets: React.Dispatch<
+    React.SetStateAction<
+      {
+        achieved: boolean;
+        score: number;
+        text: string;
+        status: string;
+      }[]
+    >
+  >;
+  session: {
+    sessionId: string;
+    sessionHistory: string;
+    previousUserResponse: string;
+    previousSystemResponse: string[];
+    dialogState: {
+      expectationsCompleted: boolean;
+      expectationData: {
+        ideal: string;
+        score: number;
+        satisfied: boolean;
+        status: string;
+      }[];
+      hints: boolean;
+    };
+    hash: string;
+  };
+  setSession: React.Dispatch<
+    React.SetStateAction<{
+      sessionId: string;
+      sessionHistory: string;
+      previousUserResponse: string;
+      previousSystemResponse: string[];
+      dialogState: {
+        expectationsCompleted: boolean;
+        expectationData: {
+          ideal: string;
+          score: number;
+          satisfied: boolean;
+          status: string;
+        }[];
+        hints: boolean;
+      };
+      hash: string;
+    }>
+  >;
+  handleSummaryOpen: () => void;
+  setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
+  setErrorProps: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      message: string;
+      buttonText: string;
+    }>
+  >;
+  handleErrorOpen: () => void;
 }) {
   const styles = useStyles();
   const [chat, setChat] = useState("");
@@ -43,7 +100,7 @@ export default function ChatForm(props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.session) {
+      if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
           session: props.session,
@@ -56,21 +113,40 @@ export default function ChatForm(props: {
         } else {
           //Add Messages
           const newMessages = props.messages.slice();
-          response.data.response.forEach((msg: any) => {
-            newMessages.push({
-              senderId: "system",
-              type: msg.type,
-              text: msg.data.text,
-            });
-          });
+          response.data.response.forEach(
+            (msg: {
+              author: string;
+              type: string;
+              data: {
+                text: string;
+              };
+            }) => {
+              newMessages.push({
+                senderId: "system",
+                type: msg.type,
+                text: msg.data.text,
+              });
+            }
+          );
           props.setMessages(newMessages);
 
           // Add expectations
-          const newTargets: any[] = [];
+          const newTargets: {
+            achieved: boolean;
+            score: number;
+            text: string;
+            status: string;
+          }[] = [];
           response.data.sessionInfo.dialogState.expectationData.forEach(
-            (exp: any) => {
+            (exp: {
+              ideal: string;
+              score: number;
+              satisfied: boolean;
+              status: string;
+            }) => {
               newTargets.push({
-                achieved: exp.satisfied ? 1 : exp.score,
+                achieved: exp.satisfied,
+                score: exp.satisfied ? 1 : exp.score,
                 text: exp.ideal,
                 status: exp.status,
               });

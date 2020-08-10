@@ -1,8 +1,8 @@
+import { visitOnMobile } from "../support/functions";
+
 describe("Expectation summary pop-up", () => {
   it("opens with View Summary button", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
@@ -10,9 +10,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows icons for each expectation for lesson q1", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.get("#view-summary-btn").click();
@@ -21,9 +19,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows icons for each expectation for lesson q2", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
@@ -32,9 +28,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("displays on tap any expectation-progress indicator", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.get(
@@ -48,9 +42,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("displays at when lesson is completed", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
 
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
@@ -62,9 +54,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("hides text for expectations that have not been completed", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
@@ -74,9 +64,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows no progress for expectations that have not been completed", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.get("#view-summary-btn").click();
@@ -86,9 +74,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows text for expectations that have been completed", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
@@ -103,9 +89,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows progress for expectations that have been completed", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
@@ -117,3 +101,9 @@ describe("Expectation summary pop-up", () => {
     cy.get("#summary-target-0-1");
   });
 });
+
+function visitOnMobile(cy, url) {
+  cy.server();
+  cy.viewport(660, 1000);
+  cy.visit(url);
+}

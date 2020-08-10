@@ -1,8 +1,8 @@
+import { visitOnMobile } from "../support/functions";
+
 describe("Expectation-progress Indicators", () => {
   it("shows no progress on all three targets at start of a lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
 
     cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
@@ -25,9 +25,7 @@ describe("Expectation-progress Indicators", () => {
   });
 
   it("shows some progress on two targets during a lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-2-p2.json");
 
     cy.fixture("q1-2-p2.json").then((desiredServerResponse) => {
@@ -56,9 +54,7 @@ describe("Expectation-progress Indicators", () => {
   });
 
   it("shows full progress for three targets on perfect response", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p2.json");
 
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
@@ -88,9 +84,7 @@ describe("Expectation-progress Indicators", () => {
   });
   //Q2
   it("shows no progress on all three targets at start of another lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
 
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2", desiredServerResponse);
@@ -103,9 +97,7 @@ describe("Expectation-progress Indicators", () => {
   });
 
   it("shows some progress on two targets during another lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-2-p2.json");
 
     cy.fixture("q2-2-p2.json").then((desiredServerResponse) => {
@@ -124,9 +116,7 @@ describe("Expectation-progress Indicators", () => {
   });
 
   it("shows full progress for three targets on perfect response on another lesson", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p2.json");
 
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
@@ -145,3 +135,9 @@ describe("Expectation-progress Indicators", () => {
     });
   });
 });
+
+function visitOnMobile(cy, url) {
+  cy.server();
+  cy.viewport(660, 1000);
+  cy.visit(url);
+}
