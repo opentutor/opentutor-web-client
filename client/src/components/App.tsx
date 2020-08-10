@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import { createSession } from "api";
+import { createSession, SuccessfulCreationResponse } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -106,18 +106,19 @@ const App = (props: { search: { lesson: string } }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let lessonOut = lesson || ""; //If lesson is undef make ""
+      const lessonOut = lesson || ""; //If lesson is undef make ""
 
       const response = await createSession(lessonOut);
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
       } else {
-        setSession(response.data.sessionInfo);
+        const succesfulResponse = response as SuccessfulCreationResponse;
+        setSession(succesfulResponse.data.sessionInfo);
 
         // Add Messages
         const newMessages = messages.slice();
-        response.data.response.forEach(
+        succesfulResponse.data.response.forEach(
           (msg: {
             author: string;
             type: string;
@@ -141,7 +142,7 @@ const App = (props: { search: { lesson: string } }) => {
           text: string;
           status: string;
         }[] = [];
-        response.data.sessionInfo.dialogState.expectationData.forEach(
+        succesfulResponse.data.sessionInfo.dialogState.expectationData.forEach(
           (exp: {
             ideal: string;
             score: number;

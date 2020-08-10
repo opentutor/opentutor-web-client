@@ -104,7 +104,9 @@ export function SummaryIndicator(props: {
                 <TargetIcon
                   target={target}
                   index={index}
-                  showSummary={() => {}}
+                  showSummary={() => {
+                    /* Empty Function as we don't want to pop another summary from the summary page */
+                  }}
                 />
               </ListItemIcon>
               <ListItemText id={`exp-${index}`} key={`exp-${index}`}>
