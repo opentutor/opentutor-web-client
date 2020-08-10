@@ -42,8 +42,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function TargetIndicator(props: {
-  targets: { achieved: number; status: any }[];
-  showSummary: any;
+  targets: {
+    achieved: boolean;
+    score: number;
+    text: string;
+    status: string;
+  }[];
+  showSummary: () => void;
 }) {
   const styles = useStyles();
 
@@ -69,36 +74,57 @@ export function TargetIndicator(props: {
   );
 }
 
-export function SummaryIndicator(props: { targets: any[] }) {
+export function SummaryIndicator(props: {
+  targets: {
+    achieved: boolean;
+    score: number;
+    text: string;
+    status: string;
+  }[];
+}) {
   const styles = useStyles();
 
   return (
     <List id="summary-targets">
-      {props.targets.map((target: any, index: number) => {
-        return (
-          <ListItem key={`summary-target-${index}`}>
-            <ListItemIcon
-              id={`summary-target-${index}-${Number(
-                target.achieved
-              ).toFixed()}`}
-            >
-              <TargetIcon target={target} index={index} showSummary={null} />
-            </ListItemIcon>
-            <ListItemText id={`exp-${index}`} key={`exp-${index}`}>
-              <div className={target.text ? styles.released : styles.censored}>
-                {target.text ? (
-                  target.text
-                ) : (
-                  <LockIcon
-                    className={styles.centerLock}
-                    id={`exp-locked-${index}`}
-                  />
-                )}
-              </div>
-            </ListItemText>
-          </ListItem>
-        );
-      })}
+      {props.targets.map(
+        (
+          target: {
+            achieved: boolean;
+            score: number;
+            text: string;
+            status: string;
+          },
+          index: number
+        ) => {
+          return (
+            <ListItem key={`summary-target-${index}`}>
+              <ListItemIcon
+                id={`summary-target-${index}-${Number(target.score).toFixed()}`}
+              >
+                <TargetIcon
+                  target={target}
+                  index={index}
+                  showSummary={() => {}}
+                />
+              </ListItemIcon>
+              <ListItemText id={`exp-${index}`} key={`exp-${index}`}>
+                <div
+                  className={target.text ? styles.released : styles.censored}
+                >
+                  {target.text ? (
+                    target.text
+                  ) : (
+                    <LockIcon
+                      className={styles.centerLock}
+                      id={`exp-locked-${index}`}
+                    />
+                  )}
+                </div>
+              </ListItemText>
+            </ListItem>
+          );
+        }
+      )}
     </List>
   );
 }

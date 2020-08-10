@@ -1,8 +1,8 @@
+import { visitOnMobile } from "../support/functions";
+
 describe("Lesson query parameter", () => {
   it("starts session for lesson q1", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
 
     cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
@@ -17,9 +17,7 @@ describe("Lesson query parameter", () => {
   });
 
   it("sends message and gets response for lesson q1", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
@@ -44,9 +42,7 @@ describe("Lesson query parameter", () => {
   });
 
   it("starts session for lesson q2", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
 
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2", desiredServerResponse);
@@ -61,9 +57,7 @@ describe("Lesson query parameter", () => {
   });
 
   it("sends message and gets response for lesson q2", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
 
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
@@ -83,3 +77,9 @@ describe("Lesson query parameter", () => {
     });
   });
 });
+
+function visitOnMobile(cy, url) {
+  cy.server();
+  cy.viewport(660, 1000);
+  cy.visit(url);
+}

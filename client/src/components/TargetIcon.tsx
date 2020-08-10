@@ -38,25 +38,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TargetIcon(props: {
-  target: { achieved: number; status: any };
+  target: {
+    achieved: boolean;
+    score: number;
+    text: string;
+    status: string;
+  };
   index: number;
-  showSummary: any;
+  showSummary: () => void;
 }) {
   const styles = useStyles();
 
   return (
     <Box
-      id={`target-${props.index}-${Number(props.target.achieved).toFixed()}`}
+      id={`target-${props.index}-${Number(props.target.score).toFixed()}`}
       position="relative"
       display="inline-flex"
     >
       <CircularProgress
         className={[
           styles.circleProgress,
-          props.target.achieved === 1 ? styles.complete : styles.inProgress,
+          props.target.score === 1 ? styles.complete : styles.inProgress,
         ].join(" ")}
         variant="static"
-        value={props.target.achieved * 100}
+        value={props.target.score * 100}
       />
       <Box
         top={0}
@@ -78,18 +83,14 @@ export default function TargetIcon(props: {
           {props.target.status !== "active" ? (
             <GpsNotFixedIcon
               className={[
-                props.target.achieved === 1
-                  ? styles.complete
-                  : styles.inProgress,
+                props.target.score === 1 ? styles.complete : styles.inProgress,
                 styles.centerIcon,
               ].join(" ")}
             />
           ) : (
             <GpsFixedIcon
               className={[
-                props.target.achieved === 1
-                  ? styles.complete
-                  : styles.inProgress,
+                props.target.score === 1 ? styles.complete : styles.inProgress,
                 styles.centerIcon,
               ].join(" ")}
             />

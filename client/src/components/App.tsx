@@ -8,7 +8,7 @@ import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
-import { errorForStatus, ErrorConfig } from "components/ErrorConfig";
+import { errorForStatus } from "components/ErrorConfig";
 
 const theme = createMuiTheme({
   palette: {
@@ -54,15 +54,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = (props: { search: any }) => {
+const App = (props: { search: { lesson: string } }) => {
   const styles = useStyles();
   const { lesson } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
   );
-  const [targets, setTargets] = React.useState<any[]>([]);
-  const [session, setSession] = React.useState(null);
+  const [targets, setTargets] = React.useState<
+    {
+      achieved: boolean;
+      score: number;
+      text: string;
+      status: string;
+    }[]
+  >([]);
+  const [session, setSession] = React.useState({
+    sessionId: "",
+    sessionHistory: "",
+    previousUserResponse: "",
+    previousSystemResponse: [""],
+    dialogState: {
+      expectationsCompleted: false,
+      expectationData: [{ ideal: "", score: 0, satisfied: false, status: "" }],
+      hints: false,
+    },
+    hash: "",
+  });
 
   const [messages, setMessages] = useState([
     {
@@ -76,7 +94,6 @@ const App = (props: { search: any }) => {
     message: "",
     buttonText: "",
   });
-
   const handleSummaryOpen = () => {
     setSummaryOpen(true);
   };
@@ -89,10 +106,7 @@ const App = (props: { search: any }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let lessonOut = lesson;
-      if (lessonOut == undefined) {
-        lessonOut = "";
-      }
+      let lessonOut = lesson || ""; //If lesson is undef make ""
 
       const response = await createSession(lessonOut);
       if (response.status !== 200) {
@@ -103,19 +117,37 @@ const App = (props: { search: any }) => {
 
         // Add Messages
         const newMessages = messages.slice();
-        response.data.response.forEach((msg: any) => {
-          newMessages.push({
-            senderId: "system",
-            type: msg.type,
-            text: msg.data.text,
-          });
-        });
+        response.data.response.forEach(
+          (msg: {
+            author: string;
+            type: string;
+            data: {
+              text: string;
+            };
+          }) => {
+            newMessages.push({
+              senderId: "system",
+              type: msg.type,
+              text: msg.data.text,
+            });
+          }
+        );
         setMessages(newMessages);
 
         // Add expectations
-        const newTargets: any[] = [];
+        const newTargets: {
+          achieved: boolean;
+          score: number;
+          text: string;
+          status: string;
+        }[] = [];
         response.data.sessionInfo.dialogState.expectationData.forEach(
-          (exp: any) => {
+          (exp: {
+            ideal: string;
+            score: number;
+            satisfied: boolean;
+            status: string;
+          }) => {
             newTargets.push({
               achieved: exp.satisfied,
               score: exp.score,

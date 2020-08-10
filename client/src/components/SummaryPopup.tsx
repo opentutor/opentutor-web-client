@@ -67,11 +67,16 @@ const DialogActions = withStyles((theme: Theme) => ({
 }))(MuiDialogActions);
 
 export default function SummaryPopup(props: {
-  open: any;
-  setOpen: any;
-  message: any;
-  buttonText: any;
-  targets: any;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  message: string;
+  buttonText: string;
+  targets: {
+    achieved: boolean;
+    score: number;
+    text: string;
+    status: string;
+  }[];
 }) {
   const { open, setOpen, message, buttonText, targets } = props;
 
@@ -94,11 +99,7 @@ export default function SummaryPopup(props: {
       </DialogContent>
       <SummaryIndicator targets={targets} />
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          color="primary"
-          variant="contained"
-        >
+        <Button onClick={handleClose} color="primary" variant="contained">
           {buttonText}
         </Button>
       </DialogActions>

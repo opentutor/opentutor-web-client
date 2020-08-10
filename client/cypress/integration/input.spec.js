@@ -1,8 +1,8 @@
+import { visitOnMobile } from "../support/functions";
+
 describe("Input field", () => {
   it("disables send button when no input", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.get("#outlined-multiline-static").should("not.be.disabled");
@@ -10,9 +10,7 @@ describe("Input field", () => {
   });
 
   it("disables send button when session finished", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.route("POST", "**/dialog/q1/session", "fixture:q1-1-p2.json");
 
@@ -25,9 +23,7 @@ describe("Input field", () => {
   });
 
   it("enables send button when input and session not finished", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q1"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
 
     cy.get("#outlined-multiline-static").type("hi");
@@ -36,9 +32,7 @@ describe("Input field", () => {
   });
 
   it("can send input with button", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
@@ -49,9 +43,7 @@ describe("Input field", () => {
   });
 
   it("can send input with enter", () => {
-    cy.server();
-    cy.viewport(660, 1000);
-    cy.visit("/?lesson=q2"); // change URL to match your dev URLs
+    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
 
@@ -61,3 +53,9 @@ describe("Input field", () => {
     cy.get("#chat-msg-3").contains(reply);
   });
 });
+
+function visitOnMobile(cy, url) {
+  cy.server();
+  cy.viewport(660, 1000);
+  cy.visit(url);
+}
