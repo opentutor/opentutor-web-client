@@ -1,5 +1,4 @@
-export function visitOnMobile(cy, url) {
+export function cySetup(cy) {
   cy.server();
   cy.viewport(660, 1000);
-  cy.visit(url);
 }

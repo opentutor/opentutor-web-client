@@ -1,4 +1,4 @@
-import { visitOnMobile } from "../support/functions";
+import { cySetup } from "../support/functions";
 
 describe("Expectation indicators", () => {
   [
@@ -14,8 +14,9 @@ describe("Expectation indicators", () => {
     },
   ].forEach((x) => {
     it(`shows an icon for each expectation for a lesson with ${x.expectedExpCount}`, () => {
-      visitOnMobile(cy, `/?lesson=${x.lesson}`); // change URL to match your dev URLs
+      cySetup(cy)
       cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
+      cy.visit(`/?lesson=${x.lesson}`);
       cy.get("#targets").children().should("have.length", x.expectedExpCount);
     });
   });
