@@ -51,17 +51,21 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^2.5.1",
-    "gatsby-cli": "^2.12.54",
+    "gatsby-cli": "^2.12.87",
     "gatsby-plugin-eslint": "^2.0.8",
     "gatsby-plugin-root-import": "^2.0.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.1.0",
+    "npm-force-resolutions": "0.0.3",
     "prettier": "^2.0.5",
     "react-refresh": "^0.8.3",
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^26.1.1",
     "typescript": "^3.9.6",
     "webpack": "4.x"
+  },
+  "resolutions": {
+    "dot-prop": ">=5.1.1"
   },
   "keywords": [
     "gatsby"
