@@ -1,12 +1,11 @@
 import React from "react";
-import { ErrorConfig } from './types'
+import { ErrorConfig } from "./types";
 export function errorForStatus(status: number): ErrorConfig {
   switch (status) {
     case 400:
       return {
         title: "Bad request",
-        message:
-          "",
+        message: "",
         buttonText: "OK",
       };
     case 404:
