@@ -3,7 +3,7 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession, SuccessfulContinuationResponse } from "api";
+import { continueSession, DialogData } from "api";
 import { errorForStatus } from "./ErrorConfig";
 
 const theme = createMuiTheme({
@@ -111,7 +111,7 @@ export default function ChatForm(props: {
           props.setErrorProps(errorForStatus(response.status));
           props.handleErrorOpen();
         } else {
-          const succesfulResponse = response as SuccessfulContinuationResponse;
+          const succesfulResponse = response as DialogData;
           //Add Messages
           const newMessages = props.messages.slice();
           succesfulResponse.data.response.forEach(

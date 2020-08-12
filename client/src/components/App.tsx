@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import { createSession, SuccessfulCreationResponse } from "api";
+import { createSession, DialogData, SessionData, DialogMsg, ExpectationData } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -9,6 +9,8 @@ import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
+import { AxiosResponse } from "axios";
+import { Target} from './types';
 
 const theme = createMuiTheme({
   palette: {
@@ -61,15 +63,8 @@ const App = (props: { search: { lesson: string } }) => {
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
   );
-  const [targets, setTargets] = React.useState<
-    {
-      achieved: boolean;
-      score: number;
-      text: string;
-      status: string;
-    }[]
-  >([]);
-  const [session, setSession] = React.useState({
+  const [targets, setTargets] = React.useState<Target[]>([]);
+  const [session, setSession] = React.useState<SessionData>({
     sessionId: "",
     sessionHistory: "",
     previousUserResponse: "",
@@ -107,25 +102,17 @@ const App = (props: { search: { lesson: string } }) => {
   useEffect(() => {
     const fetchData = async () => {
       const lessonOut = lesson || ""; //If lesson is undef make ""
-
       const response = await createSession(lessonOut);
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
       } else {
-        const succesfulResponse = response as SuccessfulCreationResponse;
+        const succesfulResponse = response as AxiosResponse<DialogData>;
         setSession(succesfulResponse.data.sessionInfo);
-
         // Add Messages
         const newMessages = messages.slice();
         succesfulResponse.data.response.forEach(
-          (msg: {
-            author: string;
-            type: string;
-            data: {
-              text: string;
-            };
-          }) => {
+          (msg: DialogMsg) => {
             newMessages.push({
               senderId: "system",
               type: msg.type,
@@ -136,19 +123,9 @@ const App = (props: { search: { lesson: string } }) => {
         setMessages(newMessages);
 
         // Add expectations
-        const newTargets: {
-          achieved: boolean;
-          score: number;
-          text: string;
-          status: string;
-        }[] = [];
+        const newTargets: Target[] = [];
         succesfulResponse.data.sessionInfo.dialogState.expectationData.forEach(
-          (exp: {
-            ideal: string;
-            score: number;
-            satisfied: boolean;
-            status: string;
-          }) => {
+          (exp: ExpectationData) => {
             newTargets.push({
               achieved: exp.satisfied,
               score: exp.score,
