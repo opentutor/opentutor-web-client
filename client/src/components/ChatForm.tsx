@@ -3,8 +3,9 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession, DialogData } from "api";
+import { continueSession, DialogData, SessionData, DialogResponse } from "api";
 import { errorForStatus } from "./ErrorConfig";
+import { Target, ChatMsg, ErrorConfig } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,70 +28,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatForm(props: {
   lesson: string;
   messages: { senderId: string; type: string; text: string }[];
-  setMessages: React.Dispatch<
-    React.SetStateAction<
-      {
-        senderId: string;
-        type: string;
-        text: string;
-      }[]
-    >
-  >;
-  setTargets: React.Dispatch<
-    React.SetStateAction<
-      {
-        achieved: boolean;
-        score: number;
-        text: string;
-        status: string;
-      }[]
-    >
-  >;
-  session: {
-    sessionId: string;
-    sessionHistory: string;
-    previousUserResponse: string;
-    previousSystemResponse: string[];
-    dialogState: {
-      expectationsCompleted: boolean;
-      expectationData: {
-        ideal: string;
-        score: number;
-        satisfied: boolean;
-        status: string;
-      }[];
-      hints: boolean;
-    };
-    hash: string;
-  };
-  setSession: React.Dispatch<
-    React.SetStateAction<{
-      sessionId: string;
-      sessionHistory: string;
-      previousUserResponse: string;
-      previousSystemResponse: string[];
-      dialogState: {
-        expectationsCompleted: boolean;
-        expectationData: {
-          ideal: string;
-          score: number;
-          satisfied: boolean;
-          status: string;
-        }[];
-        hints: boolean;
-      };
-      hash: string;
-    }>
-  >;
+  setMessages: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
+  setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
+  session: SessionData;
+  setSession: React.Dispatch<React.SetStateAction<SessionData>>;
   handleSummaryOpen: () => void;
   setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
-  setErrorProps: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      message: string;
-      buttonText: string;
-    }>
-  >;
+  setErrorProps: React.Dispatch<React.SetStateAction<ErrorConfig>>;
   handleErrorOpen: () => void;
 }) {
   const styles = useStyles();
@@ -111,51 +55,28 @@ export default function ChatForm(props: {
           props.setErrorProps(errorForStatus(response.status));
           props.handleErrorOpen();
         } else {
-          const succesfulResponse = response as DialogData;
-          //Add Messages
-          const newMessages = props.messages.slice();
-          succesfulResponse.data.response.forEach(
-            (msg: {
-              author: string;
-              type: string;
-              data: {
-                text: string;
-              };
-            }) => {
-              newMessages.push({
+          const dialogData = response.data as DialogData;
+          props.setMessages([
+            ...props.messages,
+            ...dialogData.response.map((msg) => {
+              return {
                 senderId: "system",
                 type: msg.type,
                 text: msg.data.text,
-              });
-            }
-          );
-          props.setMessages(newMessages);
-
-          // Add expectations
-          const newTargets: {
-            achieved: boolean;
-            score: number;
-            text: string;
-            status: string;
-          }[] = [];
-          succesfulResponse.data.sessionInfo.dialogState.expectationData.forEach(
-            (exp: {
-              ideal: string;
-              score: number;
-              satisfied: boolean;
-              status: string;
-            }) => {
-              newTargets.push({
+              };
+            }),
+          ]);
+          props.setTargets(
+            dialogData.sessionInfo.dialogState.expectationData.map((exp) => {
+              return {
                 achieved: exp.satisfied,
                 score: exp.satisfied ? 1 : exp.score,
                 text: exp.ideal,
                 status: exp.status,
-              });
-            }
+              };
+            })
           );
-          props.setTargets(newTargets);
-
-          if (succesfulResponse.data.completed === true) {
+          if (dialogData.completed) {
             //Session ending. Show Summary
             setSessionAlive(false);
             props.setSummaryMessage(
@@ -163,8 +84,7 @@ export default function ChatForm(props: {
             );
             props.handleSummaryOpen();
           }
-
-          props.setSession(succesfulResponse.data.sessionInfo);
+          props.setSession(dialogData.sessionInfo);
         }
       }
     };
@@ -173,11 +93,11 @@ export default function ChatForm(props: {
 
   function handleClick(e: any) {
     e.preventDefault();
-
     if (chat.length > 0) {
-      const newMessages = props.messages.slice();
-      newMessages.push({ senderId: "user", type: "", text: chat });
-      props.setMessages(newMessages);
+      props.setMessages([
+        ...props.messages,
+        { senderId: "user", type: "", text: chat }
+      ]);
       setOutboundChat(chat);
       setChat("");
     }
