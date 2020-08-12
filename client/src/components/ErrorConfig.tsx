@@ -1,11 +1,5 @@
 import React from "react";
-
-export interface ErrorConfig {
-  title: string;
-  message: string;
-  buttonText: string;
-}
-
+import { ErrorConfig } from './types'
 export function errorForStatus(status: number): ErrorConfig {
   switch (status) {
     case 404:

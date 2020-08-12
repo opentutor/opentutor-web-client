@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import { createSession, DialogData, SessionData, DialogMsg, ExpectationData } from "api";
+import { createSession, DialogData, SessionData } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -10,7 +10,7 @@ import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
 import { AxiosResponse } from "axios";
-import { Target} from './types';
+import { ChatMsg, Target } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -77,7 +77,7 @@ const App = (props: { search: { lesson: string } }) => {
     hash: "",
   });
 
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMsg[]>([
     {
       senderId: "system",
       type: "opening",
@@ -109,33 +109,28 @@ const App = (props: { search: { lesson: string } }) => {
       } else {
         const succesfulResponse = response as AxiosResponse<DialogData>;
         setSession(succesfulResponse.data.sessionInfo);
-        // Add Messages
-        const newMessages = messages.slice();
-        succesfulResponse.data.response.forEach(
-          (msg: DialogMsg) => {
-            newMessages.push({
+        setMessages([
+          ...messages,
+          ...succesfulResponse.data.response.map((msg) => {
+            return {
               senderId: "system",
               type: msg.type,
               text: msg.data.text,
-            });
-          }
+            };
+          }),
+        ]);
+        setTargets(
+          succesfulResponse.data.sessionInfo.dialogState.expectationData.map(
+            (exp) => {
+              return {
+                achieved: exp.satisfied,
+                score: exp.score,
+                text: exp.ideal,
+                status: exp.status,
+              };
+            }
+          )
         );
-        setMessages(newMessages);
-
-        // Add expectations
-        const newTargets: Target[] = [];
-        succesfulResponse.data.sessionInfo.dialogState.expectationData.forEach(
-          (exp: ExpectationData) => {
-            newTargets.push({
-              achieved: exp.satisfied,
-              score: exp.score,
-              text: exp.ideal,
-              status: exp.status,
-            });
-          }
-        );
-
-        setTargets(newTargets);
       }
     };
     fetchData();
