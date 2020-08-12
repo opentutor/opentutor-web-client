@@ -1,7 +1,6 @@
 import { cySetup } from "../support/functions";
 
 describe("Error popup", () => {
-
   it("prompts 'bad request' on 400 response", () => {
     cySetup(cy);
     cy.route({

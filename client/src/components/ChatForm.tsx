@@ -96,7 +96,7 @@ export default function ChatForm(props: {
     if (chat.length > 0) {
       props.setMessages([
         ...props.messages,
-        { senderId: "user", type: "", text: chat }
+        { senderId: "user", type: "", text: chat },
       ]);
       setOutboundChat(chat);
       setChat("");

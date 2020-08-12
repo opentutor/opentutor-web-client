@@ -14,7 +14,7 @@ describe("Expectation indicators", () => {
     },
   ].forEach((x) => {
     it(`shows an icon for each expectation for a lesson with ${x.expectedExpCount}`, () => {
-      cySetup(cy)
+      cySetup(cy);
       cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
       cy.visit(`/?lesson=${x.lesson}`);
       cy.get("#targets").children().should("have.length", x.expectedExpCount);

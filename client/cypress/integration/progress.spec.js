@@ -113,7 +113,9 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2/session", desiredServerResponse);
       cy.visit("/?lesson=q2");
-      cy.get("#outlined-multiline-static").type("Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.");
+      cy.get("#outlined-multiline-static").type(
+        "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular."
+      );
       cy.get("#submit-button").click();
       cy.get(
         `#target-0-${Number(
