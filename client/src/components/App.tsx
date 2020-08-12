@@ -107,11 +107,11 @@ const App = (props: { search: { lesson: string } }) => {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
       } else {
-        const succesfulResponse = response as AxiosResponse<DialogData>;
-        setSession(succesfulResponse.data.sessionInfo);
+        const dialogData = response.data as DialogData;
+        setSession(dialogData.sessionInfo);
         setMessages([
           ...messages,
-          ...succesfulResponse.data.response.map((msg) => {
+          ...dialogData.response.map((msg) => {
             return {
               senderId: "system",
               type: msg.type,
@@ -120,16 +120,14 @@ const App = (props: { search: { lesson: string } }) => {
           }),
         ]);
         setTargets(
-          succesfulResponse.data.sessionInfo.dialogState.expectationData.map(
-            (exp) => {
-              return {
-                achieved: exp.satisfied,
-                score: exp.score,
-                text: exp.ideal,
-                status: exp.status,
-              };
-            }
-          )
+          dialogData.sessionInfo.dialogState.expectationData.map((exp) => {
+            return {
+              achieved: exp.satisfied,
+              score: exp.score,
+              text: exp.ideal,
+              status: exp.status,
+            };
+          })
         );
       }
     };
