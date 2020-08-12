@@ -53,9 +53,3 @@ describe("Input field", () => {
     cy.get("#chat-msg-3").contains(reply);
   });
 });
-
-function visitOnMobile(cy, url) {
-  cy.server();
-  cy.viewport(660, 1000);
-  cy.visit(url);
-}
