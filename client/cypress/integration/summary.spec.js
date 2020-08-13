@@ -1,35 +1,42 @@
-import { visitOnMobile } from "../support/functions";
+import { cySetup } from "../support/functions";
 
 describe("Expectation summary pop-up", () => {
   it("opens with View Summary button", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-
+    cy.visit("/?lesson=q2");
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
   });
 
-  it("shows icons for each expectation for lesson q1", () => {
-    visitOnMobile(cy, "/?lesson=q1"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
-
-    cy.get("#view-summary-btn").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 3);
-  });
-
-  it("shows icons for each expectation for lesson q2", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-
-    cy.get("#view-summary-btn").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 1);
+  [
+    {
+      lesson: "q1",
+      fixture: "q1-1-p1.json",
+      expectedExpectations: 3,
+    },
+    {
+      lesson: "q2",
+      fixture: "q2-1-p1.json",
+      expectedExpectations: 1,
+    },
+  ].forEach((x) => {
+    it(`shows an icon for each expectation for lesson with ${x.expectedExpectations}`, () => {
+      cySetup(cy);
+      cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
+      cy.visit(`/?lesson=${x.lesson}`);
+      cy.get("#view-summary-btn").click();
+      cy.get("#summary-popup");
+      cy.get("#summary-targets")
+        .children()
+        .should("have.length", x.expectedExpectations);
+    });
   });
 
   it("displays on tap any expectation-progress indicator", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.visit("/?lesson=q2");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.get(
         `#target-0-${Number(
@@ -42,21 +49,21 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("displays at when lesson is completed", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
-
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
-
-    const reply = "Current flows in the same direction as the arrow";
-    cy.get("#outlined-multiline-static").type(reply);
+    cy.visit("/?lesson=q2");
+    cy.get("#outlined-multiline-static").type(
+      "Current flows in the same direction as the arrow"
+    );
     cy.get("#submit-button").click();
     cy.get("#summary-popup");
   });
 
   it("hides text for expectations that have not been completed", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-
+    cy.visit("/?lesson=q2");
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
@@ -64,9 +71,9 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows no progress for expectations that have not been completed", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-
+    cy.visit("/?lesson=q2");
     cy.get("#view-summary-btn").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
@@ -74,12 +81,13 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows text for expectations that have been completed", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
-
-    const reply = "Current flows in the same direction as the arrow";
-    cy.get("#outlined-multiline-static").type(reply);
+    cy.visit("/?lesson=q2");
+    cy.get("#outlined-multiline-static").type(
+      "Current flows in the same direction as the arrow"
+    );
     cy.get("#submit-button").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
@@ -89,21 +97,16 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows progress for expectations that have been completed", () => {
-    visitOnMobile(cy, "/?lesson=q2"); // change URL to match your dev URLs
+    cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
-
-    const reply = "Current flows in the same direction as the arrow";
-    cy.get("#outlined-multiline-static").type(reply);
+    cy.visit("/?lesson=q2");
+    cy.get("#outlined-multiline-static").type(
+      "Current flows in the same direction as the arrow"
+    );
     cy.get("#submit-button").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
     cy.get("#summary-target-0-1");
   });
 });
-
-function visitOnMobile(cy, url) {
-  cy.server();
-  cy.viewport(660, 1000);
-  cy.visit(url);
-}

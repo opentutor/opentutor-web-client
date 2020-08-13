@@ -1,16 +1,16 @@
 import React from "react";
-
-export interface ErrorConfig {
-  title: string;
-  message: string;
-  buttonText: string;
-}
-
+import { ErrorConfig } from "./types";
 export function errorForStatus(status: number): ErrorConfig {
   switch (status) {
+    case 400:
+      return {
+        title: "Bad request",
+        message: "",
+        buttonText: "OK",
+      };
     case 404:
       return {
-        title: "Could not find lesson",
+        title: "Lesson not found",
         message:
           "This lesson does not exist in the OpenTutor system. Please go back and try again, or contact your teacher for help.",
         buttonText: "OK",

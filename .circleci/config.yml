@@ -29,13 +29,13 @@ jobs:
       - run:
           name: Client test format
           command: cd client && npm run test:format
-  # client-audit:
-  #   executor: node
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Audit js
-  #         command: cd client && npm audit --production --level=moderate
+  client-audit:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Audit js
+          command: cd client && npm audit --production --level=moderate
   client-lint:
     executor: node
     steps:
@@ -126,16 +126,14 @@ workflows:
     jobs:
       - client-format:
           filters: *only-untagged
-      # - client-audit:
-      #     filters: *only-untagged
+      - client-audit:
+          filters: *only-untagged
       - client-lint:
           filters: *only-untagged
       - client-license:
           filters: *only-untagged
       - client-types:
           filters: *only-untagged
-      # - client-test:
-      #     filters: *only-untagged
       - cypress/run:
           start: npm start
           wait-on: "http://localhost:8000"
@@ -147,12 +145,11 @@ workflows:
           type: approval
           requires:
             - client-format
-            # - client-audit
+            - client-audit
             - client-lint
             - client-license
             - client-types
             - cypress/run
-            # - client-test
       - build-and-push:
           is-release-tag: false
           filters: *only-untagged
@@ -162,16 +159,14 @@ workflows:
     jobs:
       - client-format:
           filters: *only-tagged-releases
-      # - client-audit:
-      #     filters: *only-tagged-releases
+      - client-audit:
+          filters: *only-tagged-releases
       - client-lint:
           filters: *only-tagged-releases
       - client-license:
           filters: *only-tagged-releases
       - client-types:
           filters: *only-tagged-releases
-      # - client-test:
-      #     filters: *only-tagged-releases
       - cypress/run:
           start: npm start
           wait-on: "http://localhost:8000"
@@ -183,9 +178,8 @@ workflows:
           filters: *only-tagged-releases
           requires:
             - client-format
-            # - client-audit
+            - client-audit
             - client-lint
             - client-license
             - client-types
             - cypress/run
-            # - client-test

@@ -13,8 +13,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
-import BlockIcon from '@material-ui/icons/Block';
-import FlashOnIcon from '@material-ui/icons/FlashOn';
+import BlockIcon from "@material-ui/icons/Block";
+import FlashOnIcon from "@material-ui/icons/FlashOn";
 
 const theme = createMuiTheme({
   palette: {
