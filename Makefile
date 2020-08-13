@@ -50,7 +50,7 @@ LICENSE_HEADER:
 .PHONY: license
 license: LICENSE LICENSE_HEADER
 	cd client && npm run license:fix
-	cd docker && npm run test:license
+	cd docker && npm run license:fix
 
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
