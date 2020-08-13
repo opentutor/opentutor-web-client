@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
 import { Target } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
   createStyles({
     root: {
