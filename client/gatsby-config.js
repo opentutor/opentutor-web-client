@@ -19,10 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        whitelist: [
-          "DIALOG_ENDPOINT",
-          "https://dev-opentutor.pal3.org/dialog/",
-        ],
+        allowList: ["DIALOG_ENDPOINT", "OPENTUTOR_CLIENT_VERSION"],
       },
     },
     `gatsby-plugin-typescript`,

@@ -58,10 +58,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatThread(props: { messages: ChatMsg[] }): JSX.Element {
+export default function ChatThread(props: {
+  messages: ChatMsg[];
+}): JSX.Element {
   const styles = useStyles();
 
-  const chatIcon = (type: string): JSX.Element|undefined => {
+  const chatIcon = (type: string): JSX.Element | undefined => {
     let icon = undefined;
     let color = styles.gray;
 

@@ -82,7 +82,7 @@ export default function SummaryPopup(props: {
 }): JSX.Element {
   const { open, setOpen, message, buttonText, targets } = props;
 
-  const handleClose = ():void => {
+  const handleClose = (): void => {
     setOpen(false);
   };
 

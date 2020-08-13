@@ -86,18 +86,18 @@ const App = (props: { search: { lesson: string } }): JSX.Element => {
     message: "",
     buttonText: "",
   });
-  const handleSummaryOpen = ():void => {
+  const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
   };
 
   const [errorOpen, setErrorOpen] = React.useState(false);
 
-  const handleErrorOpen = ():void => {
+  const handleErrorOpen = (): void => {
     setErrorOpen(true);
   };
 
   useEffect(() => {
-    const fetchData = async ():Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       const lessonOut = lesson || "";
       const response = await createSession(lessonOut);
       if (response.status !== 200) {
@@ -170,7 +170,7 @@ const App = (props: { search: { lesson: string } }): JSX.Element => {
         </Button>
       </div>
       <Typography className={styles.buildInfo}>
-        OpenTutor Client V1.0.0-alpha.12
+        OpenTutor Client {process.env.OPENTUTOR_CLIENT_VERSION}
       </Typography>
     </div>
   );

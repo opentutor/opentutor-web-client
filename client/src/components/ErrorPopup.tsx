@@ -18,7 +18,7 @@ export default function ErrorPopup(props: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   errorProps: ErrorData;
 }): JSX.Element {
-  const handleErrorClose = ():void => {
+  const handleErrorClose = (): void => {
     props.setOpen(false);
   };
 
