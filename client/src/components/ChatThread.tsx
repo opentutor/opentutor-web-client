@@ -14,7 +14,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@material-ui/core";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import HelpIcon from "@material-ui/icons/Help";
@@ -22,14 +22,6 @@ import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import { ChatMsg, ChatMsgType } from "./types";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
-    },
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,10 +58,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatThread(props: { messages: ChatMsg[] }) {
+export default function ChatThread(props: { messages: ChatMsg[] }): JSX.Element {
   const styles = useStyles();
 
-  const chatIcon = (type: string) => {
+  const chatIcon = (type: string): JSX.Element|undefined => {
     let icon = undefined;
     let color = styles.gray;
 

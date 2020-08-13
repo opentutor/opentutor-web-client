@@ -48,7 +48,7 @@ export default function TargetIcon(props: {
   target: Target;
   index: number;
   showSummary: () => void;
-}) {
+}): JSX.Element {
   const styles = useStyles();
 
   return (

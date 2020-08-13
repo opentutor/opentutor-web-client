@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 export function TargetIndicator(props: {
   targets: Target[];
   showSummary: () => void;
-}) {
+}): JSX.Element {
   const styles = useStyles();
 
   if (props.targets.length === 0) {
@@ -76,7 +76,7 @@ export function TargetIndicator(props: {
   );
 }
 
-export function SummaryIndicator(props: { targets: Target[] }) {
+export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
   const styles = useStyles();
 
   return (
@@ -90,7 +90,7 @@ export function SummaryIndicator(props: { targets: Target[] }) {
               <TargetIcon
                 target={target}
                 index={index}
-                showSummary={() => {
+                showSummary={():void => {
                   /* Empty Function as we don't want to pop another summary from the summary page */
                 }}
               />

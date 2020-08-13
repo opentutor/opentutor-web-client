@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState, useEffect } from "react";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
 import { createSession, DialogData, SessionData } from "api";
 import ChatThread from "components/ChatThread";
@@ -16,14 +16,6 @@ import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
 import { ChatMsg, ErrorData, Target, ChatMsgType } from "./types";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
-    },
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -61,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = (props: { search: { lesson: string } }) => {
+const App = (props: { search: { lesson: string } }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
@@ -94,18 +86,18 @@ const App = (props: { search: { lesson: string } }) => {
     message: "",
     buttonText: "",
   });
-  const handleSummaryOpen = () => {
+  const handleSummaryOpen = ():void => {
     setSummaryOpen(true);
   };
 
   const [errorOpen, setErrorOpen] = React.useState(false);
 
-  const handleErrorOpen = () => {
+  const handleErrorOpen = ():void => {
     setErrorOpen(true);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async ():Promise<void> => {
       const lessonOut = lesson || "";
       const response = await createSession(lessonOut);
       if (response.status !== 200) {

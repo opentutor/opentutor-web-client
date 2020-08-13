@@ -22,7 +22,7 @@ const theme = createMuiTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   logo: {
     width: 200,
     height: 75,

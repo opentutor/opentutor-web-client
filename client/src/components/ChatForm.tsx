@@ -5,21 +5,13 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState, useEffect } from "react";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession, DialogData, SessionData, DialogResponse } from "api";
+import { continueSession, DialogData, SessionData } from "api";
 import { errorForStatus } from "./ErrorConfig";
 import { Target, ChatMsg, ErrorData } from "./types";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
-    },
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {
@@ -42,14 +34,14 @@ export default function ChatForm(props: {
   setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
   handleErrorOpen: () => void;
-}) {
+}): JSX.Element {
   const styles = useStyles();
   const [chat, setChat] = useState("");
   const [outboundChat, setOutboundChat] = useState("");
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async ():Promise<void> => {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
@@ -97,7 +89,7 @@ export default function ChatForm(props: {
     fetchData();
   }, [outboundChat]); //Watches for vars in array to make updates. If none only updates on comp. mount
 
-  function handleClick(e: any) {
+  function handleClick(e: any):void {
     e.preventDefault();
     if (chat.length > 0) {
       props.setMessages([
@@ -109,7 +101,7 @@ export default function ChatForm(props: {
     }
   }
 
-  function onKeyPress(e: any) {
+  function onKeyPress(e: any):void {
     if (e.key !== "Enter") {
       return;
     }
@@ -136,7 +128,7 @@ export default function ChatForm(props: {
         className={styles.chatbox}
         value={chat}
         disabled={!sessionAlive}
-        onChange={(e) => {
+        onChange={(e):void => {
           setChat(e.target.value);
         }}
         onKeyPress={onKeyPress}
