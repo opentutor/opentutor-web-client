@@ -21,7 +21,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import { ChatMsg } from "./types";
+import { ChatMsg, ChatMsgType } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -73,21 +73,21 @@ export default function ChatThread(props: { messages: ChatMsg[] }) {
     let icon = undefined;
     let color = styles.gray;
 
-    if (type === "mainQuestion" || type === "hint") {
+    if (type === ChatMsgType.MainQuestion || type === "hint") {
       icon = <HelpIcon />;
-    } else if (type === "feedbackPositive") {
+    } else if (type === ChatMsgType.FeedbackPositive) {
       icon = <CheckCircleIcon />;
       color = styles.green;
-    } else if (type === "feedbackNegative") {
+    } else if (type === ChatMsgType.FeedbackNegative) {
       icon = <CancelIcon />;
       color = styles.red;
-    } else if (type === "feedbackNeutral") {
+    } else if (type === ChatMsgType.FeedbackNeutral) {
       icon = <ImportExportIcon />;
       color = styles.yellow;
-    } else if (type === "encouragement") {
+    } else if (type === ChatMsgType.Encouragement) {
       icon = <FlashOnIcon />;
       color = styles.green;
-    } else if (type === "profanity") {
+    } else if (type === ChatMsgType.Profanity) {
       icon = <BlockIcon />;
       color = styles.red;
     }

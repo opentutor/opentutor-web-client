@@ -15,7 +15,7 @@ import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target } from "./types";
+import { ChatMsg, ErrorData, Target, ChatMsgType } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -85,7 +85,7 @@ const App = (props: { search: { lesson: string } }) => {
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       senderId: "system",
-      type: "opening",
+      type: ChatMsgType.Opening,
       text: "Welcome to OpenTutor!",
     },
   ]);
@@ -106,7 +106,7 @@ const App = (props: { search: { lesson: string } }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const lessonOut = lesson || ""; //If lesson is undef make ""
+      const lessonOut = lesson || "";
       const response = await createSession(lessonOut);
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));

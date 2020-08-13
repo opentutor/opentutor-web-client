@@ -24,9 +24,9 @@ export function errorForStatus(status: number): ErrorData {
       };
     case 403:
       return {
-        title: "Nice Try!",
+        title: "Could not continue lesson!",
         message:
-          "Did you think we wouldn't know you tried to cheat? We're always watching... always...",
+          "We could not validate your session. Perhaps relaod the page and try again? Leaving and coming back to a lesson may cause this error.",
         buttonText: "OK",
       };
     case 410:
