@@ -14,9 +14,8 @@ import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
-import { errorForStatus, ErrorConfig } from "components/ErrorConfig";
-import { AxiosResponse } from "axios";
-import { ChatMsg, Target } from "./types";
+import { errorForStatus } from "components/ErrorConfig";
+import { ChatMsg, ErrorData, Target } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -90,7 +89,7 @@ const App = (props: { search: { lesson: string } }) => {
       text: "Welcome to OpenTutor!",
     },
   ]);
-  const [errorProps, setErrorProps] = useState<ErrorConfig>({
+  const [errorProps, setErrorProps] = useState<ErrorData>({
     title: "",
     message: "",
     buttonText: "",

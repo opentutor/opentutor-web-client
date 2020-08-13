@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import { continueSession, DialogData, SessionData, DialogResponse } from "api";
 import { errorForStatus } from "./ErrorConfig";
-import { Target, ChatMsg, ErrorConfig } from "./types";
+import { Target, ChatMsg, ErrorData } from "./types";
 
 const theme = createMuiTheme({
   palette: {
@@ -40,7 +40,7 @@ export default function ChatForm(props: {
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
   handleSummaryOpen: () => void;
   setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
-  setErrorProps: React.Dispatch<React.SetStateAction<ErrorConfig>>;
+  setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
   handleErrorOpen: () => void;
 }) {
   const styles = useStyles();

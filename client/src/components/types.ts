@@ -10,7 +10,7 @@ export interface ChatMsg {
   text: string;
 }
 
-export interface ErrorConfig {
+export interface ErrorData {
   title: string;
   message: string;
   buttonText: string;
