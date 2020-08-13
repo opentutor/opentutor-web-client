@@ -46,7 +46,15 @@ module.exports = {
     // Override some TypeScript rules just for .js files
     {
       files: ["*.js"],
-      rules: {},
+      rules: {
+        "@typescript-eslint/*": "off",
+      },
+    },
+    {
+      files: ["*.jsx"],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": "off",
+      },
     },
   ],
 };
