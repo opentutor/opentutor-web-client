@@ -14,7 +14,7 @@ import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import withLocation from "wrap-with-location";
-import { errorForStatus } from "components/ErrorConfig";
+import { errorForStatus, ErrorConfig } from "components/ErrorConfig";
 import { AxiosResponse } from "axios";
 import { ChatMsg, Target } from "./types";
 
@@ -90,7 +90,7 @@ const App = (props: { search: { lesson: string } }) => {
       text: "Welcome to OpenTutor!",
     },
   ]);
-  const [errorProps, setErrorProps] = useState({
+  const [errorProps, setErrorProps] = useState<ErrorConfig>({
     title: "",
     message: "",
     buttonText: "",

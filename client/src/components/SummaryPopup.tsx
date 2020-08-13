@@ -20,6 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
+import { Target } from "./types";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -77,12 +78,7 @@ export default function SummaryPopup(props: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   message: string;
   buttonText: string;
-  targets: {
-    achieved: boolean;
-    score: number;
-    text: string;
-    status: string;
-  }[];
+  targets: Target[];
 }) {
   const { open, setOpen, message, buttonText, targets } = props;
 

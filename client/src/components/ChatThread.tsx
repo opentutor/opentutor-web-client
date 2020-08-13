@@ -21,6 +21,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
+import { ChatMsg } from "./types"
 
 const theme = createMuiTheme({
   palette: {
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatThread(props: {
-  messages: { senderId: string; type: string; text: string }[];
+  messages: ChatMsg[];
 }) {
   const styles = useStyles();
 

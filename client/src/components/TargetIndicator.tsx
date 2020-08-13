@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import TargetIcon from "components/TargetIcon";
 import LockIcon from "@material-ui/icons/Lock";
+import { Target } from "./types"
 
 const useStyles = makeStyles((theme) => ({
   placeholder: {
@@ -48,12 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function TargetIndicator(props: {
-  targets: {
-    achieved: boolean;
-    score: number;
-    text: string;
-    status: string;
-  }[];
+  targets: Target[];
   showSummary: () => void;
 }) {
   const styles = useStyles();
@@ -81,12 +77,7 @@ export function TargetIndicator(props: {
 }
 
 export function SummaryIndicator(props: {
-  targets: {
-    achieved: boolean;
-    score: number;
-    text: string;
-    status: string;
-  }[];
+  targets: Target[];
 }) {
   const styles = useStyles();
 
@@ -94,12 +85,7 @@ export function SummaryIndicator(props: {
     <List id="summary-targets">
       {props.targets.map(
         (
-          target: {
-            achieved: boolean;
-            score: number;
-            text: string;
-            status: string;
-          },
+          target: Target,
           index: number
         ) => {
           return (
