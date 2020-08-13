@@ -4,8 +4,9 @@ export function errorForStatus(status: number): ErrorConfig {
   switch (status) {
     case 400:
       return {
-        title: "Bad request",
-        message: "",
+        title: "Lesson not provided",
+        message:
+          "A lesson id was not provided in the url. Please contact the creator of this lesson to obtain a new link.",
         buttonText: "OK",
       };
     case 404:
