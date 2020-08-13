@@ -16,7 +16,7 @@ describe("Error popup", () => {
       response: "fixture:e400.json",
     });
     cy.visit("/");
-    cy.get("#error-popup").contains("Bad request");
+    cy.get("#error-popup").contains("Lesson not provided");
   });
 
   it("prompts 'not found' on 404 response", () => {
