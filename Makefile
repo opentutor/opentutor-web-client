@@ -1,3 +1,8 @@
+PHONY: clean
+clean:
+	cd client && $(MAKE) clean
+	cd docker && $(MAKE) clean
+
 PHONY: develop
 develop:
 	cd client && $(MAKE) develop
@@ -49,13 +54,10 @@ LICENSE_HEADER:
 
 .PHONY: license
 license: LICENSE LICENSE_HEADER
-	cd client && npm run license:fix
-	cd docker && npm run license:fix
+	cd client && npm ci && npm run license:fix
+	cd docker && npm ci && npm run license:fix
 
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
-	cd client && npm run test:license
-	cd docker && npm run test:license
-
-node_modules/license-check-and-add:
-	npm ci
+	cd client && npm ci && npm run test:license
+	cd docker && npm ci && npm run test:license

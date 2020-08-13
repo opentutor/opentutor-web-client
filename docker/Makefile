@@ -10,7 +10,7 @@ BUILD=$(DIR)/build
 
 .PHONY clean:
 clean:
-	rm -rf build
+	rm -rf build node_modules
 
 build/client:
 	mkdir -p build

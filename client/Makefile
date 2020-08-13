@@ -7,7 +7,7 @@
 
 .PHONY: clean
 clean:
-	rm -rf .cache public
+	rm -rf .cache public node_modules
 
 .PHONY: develop
 develop: .env.development node_modules/gatsby-cli
