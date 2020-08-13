@@ -1,6 +1,7 @@
 SHELL:=/bin/bash
 DOCKER_IMAGE?=opentutor-web-client
 DOCKER_CONTAINER=opentutor-web-client
+OPENTUTOR_CLIENT_VERSION?=latest
 DIR=$(shell pwd)
 PROJECT_ROOT?=$(shell git rev-parse --show-toplevel 2> /dev/null)
 PROJECT_NAME=$(shell v='$(PROJECT_ROOT)'; echo "$${v\#\#*/}")
@@ -22,6 +23,7 @@ build: build/client
 docker-build: clean build/client
 	docker build \
 		-t $(DOCKER_IMAGE) \
+		--build-arg "OPENTUTOR_CLIENT_VERSION=$(OPENTUTOR_CLIENT_VERSION)" \
 	.
 
 .PHONY docker-run:

@@ -14,7 +14,7 @@ RUN apt-get update && \
 WORKDIR /
 COPY . .
 RUN cd /build/client && \
-    npm install && \
+    npm ci && \
     npm run build
 FROM node:12.16.1-slim
 ENV TINI_VERSION=v0.16.1
