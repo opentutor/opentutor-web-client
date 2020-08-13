@@ -114,6 +114,7 @@ jobs:
           path: docker
           image: uscictdocker/opentutor-web-client
           tag: ${IMAGE_TAG}
+          extra_build_args: "--build-arg OPENTUTOR_CLIENT_VERSION=${IMAGE_TAG}"
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/opentutor-web-client

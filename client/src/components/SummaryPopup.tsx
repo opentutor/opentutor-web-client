@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
 import { Target } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -82,7 +83,7 @@ export default function SummaryPopup(props: {
 }): JSX.Element {
   const { open, setOpen, message, buttonText, targets } = props;
 
-  const handleClose = ():void => {
+  const handleClose = (): void => {
     setOpen(false);
   };
 

@@ -90,7 +90,7 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
               <TargetIcon
                 target={target}
                 index={index}
-                showSummary={():void => {
+                showSummary={(): void => {
                   /* Empty Function as we don't want to pop another summary from the summary page */
                 }}
               />

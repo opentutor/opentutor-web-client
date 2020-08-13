@@ -41,7 +41,7 @@ export default function ChatForm(props: {
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
-    const fetchData = async ():Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
@@ -89,7 +89,7 @@ export default function ChatForm(props: {
     fetchData();
   }, [outboundChat]); //Watches for vars in array to make updates. If none only updates on comp. mount
 
-  function handleClick(e: any):void {
+  function handleClick(e: React.SyntheticEvent<Element>): void {
     e.preventDefault();
     if (chat.length > 0) {
       props.setMessages([
@@ -101,14 +101,13 @@ export default function ChatForm(props: {
     }
   }
 
-  function onKeyPress(e: any):void {
+  function onKeyPress(e: React.KeyboardEvent<Element>): void {
     if (e.key !== "Enter") {
       return;
     }
     if (chat.length === 0 || !sessionAlive) {
       return;
     }
-
     e.preventDefault();
     handleClick(e);
   }
@@ -128,7 +127,7 @@ export default function ChatForm(props: {
         className={styles.chatbox}
         value={chat}
         disabled={!sessionAlive}
-        onChange={(e):void => {
+        onChange={(e): void => {
           setChat(e.target.value);
         }}
         onKeyPress={onKeyPress}
