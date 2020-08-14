@@ -31,7 +31,7 @@ describe("Error popup", () => {
     cy.get("#error-popup").contains("Lesson not found");
   });
 
-  it("prompts 'nice try' on 403 response (cheating)", () => {
+  it("prompts 'Could not continue lesson' on 403 response (cheating)", () => {
     cySetup(cy);
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.route({
@@ -43,7 +43,7 @@ describe("Error popup", () => {
     cy.visit("/?lesson=q1");
     cy.get("#outlined-multiline-static").type("PLACEHOLDER");
     cy.get("#submit-button").click();
-    cy.get("#error-popup").contains("Nice Try!");
+    cy.get("#error-popup").contains("Could not continue lesson");
   });
 
   it("prompts 'already ended' on 410 response", () => {
