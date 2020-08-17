@@ -4,39 +4,26 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import "styles/layout.css";
-import React from "react";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
-import logo from "assets/logo.png";
-import App from "components/App";
+import { cySetup } from "../support/functions";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
+describe("Expectation indicators", () => {
+  [
+    {
+      lesson: "q1",
+      fixture: "q1-1-p1.json",
+      expectedExpCount: 3,
     },
-  },
+    {
+      lesson: "q2",
+      fixture: "q2-1-p1.json",
+      expectedExpCount: 1,
+    },
+  ].forEach((x) => {
+    it(`shows an icon for each expectation for a lesson with ${x.expectedExpCount}`, () => {
+      cySetup(cy);
+      cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
+      cy.visit(`/?lesson=${x.lesson}`);
+      cy.get("#targets").children().should("have.length", x.expectedExpCount);
+    });
+  });
 });
-
-const useStyles = makeStyles(() => ({
-  logo: {
-    width: 200,
-    height: 75,
-  },
-}));
-
-const IndexPage: React.FC = () => {
-  const styles = useStyles();
-  return (
-    <MuiThemeProvider theme={theme}>
-      <img src={String(logo)} className={styles.logo}></img>
-      <App />
-    </MuiThemeProvider>
-  );
-};
-
-export default IndexPage;

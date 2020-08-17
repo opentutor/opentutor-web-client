@@ -1,0 +1,65 @@
+{
+  "status": "ok",
+  "sessionInfo": {
+    "sessionId": "8c13c9e0-8b4e-4a6d-b650-f41d82ebe454",
+    "sessionHistory": "{\"userResponses\":[\"Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.\"],\"systemResponses\":[[\"Here is a question about integrity, a key Navy attribute.\",\"What are the challenges to demonstrating integrity in a group?\"],[\"Peer pressure can push you to allow and participate in inappropriate behavior.\",\"When you correct somone's behavior, you may get them in trouble or negatively impact your relationship with them.\",\"However, integrity means speaking out even when it is unpopular.\"]],\"userScores\":[],\"classifierGrades\":[{\"expectationResults\":[{\"evaluation\":\"Good\",\"expectation\":0,\"score\":0.7877823480773107},{\"evaluation\":\"Good\",\"expectation\":1,\"score\":0.848917348807831},{\"evaluation\":\"Good\",\"expectation\":2,\"score\":0.9304460039728404}]}]}",
+    "previousUserResponse": "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.",
+    "previousSystemResponse": [
+      "Peer pressure can push you to allow and participate in inappropriate behavior.",
+      "When you correct somone's behavior, you may get them in trouble or negatively impact your relationship with them.",
+      "However, integrity means speaking out even when it is unpopular."
+    ],
+    "dialogState": {
+      "expectationsCompleted": [true, true, true],
+      "expectationData": [
+        {
+          "ideal": "Peer pressure can push you to allow and participate in inappropriate behavior.",
+          "score": 1,
+          "satisfied": true,
+          "status": "complete"
+        },
+        {
+          "ideal": "When you correct somone's behavior, you may get them in trouble or negatively impact your relationship with them.",
+          "score": 1,
+          "satisfied": true,
+          "status": "complete"
+        },
+        {
+          "ideal": "However, integrity means speaking out even when it is unpopular.",
+          "score": 1,
+          "satisfied": true,
+          "status": "complete"
+        }
+      ],
+      "hints": false
+    },
+    "hash": "9a05963a53adf55bfa319a527c36e04b155478a2fa24450b1abc8b8d2820398e"
+  },
+  "response": [
+    {
+      "author": "them",
+      "type": "closing",
+      "data": {
+        "text": "Peer pressure can push you to allow and participate in inappropriate behavior."
+      }
+    },
+    {
+      "author": "them",
+      "type": "closing",
+      "data": {
+        "text": "When you correct somone's behavior, you may get them in trouble or negatively impact your relationship with them."
+      }
+    },
+    {
+      "author": "them",
+      "type": "closing",
+      "data": {
+        "text": "However, integrity means speaking out even when it is unpopular."
+      }
+    }
+  ],
+  "sentToGrader": true,
+  "completed": true,
+  "score": 1,
+  "expectationActive": -1
+}

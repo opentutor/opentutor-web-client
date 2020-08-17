@@ -1,0 +1,58 @@
+{
+  "status": "ok",
+  "lessonId": "q1",
+  "sessionInfo": {
+    "sessionId": "1d9586f9-ff47-45c2-a32e-937348eda2d6",
+    "sessionHistory": "{\"userResponses\":[],\"systemResponses\":[[\"Here is a question about integrity, a key Navy attribute.\",\"What are the challenges to demonstrating integrity in a group?\"]],\"userScores\":[],\"classifierGrades\":[]}",
+    "previousUserResponse": "",
+    "previousSystemResponse": [
+      "Here is a question about integrity, a key Navy attribute.",
+      "What are the challenges to demonstrating integrity in a group?"
+    ],
+    "dialogState": {
+      "expectationsCompleted": [false, false, false],
+      "expectationData": [
+        {
+          "ideal": "",
+          "score": 0,
+          "satisfied": false,
+          "status": ""
+        },
+        {
+          "ideal": "",
+          "score": 0,
+          "satisfied": false,
+          "status": ""
+        },
+        {
+          "ideal": "",
+          "score": 0,
+          "satisfied": false,
+          "status": ""
+        }
+      ],
+      "hints": false
+    },
+    "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"
+  },
+  "response": [
+    {
+      "author": "them",
+      "type": "opening",
+      "data": {
+        "text": "Here is a question about integrity, a key Navy attribute."
+      }
+    },
+    {
+      "author": "them",
+      "type": "mainQuestion",
+      "data": {
+        "text": "What are the challenges to demonstrating integrity in a group?"
+      }
+    }
+  ],
+  "sentToGrader": false,
+  "completed": false,
+  "score": null,
+  "expectationActive": -1
+}

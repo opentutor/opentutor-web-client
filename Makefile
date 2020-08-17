@@ -1,3 +1,8 @@
+PHONY: clean
+clean:
+	cd client && $(MAKE) clean
+	cd docker && $(MAKE) clean
+
 PHONY: develop
 develop:
 	cd client && $(MAKE) develop
@@ -15,6 +20,7 @@ test-all:
 	$(MAKE) test-audit
 	$(MAKE) test-format
 	$(MAKE) test-lint
+	$(MAKE) test-license
 	$(MAKE) test-types
 	# $(MAKE) test
 
@@ -37,3 +43,21 @@ PHONY: test-types
 test-types:
 	cd client && $(MAKE) test-types
 	cd docker && $(MAKE) test-types
+
+LICENSE:
+	@echo "you must have a LICENSE file" 1>&2
+	exit 1
+
+LICENSE_HEADER:
+	@echo "you must have a LICENSE_HEADER file" 1>&2
+	exit 1
+
+.PHONY: license
+license: LICENSE LICENSE_HEADER
+	cd client && npm ci && npm run license:fix
+	cd docker && npm ci && npm run license:fix
+
+.PHONY: test-license
+test-license: LICENSE LICENSE_HEADER
+	cd client && npm ci && npm run test:license
+	cd docker && npm ci && npm run test:license

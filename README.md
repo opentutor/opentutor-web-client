@@ -4,7 +4,7 @@ react/gatsby web client for opentutor
 
 ## Usage
 
-A docker image that serves a web client for grading opentutor sessions .
+A docker image that serves a web client for interacting with opentutor.
 
 ## Variables
 

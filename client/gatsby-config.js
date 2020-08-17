@@ -1,7 +1,7 @@
 module.exports = {
-  pathPrefix: `/grading`,
+  pathPrefix: `/tutor`,
   siteMetadata: {
-    title: `Open Tutor Grading`,
+    title: `Open Tutor Client`,
     description: ``,
   },
   plugins: [
@@ -19,7 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        whitelist: ["GRADING_GRAPHQL_ENDPOINT"],
+        allowList: ["DIALOG_ENDPOINT", "OPENTUTOR_CLIENT_VERSION"],
       },
     },
     `gatsby-plugin-typescript`,
@@ -35,5 +35,14 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `gatsby-plugin-material-ui`,
+      options: {
+        stylesProvider: {
+          injectFirst: true,
+        },
+      },
+    },
+    `gatsby-plugin-styled-components`,
   ],
 };
