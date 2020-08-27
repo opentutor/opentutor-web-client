@@ -53,9 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = (props: { search: { lesson: string } }): JSX.Element => {
+const App = (props: {
+  search: { lesson: string; guest: string };
+}): JSX.Element => {
   const styles = useStyles();
-  const { lesson } = props.search;
+  const { lesson, guest } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
@@ -73,7 +75,6 @@ const App = (props: { search: { lesson: string } }): JSX.Element => {
     },
     hash: "",
   });
-
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       senderId: "system",
@@ -86,11 +87,11 @@ const App = (props: { search: { lesson: string } }): JSX.Element => {
     message: "",
     buttonText: "",
   });
+  const [errorOpen, setErrorOpen] = React.useState(false);
+
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
   };
-
-  const [errorOpen, setErrorOpen] = React.useState(false);
 
   const handleErrorOpen = (): void => {
     setErrorOpen(true);
@@ -143,6 +144,7 @@ const App = (props: { search: { lesson: string } }): JSX.Element => {
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
+          username={guest}
           messages={messages}
           setMessages={setMessages}
           setTargets={setTargets}

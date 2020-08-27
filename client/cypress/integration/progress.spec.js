@@ -11,7 +11,7 @@ describe("Expectation-progress Indicators", () => {
     cySetup(cy);
     cy.fixture("q1-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1", desiredServerResponse);
-      cy.visit("/?lesson=q1");
+      cy.visit("/?lesson=q1&guest=guest");
       cy.get(
         `#target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
@@ -35,7 +35,7 @@ describe("Expectation-progress Indicators", () => {
     cy.route("POST", "**/dialog/q1", "fixture:q1-2-p2.json");
     cy.fixture("q1-2-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
-      cy.visit("/?lesson=q1");
+      cy.visit("/?lesson=q1&guest=guest");
       cy.get("#outlined-multiline-static").type("Peer pressure");
       cy.get("#submit-button").click();
       cy.get(
@@ -61,7 +61,7 @@ describe("Expectation-progress Indicators", () => {
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p2.json");
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q1/session", desiredServerResponse);
-      cy.visit("/?lesson=q1");
+      cy.visit("/?lesson=q1&guest=guest");
       cy.get("#outlined-multiline-static").type(
         "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular."
       );
@@ -88,7 +88,7 @@ describe("Expectation-progress Indicators", () => {
     cySetup(cy);
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2", desiredServerResponse);
-      cy.visit("/?lesson=q2");
+      cy.visit("/?lesson=q2&guest=guest");
       cy.get(
         `#target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
@@ -102,7 +102,7 @@ describe("Expectation-progress Indicators", () => {
     cy.route("POST", "**/dialog/q2", "fixture:q2-2-p2.json");
     cy.fixture("q2-2-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2/session", desiredServerResponse);
-      cy.visit("/?lesson=q2");
+      cy.visit("/?lesson=q2&guest=guest");
       cy.get("#outlined-multiline-static").type("Peer pressure");
       cy.get("#submit-button").click();
       cy.get(
@@ -118,7 +118,7 @@ describe("Expectation-progress Indicators", () => {
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p2.json");
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cy.route("POST", "**/dialog/q2/session", desiredServerResponse);
-      cy.visit("/?lesson=q2");
+      cy.visit("/?lesson=q2&guest=guest");
       cy.get("#outlined-multiline-static").type(
         "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular."
       );

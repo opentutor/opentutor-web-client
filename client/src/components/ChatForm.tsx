@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatForm(props: {
   lesson: string;
+  username: string;
   messages: { senderId: string; type: string; text: string }[];
   setMessages: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
@@ -45,6 +46,7 @@ export default function ChatForm(props: {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
+          username: props.username,
           session: props.session,
           outboundChat: outboundChat,
         });

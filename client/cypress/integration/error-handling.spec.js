@@ -15,7 +15,7 @@ describe("Error popup", () => {
       status: 400,
       response: "fixture:e400.json",
     });
-    cy.visit("/");
+    cy.visit("/?guest=guest");
     cy.get("#error-popup").contains("Lesson not provided");
   });
 
@@ -27,7 +27,7 @@ describe("Error popup", () => {
       status: 404,
       response: "fixture:e404.json",
     });
-    cy.visit("/?lesson=q12312");
+    cy.visit("/?lesson=q12312&guest=guest");
     cy.get("#error-popup").contains("Lesson not found");
   });
 
@@ -40,7 +40,7 @@ describe("Error popup", () => {
       status: 403,
       response: "fixture:e403.json",
     });
-    cy.visit("/?lesson=q1");
+    cy.visit("/?lesson=q1&guest=guest");
     cy.get("#outlined-multiline-static").type("PLACEHOLDER");
     cy.get("#submit-button").click();
     cy.get("#error-popup").contains("Could not continue lesson");
@@ -55,7 +55,7 @@ describe("Error popup", () => {
       status: 410,
       response: "fixture:e410.json",
     });
-    cy.visit("/?lesson=q2");
+    cy.visit("/?lesson=q2&guest=guest");
     cy.get("#outlined-multiline-static").type("PLACEHOLDER");
     cy.get("#submit-button").click();
     cy.get("#error-popup").contains("Lesson session ended");
@@ -69,7 +69,7 @@ describe("Error popup", () => {
       status: 502,
       response: "fixture:e502.json",
     });
-    cy.visit("/?lesson=q2");
+    cy.visit("/?lesson=q2&guest=guest");
     cy.get("#error-popup").contains("Server Error");
   });
 });
