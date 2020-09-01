@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/layout.css";
-import React from "react";
+import React, { useState } from "react";
 import {
   MuiThemeProvider,
   createMuiTheme,
@@ -13,6 +13,8 @@ import {
 } from "@material-ui/core/styles";
 import logo from "assets/logo.png";
 import App from "components/App";
+import GuestPrompt from "components/GuestPrompt";
+import withLocation from "wrap-with-location";
 
 const theme = createMuiTheme({
   palette: {
@@ -29,14 +31,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const IndexPage: React.FC = () => {
+const IndexPage = (props: {
+  search: { lesson: string; guest: string };
+}): JSX.Element => {
   const styles = useStyles();
+  const [guest, setGuest] = useState(props.search.guest);
+
+  const onNameEntered = (val: string): void => {
+    const name = val ? val : "guest";
+    setGuest(name);
+    let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}${window.location.search}`;
+    if (window.location.search) {
+      url += `&guest=${name}`;
+    } else {
+      url += `?guest=${name}`;
+    }
+    window.location.href = url;
+  };
+
   return (
     <MuiThemeProvider theme={theme}>
       <img src={String(logo)} className={styles.logo}></img>
       <App />
+      {guest ? undefined : <GuestPrompt submit={onNameEntered} />}
     </MuiThemeProvider>
   );
 };
 
-export default IndexPage;
+export default withLocation(IndexPage);

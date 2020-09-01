@@ -65,6 +65,7 @@ export async function createSession(
 
 export async function continueSession(props: {
   lesson: string;
+  username: string;
   session: SessionData;
   outboundChat: string;
 }): Promise<AxiosResponse<DialogResponse>> {
@@ -74,6 +75,7 @@ export async function continueSession(props: {
       {
         sessionInfo: props.session,
         message: props.outboundChat,
+        username: props.username,
       }
     );
   } catch (error) {
