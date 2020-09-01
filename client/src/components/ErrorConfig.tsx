@@ -25,7 +25,7 @@ export function errorForStatus(status: number): ErrorData {
       return {
         title: "Could not continue lesson",
         message:
-          "We could not validate your session. Perhaps relaod the page and try again? Leaving and coming back to a lesson may cause this error.",
+          "We could not validate your session. Perhaps reload the page and try again? Leaving and coming back to a lesson may cause this error.",
         buttonText: "OK",
       };
     case 410:

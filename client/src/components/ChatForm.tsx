@@ -107,10 +107,11 @@ export default function ChatForm(props: {
     if (e.key !== "Enter") {
       return;
     }
-    if (chat.length === 0 || !sessionAlive) {
+    e.preventDefault();
+    
+    if (chat.trim().length === 0 || !sessionAlive) {
       return;
     }
-    e.preventDefault();
     handleClick(e);
   }
 
@@ -142,7 +143,7 @@ export default function ChatForm(props: {
         className={styles.button}
         endIcon={<SendIcon />}
         onClick={handleClick}
-        disabled={chat.length === 0 || !sessionAlive}
+        disabled={chat.trim().length === 0 || !sessionAlive}
       >
         Send
       </Button>
