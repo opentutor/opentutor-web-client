@@ -5,15 +5,31 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import { ErrorData } from "./types";
-export function errorForStatus(status: number): ErrorData {
+export function errorForStatus(status: number, error?: string): ErrorData {
   switch (status) {
     case 400:
-      return {
-        title: "Lesson not provided",
-        message:
-          "A lesson id was not provided in the url. Please contact the creator of this lesson to obtain a new link.",
-        buttonText: "OK",
-      };
+      switch (error) {
+        case "Message not provided":
+          return {
+            title: error,
+            message:
+              "Oops! Somehow you've managed to send a message with no text in it.",
+            buttonText: "OK",
+          };
+        case "Username not provided":
+          return {
+            title: error,
+            message: "You must provide a username for the tutoring session.",
+            buttonText: "OK",
+          };
+        default:
+          return {
+            title: "Lesson not provided",
+            message:
+              "A lesson id was not provided in the url. Please contact the creator of this lesson to obtain a new link.",
+            buttonText: "OK",
+          };
+      }
     case 404:
       return {
         title: "Lesson not found",
@@ -25,7 +41,7 @@ export function errorForStatus(status: number): ErrorData {
       return {
         title: "Could not continue lesson",
         message:
-          "We could not validate your session. Perhaps relaod the page and try again? Leaving and coming back to a lesson may cause this error.",
+          "We could not validate your session. Perhaps reload the page and try again? Leaving and coming back to a lesson may cause this error.",
         buttonText: "OK",
       };
     case 410:

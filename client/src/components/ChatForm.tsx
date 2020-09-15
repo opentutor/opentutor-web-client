@@ -50,9 +50,9 @@ export default function ChatForm(props: {
           session: props.session,
           outboundChat: outboundChat,
         });
-
         if (response.status !== 200) {
-          props.setErrorProps(errorForStatus(response.status));
+          const error: any = response.data;
+          props.setErrorProps(errorForStatus(error.status, error.message));
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
@@ -107,10 +107,10 @@ export default function ChatForm(props: {
     if (e.key !== "Enter") {
       return;
     }
-    if (chat.length === 0 || !sessionAlive) {
+    e.preventDefault();
+    if (chat.trim().length === 0 || !sessionAlive) {
       return;
     }
-    e.preventDefault();
     handleClick(e);
   }
 
@@ -142,7 +142,7 @@ export default function ChatForm(props: {
         className={styles.button}
         endIcon={<SendIcon />}
         onClick={handleClick}
-        disabled={chat.length === 0 || !sessionAlive}
+        disabled={chat.trim().length === 0 || !sessionAlive}
       >
         Send
       </Button>
