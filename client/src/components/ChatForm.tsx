@@ -10,8 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import { continueSession, DialogData, SessionData } from "api";
-import { errorForStatus } from "./ErrorConfig";
-import { Target, ChatMsg, ErrorData } from "./types";
+import { errorForStatus } from "components/ErrorConfig";
+import { Target, ChatMsg, ErrorData } from "types";
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatForm(props: {
+const ChatForm = (props: {
   lesson: string;
   username: string;
   messages: { senderId: string; type: string; text: string }[];
@@ -31,17 +31,22 @@ export default function ChatForm(props: {
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
   session: SessionData;
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
-  handleSummaryOpen: () => void;
   setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
+  handleSummaryOpen: () => void;
   handleErrorOpen: () => void;
-}): JSX.Element {
+  handleSessionDone: () => void;
+}): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
   const [outboundChat, setOutboundChat] = useState("");
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
+    if (!sessionAlive) {
+      return;
+    }
+
     const fetchData = async (): Promise<void> => {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
@@ -76,13 +81,15 @@ export default function ChatForm(props: {
               };
             })
           );
+
+          // Session ending. Show summary and send score
           if (dialogData.completed) {
-            //Session ending. Show Summary
             setSessionAlive(false);
             props.setSummaryMessage(
               "That's a wrap! Let's see how you did on this lesson!"
             );
             props.handleSummaryOpen();
+            props.handleSessionDone();
           }
           props.setSession(dialogData.sessionInfo);
         }
@@ -148,4 +155,6 @@ export default function ChatForm(props: {
       </Button>
     </form>
   );
-}
+};
+
+export default ChatForm;

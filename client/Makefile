@@ -53,17 +53,17 @@ test-audit:
 	npm run test:audit
 
 .PHONY: test-format
-test-format: node_modules/prettier
+test-format: 
 	npm run test:format
 
 .PHONY: test-format
-test-lint: node_modules/eslint
+test-lint: 
 	npm run test:lint
 
 .PHONY: test-types
-test-types: node_modules/typescript
+test-types: 
 	npm run test:types
 
 .PHONY: test-cypress
-test-cypress: node_modules/cypress
+test-cypress: 
 	npm run test:cypress
