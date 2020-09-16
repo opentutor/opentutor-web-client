@@ -4,18 +4,20 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { Context as CmiContext } from "react-cmi5-context";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
 import { createSession, DialogData, SessionData } from "api";
+import { CMI5_EXT_RESULT_KC_SCORES } from "cmiutils";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
-import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target, ChatMsgType } from "./types";
+import { ChatMsg, ErrorData, Target, ChatMsgType } from "types";
+import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -54,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = (props: {
-  search: { lesson: string; guest: string };
+  search: { lesson: string; guest: string; kc: string[] };
 }): JSX.Element => {
   const styles = useStyles();
-  const { lesson, guest } = props.search;
+  const { lesson, guest, kc } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
@@ -88,6 +90,27 @@ const App = (props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
+  const cmi = useContext(CmiContext);
+  const { completed, terminate } = cmi;
+
+  const handleSessionDone = (): void => {
+    const score =
+      targets.reduce((total: number, exp: Target) => {
+        return total + (exp.achieved ? 1 : exp.score);
+      }, 0) / targets.length;
+    const kcs = kc ? (Array.isArray(kc) ? kc : [kc]) : [lesson];
+    const kcScores = kcs.map((kc: string) => {
+      return {
+        kc: kc,
+        score: score,
+      };
+    });
+    const extensions = {
+      [CMI5_EXT_RESULT_KC_SCORES]: kcScores,
+    };
+    completed(score, score < 0.2, extensions);
+    terminate();
+  };
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -150,10 +173,11 @@ const App = (props: {
           setTargets={setTargets}
           session={session}
           setSession={setSession}
-          handleSummaryOpen={handleSummaryOpen}
           setSummaryMessage={setSummaryMessage}
           setErrorProps={setErrorProps}
+          handleSummaryOpen={handleSummaryOpen}
           handleErrorOpen={handleErrorOpen}
+          handleSessionDone={handleSessionDone}
         />
         <SummaryPopup
           open={summaryOpen}

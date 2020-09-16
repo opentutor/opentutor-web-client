@@ -4,35 +4,28 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-export enum ChatMsgType {
-  Text = "text",
-  Closing = "closing",
-  Opening = "opening",
-  MainQuestion = "mainQuestion",
-  Hint = "hint",
-  Prompt = "prompt",
-  FeedbackPositive = "feedbackPositive",
-  FeedbackNegative = "feedbackNegative",
-  FeedbackNeutral = "feedbackNeutral",
-  Encouragement = "encouragement",
-  Profanity = "profanity",
+import axios from "axios";
+
+const config = {
+  CMI5_ENDPOINT: process.env.CMI5_ENDPOINT || "/lrs/xapi",
+  CMI5_FETCH: process.env.CMI5_FETCH || "/lrs/auth/guesttoken",
+};
+
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "test") {
+  // i.e. don't run at build time
+  axios
+    .get(`/config`)
+    .then((result) => {
+      if (typeof result.data["CMI5_ENDPOINT"] === "string") {
+        config.CMI5_ENDPOINT = result.data["CMI5_ENDPOINT"];
+      }
+      if (typeof result.data["CMI5_FETCH"] === "string") {
+        config.CMI5_FETCH = result.data["CMI5_FETCH"];
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
-export interface ChatMsg {
-  senderId: string;
-  type: string;
-  text: string;
-}
-
-export interface ErrorData {
-  title: string;
-  message: string;
-  buttonText: string;
-}
-
-export interface Target {
-  achieved: boolean;
-  score: number;
-  text: string;
-  status: string;
-}
+export default config;

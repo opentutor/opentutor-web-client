@@ -4,35 +4,21 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-export enum ChatMsgType {
-  Text = "text",
-  Closing = "closing",
-  Opening = "opening",
-  MainQuestion = "mainQuestion",
-  Hint = "hint",
-  Prompt = "prompt",
-  FeedbackPositive = "feedbackPositive",
-  FeedbackNegative = "feedbackNegative",
-  FeedbackNeutral = "feedbackNeutral",
-  Encouragement = "encouragement",
-  Profanity = "profanity",
-}
+import React from "react";
+import Cmi5 from "./cmi5";
 
-export interface ChatMsg {
-  senderId: string;
-  type: string;
-  text: string;
-}
+export const Context = React.createContext({
+  cmi5_status: Cmi5.STATUS.NONE,
+  completed: (
+    score,
+    failed,
+    extensions,
+    terminate = true,
+    verbose = false
+  ) => {},
+  sendStatement: (verb, activityExtensions, contextExtensions, result) => {},
+  start: (start) => {},
+  terminate: () => {},
+});
 
-export interface ErrorData {
-  title: string;
-  message: string;
-  buttonText: string;
-}
-
-export interface Target {
-  achieved: boolean;
-  score: number;
-  text: string;
-  status: string;
-}
+export default Context;
