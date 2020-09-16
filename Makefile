@@ -17,7 +17,7 @@ test:
 
 PHONY: test-all
 test-all:
-	$(MAKE) test-audit
+	# $(MAKE) test-audit
 	$(MAKE) test-format
 	$(MAKE) test-lint
 	$(MAKE) test-license
@@ -54,10 +54,10 @@ LICENSE_HEADER:
 
 .PHONY: license
 license: LICENSE LICENSE_HEADER
-	cd client && npm ci && npm run license:fix
-	cd docker && npm ci && npm run license:fix
+	cd client && npm run license:fix
+	cd docker && npm run license:fix
 
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
-	cd client && npm ci && npm run test:license
-	cd docker && npm ci && npm run test:license
+	cd client && npm run test:license
+	cd docker && npm run test:license

@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
-import { Target } from "./types";
+import { Target } from "types";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>

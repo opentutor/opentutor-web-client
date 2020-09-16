@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import TargetIcon from "components/TargetIcon";
 import LockIcon from "@material-ui/icons/Lock";
-import { Target } from "./types";
+import { Target } from "types";
 
 const useStyles = makeStyles((theme) => ({
   placeholder: {

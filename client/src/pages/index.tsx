@@ -6,23 +6,14 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/layout.css";
 import React, { useState } from "react";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { v1 as uuidv1 } from "uuid";
+import { makeStyles } from "@material-ui/core/styles";
+
 import logo from "assets/logo.png";
+import { addCmi, hasCmi, CMI5_ENDPOINT, CMI5_FETCH } from "cmiutils";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
 import withLocation from "wrap-with-location";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
-    },
-  },
-});
 
 const useStyles = makeStyles(() => ({
   logo: {
@@ -31,30 +22,70 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const IndexPage = (props: {
-  search: { lesson: string; guest: string };
-}): JSX.Element => {
+const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
   const styles = useStyles();
   const [guest, setGuest] = useState(props.search.guest);
 
-  const onNameEntered = (val: string): void => {
-    const name = val ? val : "guest";
-    setGuest(name);
+  const hasSessionUser = (): boolean => {
+    if (typeof window === "undefined") {
+      return Boolean(guest);
+    }
+    return Boolean(hasCmi(window.location.search) || guest);
+  };
+
+  const absUrl = (url: string): string => {
+    return url.startsWith("http")
+      ? url
+      : `${window.location.protocol}//${window.location.host}${
+          url.startsWith("/") ? "" : "/"
+        }${url}`;
+  };
+
+  const setQueryStringWithoutPageReload = (
+    qs: string,
+    qsValue: string
+  ): void => {
     let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}${window.location.search}`;
     if (window.location.search) {
-      url += `&guest=${name}`;
+      url += `&${qs}=${qsValue}`;
     } else {
-      url += `?guest=${name}`;
+      url += `?${qs}=${qsValue}`;
     }
-    window.location.href = url;
+    window.history.pushState({ path: url }, "", url);
+  };
+
+  const onNameEntered = (name: string): void => {
+    if (!name) {
+      name = "guest";
+    }
+    setGuest(name);
+    setQueryStringWithoutPageReload("guest", name);
+
+    const urlRoot = `${window.location.protocol}//${window.location.host}`;
+    const userId = uuidv1();
+    window.location.href = addCmi(window.location.href, {
+      activityId: window.location.href,
+      actor: {
+        name: `${name}`,
+        account: {
+          name: `${userId}`,
+          homePage: `${urlRoot}/guests`,
+        },
+      },
+      endpoint: absUrl(CMI5_ENDPOINT),
+      fetch: `${absUrl(CMI5_FETCH)}${
+        CMI5_FETCH.includes("?") ? "" : "?"
+      }&username=${encodeURIComponent(name)}&userid=${userId}`,
+      registration: uuidv1(),
+    });
   };
 
   return (
-    <MuiThemeProvider theme={theme}>
+    <div>
       <img src={String(logo)} className={styles.logo}></img>
       <App />
-      {guest ? undefined : <GuestPrompt submit={onNameEntered} />}
-    </MuiThemeProvider>
+      {hasSessionUser() ? undefined : <GuestPrompt submit={onNameEntered} />}
+    </div>
   );
 };
 
