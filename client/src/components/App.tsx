@@ -4,12 +4,17 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useContext, useState, useEffect } from "react";
-import { Context as CmiContext } from "react-cmi5-context";
+import React, { useState, useEffect } from "react";
+// import { Cmi5 } from "react-cmi5-context";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import { createSession, DialogData, SessionData, ExpectationData } from "api";
-import { CMI5_EXT_RESULT_KC_SCORES } from "cmiutils";
+import {
+  createSession,
+  DialogData,
+  SessionData,
+  ExpectationData,
+  CMI5_EXT_RESULT_KC_SCORES,
+} from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -61,9 +66,6 @@ const App = (props: {
   const styles = useStyles();
   const { lesson, guest, actor, kc } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
-  const cmi = useContext(CmiContext);
-  const { completed, terminate } = cmi;
-
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
@@ -96,29 +98,40 @@ const App = (props: {
   const [errorOpen, setErrorOpen] = React.useState(false);
 
   const handleSessionDone = (session: SessionData): void => {
-    const exps = session.dialogState.expectationData;
-    const score =
-      exps.reduce((total: number, exp: ExpectationData) => {
-        return total + (exp.satisfied ? 1 : exp.score);
-      }, 0) / targets.length;
-    const kcs = kc ? (Array.isArray(kc) ? kc : [kc]) : [lesson];
-    const kcScores = kcs.map((kc: string) => {
-      return {
-        kc: kc,
-        score: score,
-      };
-    });
-    const extensions = {
-      [CMI5_EXT_RESULT_KC_SCORES]: kcScores,
-    };
-
-    console.log(`cmi5 score=${score}`);
-    console.log(`cmi5 failed=${score < 0.25}`);
-    console.log(`cmi5 extensions=`, extensions);
-    console.log(`cmi5 terminate`);
-
-    completed(score, score < 0.25, extensions);
-    terminate();
+    // if (!Cmi5.isCmiAvailable) {
+    //   return;
+    // }
+    // const exps = session.dialogState.expectationData;
+    // const score =
+    //   exps.reduce((total: number, exp: ExpectationData) => {
+    //     return total + (exp.satisfied ? 1 : exp.score);
+    //   }, 0) / targets.length;
+    // const kcs = kc ? (Array.isArray(kc) ? kc : [kc]) : [lesson];
+    // const kcScores = kcs.map((kc: string) => {
+    //   return {
+    //     kc: kc,
+    //     score: score,
+    //   };
+    // });
+    // const extensions = {
+    //   [CMI5_EXT_RESULT_KC_SCORES]: kcScores,
+    // };
+    // const cmi5 = Cmi5.get();
+    // const lmsData = cmi5.state.lmsLaunchData;
+    // console.log(lmsData);
+    // console.log(`score: ${score}`);
+    // console.log(`resultExtensions: `, extensions);
+    // if (lmsData.moveOn) {
+    //   cmi5.moveOn({ score, resultExtensions: extensions });
+    // } else {
+    //   const masteryScore = lmsData.masteryScore || 0;
+    //   if (masteryScore > score) {
+    //     cmi5.failed({ score, resultExtensions: extensions });
+    //   } else {
+    //     cmi5.passed({ score, resultExtensions: extensions });
+    //   }
+    //   cmi5.terminate();
+    // }
   };
 
   const handleSummaryOpen = (): void => {

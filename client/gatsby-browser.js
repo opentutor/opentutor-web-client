@@ -1,6 +1,5 @@
 import React from "react";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Provider as CmiProvider } from "react-cmi5-context";
 
 const theme = createMuiTheme({
   palette: {
@@ -11,7 +10,5 @@ const theme = createMuiTheme({
 });
 
 export const wrapRootElement = ({ element }) => (
-  <MuiThemeProvider theme={theme}>
-    <CmiProvider>{element}</CmiProvider>
-  </MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
 );

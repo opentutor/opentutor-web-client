@@ -5,13 +5,10 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/layout.css";
-import React, { useContext, useEffect, useState } from "react";
-import { Context as CmiContext } from "react-cmi5-context";
-import { v1 as uuidv1 } from "uuid";
+import React, { useEffect, useState } from "react";
+// import { Cmi5 } from "react-cmi5-context";
 import { makeStyles } from "@material-ui/core/styles";
-
 import logo from "assets/logo.png";
-import { addCmi, hasCmi, CMI5_ENDPOINT, CMI5_FETCH } from "cmiutils";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
 import withLocation from "wrap-with-location";
@@ -26,32 +23,19 @@ const useStyles = makeStyles(() => ({
 const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
   const styles = useStyles();
   const [guest, setGuest] = useState(props.search.guest);
-  const cmi = useContext(CmiContext);
-  const { start: cmi5Start } = cmi;
 
   useEffect(() => {
-    cmi5Start();
+    // if (Cmi5.isCmiAvailable) {
+    //   Cmi5.get().start();
+    // }
   }, []);
 
   const hasSessionUser = (): boolean => {
-    if (typeof window === "undefined") {
-      return Boolean(guest);
-    }
-    return Boolean(hasCmi(window.location.search) || guest);
+    return Boolean(guest);
+    // return Boolean(Cmi5.isCmiAvailable || guest);
   };
 
-  const absUrl = (url: string): string => {
-    return url.startsWith("http")
-      ? url
-      : `${window.location.protocol}//${window.location.host}${
-          url.startsWith("/") ? "" : "/"
-        }${url}`;
-  };
-
-  const setQueryStringWithoutPageReload = (
-    qs: string,
-    qsValue: string
-  ): void => {
+  const setQueryString = (qs: string, qsValue: string): string => {
     let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}${window.location.search}`;
     if (window.location.search) {
       url += `&${qs}=${qsValue}`;
@@ -59,6 +43,7 @@ const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
       url += `?${qs}=${qsValue}`;
     }
     window.history.pushState({ path: url }, "", url);
+    return url;
   };
 
   const onNameEntered = (name: string): void => {
@@ -66,25 +51,7 @@ const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
       name = "guest";
     }
     setGuest(name);
-    setQueryStringWithoutPageReload("guest", name);
-
-    const urlRoot = `${window.location.protocol}//${window.location.host}`;
-    const userId = uuidv1();
-    window.location.href = addCmi(window.location.href, {
-      activityId: window.location.href,
-      actor: {
-        name: `${name}`,
-        account: {
-          name: `${userId}`,
-          homePage: `${urlRoot}/guests`,
-        },
-      },
-      endpoint: absUrl(CMI5_ENDPOINT),
-      fetch: `${absUrl(CMI5_FETCH)}${
-        CMI5_FETCH.includes("?") ? "" : "?"
-      }&username=${encodeURIComponent(name)}&userid=${userId}`,
-      registration: uuidv1(),
-    });
+    window.location.href = setQueryString("guest", name);
   };
 
   return (
