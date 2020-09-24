@@ -6,7 +6,7 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/layout.css";
 import React, { useEffect, useState } from "react";
-// import { Cmi5 } from "react-cmi5-context";
+import { Cmi5 } from "react-cmi5-context";
 import { makeStyles } from "@material-ui/core/styles";
 import logo from "assets/logo.png";
 import App from "components/App";
@@ -25,14 +25,16 @@ const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
   const [guest, setGuest] = useState(props.search.guest);
 
   useEffect(() => {
-    // if (Cmi5.isCmiAvailable) {
-    //   Cmi5.get().start();
-    // }
+    if (Cmi5.isCmiAvailable) {
+      Cmi5.get().start();
+    }
   }, []);
 
   const hasSessionUser = (): boolean => {
-    return Boolean(guest);
-    // return Boolean(Cmi5.isCmiAvailable || guest);
+    if (typeof window === "undefined") {
+      return Boolean(guest);
+    }
+    return Boolean(Cmi5.isCmiAvailable || guest);
   };
 
   const setQueryString = (qs: string, qsValue: string): string => {

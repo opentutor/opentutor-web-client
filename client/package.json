@@ -19,6 +19,7 @@
     "gatsby-plugin-styled-components": "^3.3.10",
     "gatsby-plugin-typescript": "^2.4.10",
     "react": "^16.13.1",
+    "react-cmi5-context": "github:ictlearningsciences/react-cmi5-context#semver:2.0.0-alpha.5",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-scroll": "^1.8.0",
