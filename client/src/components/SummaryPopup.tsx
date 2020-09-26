@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
-import { Target } from "types";
+import { SummaryState, Target } from "types";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
@@ -76,7 +76,7 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 export default function SummaryPopup(props: {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
   message: string;
   buttonText: string;
   targets: Target[];

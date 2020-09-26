@@ -36,3 +36,8 @@ export interface Target {
   text: string;
   status: string;
 }
+
+export interface SummaryState {
+  isOpen: boolean;
+  message?: string;
+}

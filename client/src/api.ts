@@ -52,8 +52,6 @@ export interface DialogError {
 export type DialogResponse = DialogData | DialogError;
 
 export const DIALOG_ENDPOINT = process.env.DIALOG_ENDPOINT || "/dialog";
-export const CMI5_EXT_RESULT_KC_SCORES =
-  "http://pal3.org/xapi/knowledgecomponent/result/kc-scores";
 
 export async function createSession(
   lesson: string

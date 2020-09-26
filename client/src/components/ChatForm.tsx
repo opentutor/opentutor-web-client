@@ -31,9 +31,7 @@ const ChatForm = (props: {
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
   session: SessionData;
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
-  setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
-  handleSummaryOpen: () => void;
   handleErrorOpen: () => void;
   handleSessionDone: (session: SessionData) => void;
 }): JSX.Element => {
@@ -85,10 +83,11 @@ const ChatForm = (props: {
           // Session ending. Show summary and send score
           if (dialogData.completed) {
             setSessionAlive(false);
-            props.setSummaryMessage(
-              "That's a wrap! Let's see how you did on this lesson!"
-            );
-            props.handleSummaryOpen();
+            // props.setSummaryState()
+            // props.setSummaryMessage(
+            //   "That's a wrap! Let's see how you did on this lesson!"
+            // );
+            // props.handleSummaryOpen();
             props.handleSessionDone(dialogData.sessionInfo);
           }
 

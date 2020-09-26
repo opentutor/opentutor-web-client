@@ -13,7 +13,6 @@ import {
   DialogData,
   SessionData,
   ExpectationData,
-  CMI5_EXT_RESULT_KC_SCORES,
 } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
@@ -21,7 +20,7 @@ import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target, ChatMsgType } from "types";
+import { ChatMsg, ErrorData, Target, ChatMsgType, SummaryState } from "types";
 import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,16 +59,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = (props: {
-  search: { lesson: string; guest: string; actor: string; kc: string[] };
-}): JSX.Element => {
+
+function App(props: {
+  search: { lesson: string; guest: string; actor: string };
+}): JSX.Element {
   const styles = useStyles();
-  const { lesson, guest, actor, kc } = props.search;
+  const { lesson, guest, actor } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
-  const [summaryOpen, setSummaryOpen] = React.useState(false);
-  const [summaryMessage, setSummaryMessage] = React.useState(
-    "Let's see how you're doing so far!"
-  );
+  const [summaryState, setSummaryState] = React.useState<SummaryState>({
+    isOpen: false,
+    message: "Let's see how you're doing so far!",
+  });
   const [targets, setTargets] = React.useState<Target[]>([]);
   const [session, setSession] = React.useState<SessionData>({
     sessionId: "",
@@ -97,7 +97,13 @@ const App = (props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
 
-  const handleSessionDone = (session: SessionData): void => {
+  async function handleSessionDone(session: SessionData): Promise<void> {
+    
+    props.setSummaryState()
+            props.setSummaryMessage(
+              "That's a wrap! Let's see how you did on this lesson!"
+            );
+            props.handleSummaryOpen();
     if (!Cmi5.isCmiAvailable) {
       return;
     }
@@ -106,32 +112,31 @@ const App = (props: {
       exps.reduce((total: number, exp: ExpectationData) => {
         return total + (exp.satisfied ? 1 : exp.score);
       }, 0) / targets.length;
-    const kcs = kc ? (Array.isArray(kc) ? kc : [kc]) : [lesson];
-    const kcScores = kcs.map((kc: string) => {
-      return {
-        kc: kc,
-        score: score,
-      };
-    });
-    const extensions = {
-      [CMI5_EXT_RESULT_KC_SCORES]: kcScores,
-    };
     const cmi5 = Cmi5.get();
+    // TODO: everything here and below
+    // should be a function in the cmi lib
     const lms = cmi5.state.lmsLaunchData.contents || {};
-    const scoreExt = { score, resultExtensions: extensions };
+    const scoreExt = { score };
     if (lms.moveOn) {
-      cmi5.moveOn(scoreExt);
+      await cmi5.moveOn(scoreExt);
     } else {
       const masteryScore = lms.masteryScore || 0;
       if (masteryScore > score) {
-        cmi5.failed(scoreExt);
+        await cmi5.failed(scoreExt);
       } else {
-        cmi5.passed(scoreExt);
+        await cmi5.passed(scoreExt);
       }
-      cmi5.completed();
-      cmi5.terminate();
+      await cmi5.completed();
+      await cmi5.terminate();
     }
-  };
+  }
+
+  function setSummaryOpen(open: boolean): void {
+    setSummaryState({
+      ...summaryState,
+      isOpen: open,
+    });
+  }
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -194,16 +199,15 @@ const App = (props: {
           setTargets={setTargets}
           session={session}
           setSession={setSession}
-          setSummaryMessage={setSummaryMessage}
           setErrorProps={setErrorProps}
-          handleSummaryOpen={handleSummaryOpen}
+          // handleSummaryOpen={handleSummaryOpen}
           handleErrorOpen={handleErrorOpen}
           handleSessionDone={handleSessionDone}
         />
         <SummaryPopup
-          open={summaryOpen}
+          open={summaryState.isOpen}
           setOpen={setSummaryOpen}
-          message={summaryMessage}
+          message={summaryState.message || ""}
           buttonText={"Close"}
           targets={targets}
         />
@@ -221,6 +225,6 @@ const App = (props: {
       </Typography>
     </div>
   );
-};
+}
 
 export default withLocation(App);
