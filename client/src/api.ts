@@ -35,7 +35,6 @@ export interface DialogMsg {
 }
 
 export interface DialogData {
-  status: number;
   sessionInfo: SessionData;
   response: DialogMsg[];
   completed: boolean;
@@ -44,16 +43,12 @@ export interface DialogData {
 }
 
 export interface DialogError {
-  status: number;
-  statusText: string;
-  data: string;
+  message: string;
 }
 
 export type DialogResponse = DialogData | DialogError;
 
 export const DIALOG_ENDPOINT = process.env.DIALOG_ENDPOINT || "/dialog";
-export const CMI5_EXT_RESULT_KC_SCORES =
-  "http://pal3.org/xapi/knowledgecomponent/result/kc-scores";
 
 export async function createSession(
   lesson: string

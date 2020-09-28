@@ -36,3 +36,10 @@ export interface Target {
   text: string;
   status: string;
 }
+
+export interface SessionSummary {
+  showSummary: boolean;
+  summaryMessage?: string;
+  sendResultsPending?: boolean;
+  score?: number;
+}
