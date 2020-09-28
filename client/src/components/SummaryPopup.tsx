@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
-import { SummaryState, Target } from "types";
+import { Target } from "types";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
@@ -76,25 +76,21 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 export default function SummaryPopup(props: {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  onCloseRequested: () => void;
   message: string;
   buttonText: string;
   targets: Target[];
 }): JSX.Element {
-  const { open, setOpen, message, buttonText, targets } = props;
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
+  const { open, onCloseRequested, message, buttonText, targets } = props;
 
   return (
     <Dialog
       id="summary-popup"
-      onClose={handleClose}
+      onClose={onCloseRequested}
       aria-labelledby="customized-dialog-title"
       open={open}
     >
-      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <DialogTitle id="customized-dialog-title" onClose={onCloseRequested}>
         Lesson Summary
       </DialogTitle>
       <DialogContent dividers>
@@ -102,7 +98,7 @@ export default function SummaryPopup(props: {
       </DialogContent>
       <SummaryIndicator targets={targets} />
       <DialogActions>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button onClick={onCloseRequested} color="primary" variant="contained">
           {buttonText}
         </Button>
       </DialogActions>

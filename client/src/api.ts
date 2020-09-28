@@ -35,7 +35,6 @@ export interface DialogMsg {
 }
 
 export interface DialogData {
-  status: number;
   sessionInfo: SessionData;
   response: DialogMsg[];
   completed: boolean;
@@ -44,9 +43,7 @@ export interface DialogData {
 }
 
 export interface DialogError {
-  status: number;
-  statusText: string;
-  data: string;
+  message: string;
 }
 
 export type DialogResponse = DialogData | DialogError;

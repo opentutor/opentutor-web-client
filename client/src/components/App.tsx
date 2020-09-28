@@ -8,19 +8,14 @@ import React, { useState, useEffect } from "react";
 import { Cmi5 } from "react-cmi5-context";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import {
-  createSession,
-  DialogData,
-  SessionData,
-  ExpectationData,
-} from "api";
+import { createSession, DialogData, SessionData, ExpectationData } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target, ChatMsgType, SummaryState } from "types";
+import { ChatMsg, ErrorData, Target, ChatMsgType, SessionSummary } from "types";
 import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,16 +54,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function App(props: {
   search: { lesson: string; guest: string; actor: string };
 }): JSX.Element {
   const styles = useStyles();
   const { lesson, guest, actor } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
-  const [summaryState, setSummaryState] = React.useState<SummaryState>({
-    isOpen: false,
-    message: "Let's see how you're doing so far!",
+  const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
+    showSummary: false,
+    summaryMessage: "Let's see how you're doing so far!",
   });
   const [targets, setTargets] = React.useState<Target[]>([]);
   const [session, setSession] = React.useState<SessionData>({
@@ -97,25 +91,30 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
 
-  async function handleSessionDone(session: SessionData): Promise<void> {
-    
-    props.setSummaryState()
-            props.setSummaryMessage(
-              "That's a wrap! Let's see how you did on this lesson!"
-            );
-            props.handleSummaryOpen();
+  function handleSessionDone(session: SessionData): void {
+    setSessionSummary({
+      summaryMessage: "That's a wrap! Let's see how you did on this lesson!",
+      showSummary: true,
+      sendResultsPending: true,
+      score:
+        session.dialogState.expectationData.reduce(
+          (total: number, exp: ExpectationData) => {
+            return total + (exp.satisfied ? 1 : exp.score);
+          },
+          0
+        ) / targets.length,
+    });
+  }
+
+  async function sendCmi5Results(): Promise<void> {
     if (!Cmi5.isCmiAvailable) {
       return;
     }
-    const exps = session.dialogState.expectationData;
-    const score =
-      exps.reduce((total: number, exp: ExpectationData) => {
-        return total + (exp.satisfied ? 1 : exp.score);
-      }, 0) / targets.length;
     const cmi5 = Cmi5.get();
     // TODO: everything here and below
     // should be a function in the cmi lib
     const lms = cmi5.state.lmsLaunchData.contents || {};
+    const score = sessionSummary.score || 0;
     const scoreExt = { score };
     if (lms.moveOn) {
       await cmi5.moveOn(scoreExt);
@@ -131,15 +130,25 @@ function App(props: {
     }
   }
 
-  function setSummaryOpen(open: boolean): void {
-    setSummaryState({
-      ...summaryState,
-      isOpen: open,
+  const onSummaryOpenRequested = (): void => {
+    setSessionSummary({
+      ...sessionSummary,
+      showSummary: true,
     });
-  }
+  };
 
-  const handleSummaryOpen = (): void => {
-    setSummaryOpen(true);
+  const onSummaryCloseRequested = (): void => {
+    const sendResults = sessionSummary.sendResultsPending;
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        showSummary: false,
+        sendResultsPending: false,
+      };
+    });
+    if (sendResults) {
+      sendCmi5Results();
+    }
   };
 
   const handleErrorOpen = (): void => {
@@ -189,7 +198,10 @@ function App(props: {
       ></img>
       <br />
       <div className={styles.chatWindow}>
-        <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
+        <TargetIndicator
+          targets={targets}
+          showSummary={onSummaryOpenRequested}
+        />
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
@@ -200,14 +212,14 @@ function App(props: {
           session={session}
           setSession={setSession}
           setErrorProps={setErrorProps}
-          // handleSummaryOpen={handleSummaryOpen}
+          // onSummaryOpenRequested={onSummaryOpenRequested}
           handleErrorOpen={handleErrorOpen}
           handleSessionDone={handleSessionDone}
         />
         <SummaryPopup
-          open={summaryState.isOpen}
-          setOpen={setSummaryOpen}
-          message={summaryState.message || ""}
+          open={sessionSummary.showSummary}
+          onCloseRequested={onSummaryCloseRequested}
+          message={sessionSummary.summaryMessage || ""}
           buttonText={"Close"}
           targets={targets}
         />
@@ -216,7 +228,7 @@ function App(props: {
           setOpen={setErrorOpen}
           errorProps={errorProps}
         />
-        <Button id="view-summary-btn" onClick={handleSummaryOpen}>
+        <Button id="view-summary-btn" onClick={onSummaryOpenRequested}>
           View Summary
         </Button>
       </div>

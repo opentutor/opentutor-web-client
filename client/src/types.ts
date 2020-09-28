@@ -37,7 +37,9 @@ export interface Target {
   status: string;
 }
 
-export interface SummaryState {
-  isOpen: boolean;
-  message?: string;
+export interface SessionSummary {
+  showSummary: boolean;
+  summaryMessage?: string;
+  sendResultsPending?: boolean;
+  score?: number;
 }

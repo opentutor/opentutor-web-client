@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession, DialogData, SessionData } from "api";
+import { continueSession, DialogData, DialogError, SessionData } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import { Target, ChatMsg, ErrorData } from "types";
 
@@ -44,8 +44,7 @@ const ChatForm = (props: {
     if (!sessionAlive) {
       return;
     }
-
-    const fetchData = async (): Promise<void> => {
+    async function fetchData(): Promise<void> {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
@@ -54,8 +53,12 @@ const ChatForm = (props: {
           outboundChat: outboundChat,
         });
         if (response.status !== 200) {
-          const error: any = response.data;
-          props.setErrorProps(errorForStatus(error.status, error.message));
+          props.setErrorProps(
+            errorForStatus(
+              response.status,
+              (response.data as DialogError).message
+            )
+          );
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
@@ -79,22 +82,16 @@ const ChatForm = (props: {
               };
             })
           );
-
-          // Session ending. Show summary and send score
+          // Session complete.
+          // Show summary then send score on summary close
           if (dialogData.completed) {
             setSessionAlive(false);
-            // props.setSummaryState()
-            // props.setSummaryMessage(
-            //   "That's a wrap! Let's see how you did on this lesson!"
-            // );
-            // props.handleSummaryOpen();
             props.handleSessionDone(dialogData.sessionInfo);
           }
-
           props.setSession(dialogData.sessionInfo);
         }
       }
-    };
+    }
     fetchData();
   }, [outboundChat]); //Watches for vars in array to make updates. If none only updates on comp. mount
 
