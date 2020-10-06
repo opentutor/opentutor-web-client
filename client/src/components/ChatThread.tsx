@@ -21,7 +21,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import { ChatMsg, ChatMsgType } from "./types";
+import { ChatMsg, ChatMsgType } from "types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
