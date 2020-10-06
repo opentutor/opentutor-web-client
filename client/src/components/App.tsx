@@ -4,44 +4,49 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
-import { createSession, DialogData, SessionData } from "api";
+import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
-import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target, ChatMsgType } from "./types";
+import {
+  ChatMsg,
+  ErrorData,
+  Target,
+  ChatMsgType,
+  SessionData,
+  DialogData,
+  Lesson,
+} from "types";
+import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
     backgroundColor: theme.palette.primary.main,
     width: "100%",
-    height: "calc(100% - 75px)",
-    minHeight: 750,
+    height: "100%",
     position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, 0%)",
+  },
+  scroll: {
+    overflow: "auto",
+    whiteSpace: "nowrap",
+    // width: "100%",
+    maxHeight: "35%",
+    minHeight: "35%",
   },
   image: {
-    width: "100%",
-    height: "30%",
-    aspectRatio: "2/1",
-    objectFit: "cover",
-    marginBottom: -5,
+    minWidth: 400,
+    minHeight: "35%",
   },
   chatWindow: {
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    height: "67%",
-    position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, 0%)",
-    marginBottom: 15,
+    height: "60%",
   },
   buildInfo: {
     position: "fixed",
@@ -75,19 +80,24 @@ const App = (props: {
     },
     hash: "",
   });
-  const [messages, setMessages] = useState<ChatMsg[]>([
+  const [messages, setMessages] = React.useState<ChatMsg[]>([
     {
       senderId: "system",
       type: ChatMsgType.Opening,
       text: "Welcome to OpenTutor!",
     },
   ]);
-  const [errorProps, setErrorProps] = useState<ErrorData>({
+  const [errorProps, setErrorProps] = React.useState<ErrorData>({
     title: "",
     message: "",
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
+  const [image, setImage] = React.useState<string>();
+  const [imgWidth, setImgWidth] = React.useState(0);
+  const [imgHeight, setImgHeight] = React.useState(0);
+  const [windowWidth, setWindowWidth] = React.useState(0);
+  const [windowHeight, setWindowHeight] = React.useState(0);
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -97,10 +107,54 @@ const App = (props: {
     setErrorOpen(true);
   };
 
-  useEffect(() => {
+  const showImage = (): JSX.Element => {
+    return (
+      <div className={styles.scroll}>
+        <img
+          src={image}
+          className={styles.image}
+          style={{
+            width: imgHeight > imgWidth ? 400 : "",
+          }}
+        ></img>
+      </div>
+    );
+  };
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+  React.useEffect(() => {
+    fetchLesson(lesson)
+      .then((lesson: Lesson) => {
+        if (lesson) {
+          setImage(lesson.image);
+          const img = new Image();
+          img.addEventListener("load", function () {
+            setImgHeight(this.naturalHeight);
+            setImgWidth(this.naturalWidth);
+          });
+          img.src = lesson.image;
+        }
+      })
+      .catch((err: string) => console.error(err));
+  }, [lesson]);
+
+  React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const lessonOut = lesson || "";
-      const response = await createSession(lessonOut);
+      const response = await createSession(lesson || "");
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
@@ -134,11 +188,7 @@ const App = (props: {
 
   return (
     <div className={styles.foreground}>
-      <img
-        src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"
-        className={styles.image}
-      ></img>
-      <br />
+      {showImage()}
       <div className={styles.chatWindow}>
         <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />
