@@ -5,8 +5,10 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
+import ZoomInIcon from "@material-ui/icons/ZoomIn";
+import ZoomOutIcon from "@material-ui/icons/ZoomOut";
+import { makeStyles } from "@material-ui/core/styles";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
@@ -28,30 +30,35 @@ import withLocation from "wrap-with-location";
 const useStyles = makeStyles((theme) => ({
   foreground: {
     backgroundColor: theme.palette.primary.main,
+    position: "absolute",
     width: "100%",
     height: "100%",
-    position: "absolute",
+    display: "flex",
+    flexDirection: "column",
   },
   scroll: {
     overflow: "auto",
     whiteSpace: "nowrap",
-    // width: "100%",
     maxHeight: "35%",
-    minHeight: "35%",
   },
   image: {
     minWidth: 400,
-    minHeight: "35%",
+  },
+  zoom: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    height: 50,
+    width: 50,
+    color: "white",
   },
   chatWindow: {
+    flex: 1,
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    height: "60%",
   },
   buildInfo: {
-    position: "fixed",
-    bottom: 4,
-    marginLeft: 8,
+    padding: 5,
     color: "white",
     fontWeight: "bold",
     fontSize: "70%",
@@ -96,8 +103,7 @@ const App = (props: {
   const [image, setImage] = React.useState<string>();
   const [imgWidth, setImgWidth] = React.useState(0);
   const [imgHeight, setImgHeight] = React.useState(0);
-  const [windowWidth, setWindowWidth] = React.useState(0);
-  const [windowHeight, setWindowHeight] = React.useState(0);
+  const [isImgExpanded, setImgExpanded] = React.useState(false);
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -107,34 +113,51 @@ const App = (props: {
     setErrorOpen(true);
   };
 
+  const handleImageExpand = (): void => {
+    setImgExpanded(!isImgExpanded);
+  };
+
   const showImage = (): JSX.Element => {
+    if (!image) {
+      return <div style={{ height: 20 }}></div>;
+    }
+    if (isImgExpanded) {
+      return (
+        <div id="image" className={styles.scroll} onClick={handleImageExpand}>
+          <img
+            src={image}
+            className={styles.image}
+            style={{
+              width: imgHeight > imgWidth ? 400 : "",
+            }}
+          ></img>
+        </div>
+      );
+    }
     return (
-      <div className={styles.scroll}>
-        <img
-          src={image}
-          className={styles.image}
-          style={{
-            width: imgHeight > imgWidth ? 400 : "",
-          }}
-        ></img>
-      </div>
+      <img
+        id="image"
+        src={image}
+        onClick={handleImageExpand}
+        style={{
+          objectFit: "contain",
+          height: "35%",
+        }}
+      ></img>
     );
   };
 
-  React.useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
+  const showZoom = (): JSX.Element => {
+    if (!image) {
+      return <div></div>;
     }
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-      setWindowHeight(window.innerHeight);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  });
+    if (isImgExpanded) {
+      return (
+        <ZoomOutIcon className={styles.zoom} onClick={handleImageExpand} />
+      );
+    }
+    return <ZoomInIcon className={styles.zoom} onClick={handleImageExpand} />;
+  };
 
   React.useEffect(() => {
     fetchLesson(lesson)
@@ -189,6 +212,7 @@ const App = (props: {
   return (
     <div className={styles.foreground}>
       {showImage()}
+      {showZoom()}
       <div className={styles.chatWindow}>
         <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />
