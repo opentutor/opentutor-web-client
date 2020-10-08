@@ -6,10 +6,8 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
-import ZoomInIcon from "@material-ui/icons/ZoomIn";
-import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import { makeStyles } from "@material-ui/core/styles";
-import { createSession, fetchLesson } from "api";
+import { createSession } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -23,34 +21,18 @@ import {
   ChatMsgType,
   SessionData,
   DialogData,
-  Lesson,
 } from "types";
 import withLocation from "wrap-with-location";
+import HeaderBar from "./HeaderBar";
+import LessonImage from "./LessonImage";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
-    backgroundColor: theme.palette.primary.main,
     position: "absolute",
     width: "100%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-  },
-  scroll: {
-    overflow: "auto",
-    whiteSpace: "nowrap",
-    maxHeight: "35%",
-  },
-  image: {
-    minWidth: 400,
-  },
-  zoom: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    height: 50,
-    width: 50,
-    color: "white",
   },
   chatWindow: {
     flex: 1,
@@ -100,10 +82,6 @@ const App = (props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
-  const [image, setImage] = React.useState<string>();
-  const [imgWidth, setImgWidth] = React.useState(0);
-  const [imgHeight, setImgHeight] = React.useState(0);
-  const [isImgExpanded, setImgExpanded] = React.useState(false);
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -112,68 +90,6 @@ const App = (props: {
   const handleErrorOpen = (): void => {
     setErrorOpen(true);
   };
-
-  const handleImageExpand = (): void => {
-    setImgExpanded(!isImgExpanded);
-  };
-
-  const showImage = (): JSX.Element => {
-    if (!image) {
-      return <div style={{ height: 20 }}></div>;
-    }
-    if (isImgExpanded) {
-      return (
-        <div id="image" className={styles.scroll} onClick={handleImageExpand}>
-          <img
-            src={image}
-            className={styles.image}
-            style={{
-              width: imgHeight > imgWidth ? 400 : "",
-            }}
-          ></img>
-        </div>
-      );
-    }
-    return (
-      <img
-        id="image"
-        src={image}
-        onClick={handleImageExpand}
-        style={{
-          objectFit: "contain",
-          height: "35%",
-        }}
-      ></img>
-    );
-  };
-
-  const showZoom = (): JSX.Element => {
-    if (!image) {
-      return <div></div>;
-    }
-    if (isImgExpanded) {
-      return (
-        <ZoomOutIcon className={styles.zoom} onClick={handleImageExpand} />
-      );
-    }
-    return <ZoomInIcon className={styles.zoom} onClick={handleImageExpand} />;
-  };
-
-  React.useEffect(() => {
-    fetchLesson(lesson)
-      .then((lesson: Lesson) => {
-        if (lesson) {
-          setImage(lesson.image);
-          const img = new Image();
-          img.addEventListener("load", function () {
-            setImgHeight(this.naturalHeight);
-            setImgWidth(this.naturalWidth);
-          });
-          img.src = lesson.image;
-        }
-      })
-      .catch((err: string) => console.error(err));
-  }, [lesson]);
 
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -211,8 +127,8 @@ const App = (props: {
 
   return (
     <div className={styles.foreground}>
-      {showImage()}
-      {showZoom()}
+      <HeaderBar />
+      <LessonImage />
       <div className={styles.chatWindow}>
         <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />
