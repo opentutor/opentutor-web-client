@@ -35,7 +35,7 @@ jobs:
       - checkout
       - run:
           name: Audit js
-          command: cd client && npm audit --production --level=moderate
+          command: cd client && npm run test:audit
   client-lint:
     executor: node
     steps:
@@ -127,8 +127,8 @@ workflows:
     jobs:
       - client-format:
           filters: *only-untagged
-      # - client-audit:
-      #     filters: *only-untagged
+      - client-audit:
+          filters: *only-untagged
       - client-lint:
           filters: *only-untagged
       - client-license:
@@ -146,7 +146,7 @@ workflows:
           type: approval
           requires:
             - client-format
-            # - client-audit
+            - client-audit
             - client-lint
             - client-license
             - client-types
@@ -160,8 +160,8 @@ workflows:
     jobs:
       - client-format:
           filters: *only-tagged-releases
-      # - client-audit:
-      #     filters: *only-tagged-releases
+      - client-audit:
+          filters: *only-tagged-releases
       - client-lint:
           filters: *only-tagged-releases
       - client-license:
@@ -179,7 +179,7 @@ workflows:
           filters: *only-tagged-releases
           requires:
             - client-format
-            # - client-audit
+            - client-audit
             - client-lint
             - client-license
             - client-types
