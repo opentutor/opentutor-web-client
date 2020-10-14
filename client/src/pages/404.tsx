@@ -6,23 +6,11 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/layout.css";
 import React from "react";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
 import logo from "assets/logo.png";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1b6a9c",
-    },
-  },
-});
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   logo: {
     width: 200,
     height: 75,
@@ -76,7 +64,7 @@ const useStyles = makeStyles(() => ({
 const NotFoundPage: React.FC = () => {
   const styles = useStyles();
   return (
-    <MuiThemeProvider theme={theme}>
+    <div>
       <img src={String(logo)} className={styles.logo}></img>
       <div className={styles.foreground}>
         <img
@@ -102,7 +90,7 @@ const NotFoundPage: React.FC = () => {
           OpenTutor Client {process.env.OPENTUTOR_CLIENT_VERSION}
         </Typography>
       </div>
-    </MuiThemeProvider>
+    </div>
   );
 };
 

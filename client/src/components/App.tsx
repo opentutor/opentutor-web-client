@@ -4,49 +4,43 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { Button, Typography } from "@material-ui/core";
-import { createSession, DialogData, SessionData } from "api";
+import { makeStyles } from "@material-ui/core/styles";
+import { createSession } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
-import withLocation from "wrap-with-location";
 import { errorForStatus } from "components/ErrorConfig";
-import { ChatMsg, ErrorData, Target, ChatMsgType } from "./types";
+import {
+  ChatMsg,
+  ErrorData,
+  Target,
+  ChatMsgType,
+  SessionData,
+  DialogData,
+} from "types";
+import withLocation from "wrap-with-location";
+import HeaderBar from "./HeaderBar";
+import LessonImage from "./LessonImage";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
-    backgroundColor: theme.palette.primary.main,
-    width: "100%",
-    height: "calc(100% - 75px)",
-    minHeight: 750,
     position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, 0%)",
-  },
-  image: {
     width: "100%",
-    height: "30%",
-    aspectRatio: "2/1",
-    objectFit: "cover",
-    marginBottom: -5,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
   chatWindow: {
+    flex: 1,
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    height: "67%",
-    position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, 0%)",
-    marginBottom: 15,
   },
   buildInfo: {
-    position: "fixed",
-    bottom: 4,
-    marginLeft: 8,
+    padding: 5,
     color: "white",
     fontWeight: "bold",
     fontSize: "70%",
@@ -75,14 +69,14 @@ const App = (props: {
     },
     hash: "",
   });
-  const [messages, setMessages] = useState<ChatMsg[]>([
+  const [messages, setMessages] = React.useState<ChatMsg[]>([
     {
       senderId: "system",
       type: ChatMsgType.Opening,
       text: "Welcome to OpenTutor!",
     },
   ]);
-  const [errorProps, setErrorProps] = useState<ErrorData>({
+  const [errorProps, setErrorProps] = React.useState<ErrorData>({
     title: "",
     message: "",
     buttonText: "",
@@ -97,10 +91,9 @@ const App = (props: {
     setErrorOpen(true);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const lessonOut = lesson || "";
-      const response = await createSession(lessonOut);
+      const response = await createSession(lesson || "");
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
@@ -134,11 +127,8 @@ const App = (props: {
 
   return (
     <div className={styles.foreground}>
-      <img
-        src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"
-        className={styles.image}
-      ></img>
-      <br />
+      <HeaderBar />
+      <LessonImage />
       <div className={styles.chatWindow}>
         <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />

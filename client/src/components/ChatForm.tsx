@@ -9,9 +9,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { continueSession, DialogData, SessionData } from "api";
-import { errorForStatus } from "./ErrorConfig";
-import { Target, ChatMsg, ErrorData } from "./types";
+import { continueSession } from "api";
+import { errorForStatus } from "components/ErrorConfig";
+import { Target, ChatMsg, ErrorData, SessionData, DialogData } from "types";
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {

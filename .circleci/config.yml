@@ -35,7 +35,7 @@ jobs:
       - checkout
       - run:
           name: Audit js
-          command: cd client && npm audit --production --level=moderate
+          command: cd client && npm run test:audit
   client-lint:
     executor: node
     steps:

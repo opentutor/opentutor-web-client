@@ -4,4 +4,110 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-// put share ts interfaces here
+export enum ChatMsgType {
+  Text = "text",
+  Closing = "closing",
+  Opening = "opening",
+  MainQuestion = "mainQuestion",
+  Hint = "hint",
+  Prompt = "prompt",
+  FeedbackPositive = "feedbackPositive",
+  FeedbackNegative = "feedbackNegative",
+  FeedbackNeutral = "feedbackNeutral",
+  Encouragement = "encouragement",
+  Profanity = "profanity",
+}
+
+export interface ChatMsg {
+  senderId: string;
+  type: string;
+  text: string;
+}
+
+export interface ErrorData {
+  title: string;
+  message: string;
+  buttonText: string;
+}
+
+export interface Target {
+  achieved: boolean;
+  score: number;
+  text: string;
+  status: string;
+}
+
+export interface Lesson {
+  id: string;
+  lessonId: string;
+  name: string;
+  intro: string;
+  question: string;
+  image: string;
+  conclusion: string[];
+  expectations: LessonExpectation[];
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  lastTrainedAt: string;
+  isTrainable: boolean;
+  deleted: boolean;
+}
+
+export interface LessonExpectation {
+  expectation: string;
+  hints: Hint[];
+}
+
+export interface Hint {
+  text: string;
+}
+
+export interface ExpectationData {
+  ideal: string;
+  score: number;
+  satisfied: boolean;
+  status: string;
+}
+
+export interface DialogState {
+  expectationsCompleted: boolean;
+  expectationData: ExpectationData[];
+  hints: boolean;
+}
+
+export interface SessionData {
+  sessionId: string;
+  sessionHistory: string;
+  previousUserResponse: string;
+  previousSystemResponse: string[];
+  dialogState: DialogState;
+  hash: string;
+}
+
+export interface DialogMsg {
+  author: string;
+  type: string;
+  data: { text: string };
+}
+
+export interface DialogData {
+  status: number;
+  sessionInfo: SessionData;
+  response: DialogMsg[];
+  completed: boolean;
+  score: number;
+  expectationActive: number;
+}
+
+export interface DialogError {
+  status: number;
+  statusText: string;
+  data: string;
+}
+
+export type DialogResponse = DialogData | DialogError;
+
+export interface FetchLesson {
+  lesson: Lesson;
+}

@@ -5,53 +5,43 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import axios, { AxiosResponse } from "axios";
+import { Lesson, FetchLesson, DialogResponse, SessionData } from "types";
 
-export interface ExpectationData {
-  ideal: string;
-  score: number;
-  satisfied: boolean;
-  status: string;
+interface GQLResponse<T> {
+  errors?: { message: string }[];
+  data?: T;
 }
-
-export interface DialogState {
-  expectationsCompleted: boolean;
-  expectationData: ExpectationData[];
-  hints: boolean;
-}
-
-export interface SessionData {
-  sessionId: string;
-  sessionHistory: string;
-  previousUserResponse: string;
-  previousSystemResponse: string[];
-  dialogState: DialogState;
-  hash: string;
-}
-
-export interface DialogMsg {
-  author: string;
-  type: string;
-  data: { text: string };
-}
-
-export interface DialogData {
-  status: number;
-  sessionInfo: SessionData;
-  response: DialogMsg[];
-  completed: boolean;
-  score: number;
-  expectationActive: number;
-}
-
-export interface DialogError {
-  status: number;
-  statusText: string;
-  data: string;
-}
-
-export type DialogResponse = DialogData | DialogError;
 
 const DIALOG_ENDPOINT = process.env.DIALOG_ENDPOINT || "/dialog";
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
+
+export async function fetchLesson(lessonId: string): Promise<Lesson> {
+  const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
+    query: `
+      query {
+        lesson(lessonId: "${lessonId}") {
+          lessonId
+          intro
+          name
+          question
+          image
+          conclusion
+          expectations {
+            expectation
+            hints {
+              text
+            }
+          }
+          lastTrainedAt
+          isTrainable
+          createdBy
+        }
+      }
+`,
+  });
+  return result.data.data!.lesson;
+}
+
 export async function createSession(
   lesson: string
 ): Promise<AxiosResponse<DialogResponse>> {
