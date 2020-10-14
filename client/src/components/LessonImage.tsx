@@ -43,8 +43,7 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
   const [image, setImage] = React.useState<string>();
-  const [imgWidth, setImgWidth] = React.useState(0);
-  const [imgHeight, setImgHeight] = React.useState(0);
+  const [imgDims, setImgDims] = React.useState({ width: 0, height: 0 });
   const [isImgExpanded, setImgExpanded] = React.useState(false);
 
   const handleImageExpand = (): void => {
@@ -52,18 +51,15 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
   };
 
   const getImage = (): JSX.Element => {
-    if (isImgExpanded) {
-      return (
-        <img
-          src={image}
-          className={styles.image}
-          style={{
-            width: imgHeight > imgWidth ? 400 : "",
-          }}
-        ></img>
-      );
-    }
-    return (
+    return isImgExpanded ? (
+      <img
+        src={image}
+        className={styles.image}
+        style={{
+          width: imgDims.height > imgDims.width ? 400 : "",
+        }}
+      ></img>
+    ) : (
       <img
         src={image}
         style={{
@@ -76,10 +72,11 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
   };
 
   const getZoom = (): JSX.Element => {
-    if (isImgExpanded) {
-      return <ZoomOutIcon className={styles.zoom} />;
-    }
-    return <ZoomInIcon className={styles.zoom} />;
+    return isImgExpanded ? (
+      <ZoomOutIcon className={styles.zoom} />
+    ) : (
+      <ZoomInIcon className={styles.zoom} />
+    );
   };
 
   React.useEffect(() => {
@@ -89,8 +86,10 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
           setImage(lesson.image);
           const img = new Image();
           img.addEventListener("load", function () {
-            setImgHeight(this.naturalHeight);
-            setImgWidth(this.naturalWidth);
+            setImgDims({
+              width: this.naturalWidth,
+              height: this.naturalHeight,
+            });
           });
           img.src = lesson.image;
         }
@@ -98,15 +97,13 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
       .catch((err: string) => console.error(err));
   }, [lesson]);
 
-  if (!image) {
-    return <div></div>;
-  }
-
-  return (
+  return image ? (
     <div id="image" className={styles.scroll} onClick={handleImageExpand}>
       {getImage()}
       {getZoom()}
     </div>
+  ) : (
+    <div></div>
   );
 };
 
