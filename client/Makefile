@@ -19,9 +19,7 @@ clean: clean-cypress-snapshot-cache
 
 .PHONY: cypress-docker
 cypress-docker:
-	mkdir -p $(CYPRESS_DOCKER_CACHE)/.npm
 	mkdir -p $(CYPRESS_DOCKER_CACHE)/.gatsby.cache
-	mkdir -p $(CYPRESS_DOCKER_CACHE)/.root.cache
 	docker run \
 		--rm \
 		-it \
