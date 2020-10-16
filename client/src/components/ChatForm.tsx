@@ -115,7 +115,7 @@ export default function ChatForm(props: {
   }
 
   return (
-    <form noValidate autoComplete="off">
+    <form id="chat-form" noValidate autoComplete="off">
       <TextField
         id="outlined-multiline-static"
         label={

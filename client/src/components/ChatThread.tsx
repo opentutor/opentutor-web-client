@@ -108,7 +108,7 @@ export default function ChatThread(props: {
   });
 
   return (
-    <div className={styles.body}>
+    <div id="chat-thread" className={styles.body}>
       <List id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (
