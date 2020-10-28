@@ -49,10 +49,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = (props: {
-  search: { lesson: string; guest: string };
+  search: { lesson: string; guest: string; noheader: string };
 }): JSX.Element => {
   const styles = useStyles();
-  const { lesson, guest } = props.search;
+  const { lesson, guest, noheader } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
@@ -139,7 +139,7 @@ const App = (props: {
 
   return (
     <div className={styles.foreground}>
-      <HeaderBar />
+      {noheader ? undefined : <HeaderBar />}
       <LessonImage />
       <div
         className={styles.chatWindow}
