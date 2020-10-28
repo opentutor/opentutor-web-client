@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 declare namespace Cypress {
   interface Chainable<Subject = any> {
     matchImageSnapshot(value: string): Chainable<void>;
-    fill(value: string): Chainable<void>;
+    type(value: string): Chainable<void>;
   }
   interface cy extends Chainable<undefined> {}
 }
