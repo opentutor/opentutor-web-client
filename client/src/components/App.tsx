@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { createSession } from "api";
+import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -21,6 +21,7 @@ import {
   ChatMsgType,
   SessionData,
   DialogData,
+  Lesson,
 } from "types";
 import withLocation from "wrap-with-location";
 import HeaderBar from "./HeaderBar";
@@ -48,10 +49,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = (props: {
-  search: { lesson: string; guest: string };
+  search: { lesson: string; guest: string; noheader: string };
 }): JSX.Element => {
   const styles = useStyles();
-  const { lesson, guest } = props.search;
+  const { lesson, guest, noheader } = props.search;
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const [summaryMessage, setSummaryMessage] = React.useState(
     "Let's see how you're doing so far!"
@@ -82,6 +83,7 @@ const App = (props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
+  const [image, setImage] = React.useState<string>();
 
   const handleSummaryOpen = (): void => {
     setSummaryOpen(true);
@@ -125,11 +127,24 @@ const App = (props: {
     fetchData();
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
 
+  React.useEffect(() => {
+    fetchLesson(lesson)
+      .then((lesson: Lesson) => {
+        if (lesson) {
+          setImage(lesson.image);
+        }
+      })
+      .catch((err: string) => console.error(err));
+  }, [lesson]);
+
   return (
     <div className={styles.foreground}>
-      <HeaderBar />
+      {noheader ? undefined : <HeaderBar />}
       <LessonImage />
-      <div className={styles.chatWindow}>
+      <div
+        className={styles.chatWindow}
+        style={{ height: image ? "65%" : "100%" }}
+      >
         <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
         <ChatThread messages={messages} />
         <ChatForm

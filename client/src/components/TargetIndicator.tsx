@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#929fad",
     padding: 10,
     height: 10,
-    width: "140%",
+    width: "150%",
   },
   inProgress: {
     color: "#DC143C",
@@ -53,13 +53,11 @@ export function TargetIndicator(props: {
   showSummary: () => void;
 }): JSX.Element {
   const styles = useStyles();
-
   if (props.targets.length === 0) {
     return (
       <TrackChangesIcon id={`placeholder`} className={styles.placeholder} />
     );
   }
-
   return (
     <div id="targets">
       {props.targets.map((target, index) => {
@@ -78,7 +76,6 @@ export function TargetIndicator(props: {
 
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
   const styles = useStyles();
-
   return (
     <List id="summary-targets">
       {props.targets.map((target, index) => {
@@ -95,18 +92,18 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
                 }}
               />
             </ListItemIcon>
-            <ListItemText id={`exp-${index}`} key={`exp-${index}`}>
-              <div className={target.text ? styles.released : styles.censored}>
-                {target.text ? (
-                  target.text
-                ) : (
+            {target.text ? (
+              <ListItemText id={`exp-${index}`}>{target.text}</ListItemText>
+            ) : (
+              <ListItemText>
+                <div className={styles.censored}>
                   <LockIcon
                     className={styles.centerLock}
                     id={`exp-locked-${index}`}
                   />
-                )}
-              </div>
-            </ListItemText>
+                </div>
+              </ListItemText>
+            )}
           </ListItem>
         );
       })}
