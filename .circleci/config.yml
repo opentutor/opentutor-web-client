@@ -16,12 +16,12 @@ executors:
       - image: cypress/base:12
   node:
     docker:
-      - image: circleci/node:12.16.1
+      - image: circleci/node:12.18.1
   python:
     docker:
       - image: circleci/python:3.6.9
 jobs:
-  client-format:
+  client-test:
     executor: node
     steps:
       - checkout
@@ -31,53 +31,18 @@ jobs:
       - run:
           name: Client test format
           command: cd client && npm run test:format
-  client-audit:
-    executor: node
-    steps:
-      - checkout
       - run:
           name: Audit js
           command: cd client && npm run test:audit
-  client-lint:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Install client
-          command: cd client && npm ci
       - run:
           name: Client test lint
           command: cd client && npm run test:lint
-  client-license:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Install client
-          command: cd client && npm ci
       - run:
           name: Client test license
           command: cd client && npm run test:license
-  client-types:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Install client
-          command: cd client && npm ci
       - run:
           name: Client test types
           command: cd client && npm run test:types
-  client-test:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Install client
-          command: cd client && npm ci
-      - run:
-          name: Client test
-          command: cd client && npm run test
   client-cypress:
     executor: cypress
     steps:
@@ -149,15 +114,7 @@ jobs:
 workflows:
   test-build-deploy:
     jobs:
-      - client-format:
-          filters: *only-untagged
-      - client-audit:
-          filters: *only-untagged
-      - client-lint:
-          filters: *only-untagged
-      - client-license:
-          filters: *only-untagged
-      - client-types:
+      - client-test:
           filters: *only-untagged
       - client-cypress:
           filters: *only-untagged
@@ -165,11 +122,7 @@ workflows:
           filters: *only-untagged
           type: approval
           requires:
-            - client-format
-            - client-audit
-            - client-lint
-            - client-license
-            - client-types
+            - client-test
             - client-cypress
       - build-and-push:
           is-release-tag: false
@@ -178,25 +131,13 @@ workflows:
             - approve-build-and-push
   test-build-deploy-release:
     jobs:
-      - client-format:
-          filters: *only-tagged-releases
-      - client-audit:
-          filters: *only-tagged-releases
-      - client-lint:
-          filters: *only-tagged-releases
-      - client-license:
-          filters: *only-tagged-releases
-      - client-types:
+      - client-test:
           filters: *only-tagged-releases
       - client-cypress:
-          filters: *only-untagged
+          filters: *only-tagged-releases
       - build-and-push:
           is-release-tag: true
           filters: *only-tagged-releases
           requires:
-            - client-format
-            - client-audit
-            - client-lint
-            - client-license
-            - client-types
+            - client-test
             - client-cypress

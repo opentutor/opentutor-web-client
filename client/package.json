@@ -66,7 +66,7 @@
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3",
-    "webpack": "5.x"
+    "webpack": "^4.44.2"
   },
   "resolutions": {
     "dot-prop": ">=5.1.1"
