@@ -26,6 +26,6 @@ WORKDIR /app
 COPY . .
 RUN rm -rf build
 COPY --from=builder /build/client/public /app/public/tutor
-RUN npm install --production 
+RUN npm ci --production 
 RUN chmod +x /app/entrypoint.sh
 ENTRYPOINT ["/tini", "--", "/app/entrypoint.sh"]
