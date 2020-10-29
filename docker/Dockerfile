@@ -2,6 +2,7 @@ FROM node:12.16.1 as builder
 ARG NODE_ENV
 ARG OPENTUTOR_CLIENT_VERSION
 ENV OPENTUTOR_CLIENT_VERSION=${OPENTUTOR_CLIENT_VERSION}
+ENV CYPRESS_INSTALL_BINARY=0
 RUN apt-get update && \
     apt-get install -y \
         libgif-dev \
@@ -18,6 +19,7 @@ RUN cd /build/client && \
     npm run build
 FROM node:12.16.1-slim
 ENV TINI_VERSION=v0.16.1
+ENV CYPRESS_INSTALL_BINARY=0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini 
 WORKDIR /app
