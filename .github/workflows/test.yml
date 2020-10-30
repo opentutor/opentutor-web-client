@@ -1,0 +1,32 @@
+name: Test
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: cd client && npm ci
+      - name: Run audit
+        run: cd client && npm run test:audit
+      - name: Run format test
+        run: cd client && npm run test:format
+      - name: Run lint test
+        run: cd client && npm run test:lint
+      - name: Run types test
+        run: cd client && npm run test:types
+      - name: Run license test
+        run: cd client && npm run test:license
+
+      - name: Run cypress test
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: client
+          env: CYPRESS_SNAPSHOT_DIFF_DIR=cypress/snapshot/snapshot_failed_diffs
+          start: npm run develop
+      - name: Cypress snapshot tests
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: snapshot_failed_diffs
+          path: client/cypress/snapshot/snapshot_failed_diffs
