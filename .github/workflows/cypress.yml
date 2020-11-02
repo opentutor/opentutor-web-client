@@ -16,6 +16,7 @@ jobs:
         if: ${{ failure() }}
       - name: If Cypress failed, upload image-diff artifacts
         uses: actions/upload-artifact@v1
+        if: ${{ failure() }}
         with:
           name: snapshot_failed_diffs
           path: client/cypress/snapshot/snapshot_failed_diffs

@@ -49,8 +49,6 @@ test-all:
 	$(MAKE) test-format
 	$(MAKE) test-lint
 	$(MAKE) test-types
-	# $(MAKE) test-cypress
-	# $(MAKE) test
 
 .PHONY: test-audit
 test-audit:
