@@ -1,0 +1,19 @@
+name: Cypress
+on: [push]
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build the docker-compose stack
+        run: cd client && docker-compose up -d
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "5s"
+      - name: Check running containers
+        run: docker ps
+      - name: test can pass
+        run: cd client && docker-compose exec cypress sh ./pass.sh
+      - name: test can fail
+        run: cd client && docker-compose exec cypress sh ./fail.sh

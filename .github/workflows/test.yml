@@ -17,7 +17,6 @@ jobs:
         run: cd client && npm run test:types
       - name: Run license test
         run: cd client && npm run test:license
-
       - name: Run cypress test
         uses: cypress-io/github-action@v2
         with:
