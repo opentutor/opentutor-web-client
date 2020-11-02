@@ -14,6 +14,6 @@ jobs:
       - name: Check running containers
         run: docker ps
       - name: test can pass
-        run: cd client && docker-compose exec cypress sh ./pass.sh
+        run: cd client && docker-compose exec -T cypress sh ./pass.sh
       - name: test can fail
-        run: cd client && docker-compose exec cypress sh ./fail.sh
+        run: cd client && docker-compose exec -T cypress sh ./fail.sh
