@@ -7,13 +7,13 @@ The full terms of this copyright and license should always be found in the root 
 import { cySetup } from "../support/functions";
 
 describe("Expectation summary pop-up", () => {
-  it("opens with View Summary button", () => {
-    cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.visit("/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").click();
-    cy.get("#summary-popup");
-  });
+  // it("opens with View Summary button", () => {
+  //   cySetup(cy);
+  //   cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+  //   cy.visit("/?lesson=q2&guest=guest");
+  //   cy.get("#view-summary-btn").click();
+  //   cy.get("#summary-popup");
+  // });
 
   [
     {
