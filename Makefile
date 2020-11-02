@@ -72,6 +72,16 @@ test-license: LICENSE LICENSE_HEADER
 
 
 
+DOCKER_IMAGE?=opentutor-web-client
+OPENTUTOR_CLIENT_VERSION?=latest
+
+.PHONY docker-build:
+docker-build:
+	docker build \
+		--file docker/Dockerfile \
+		-t $(DOCKER_IMAGE) \
+		--build-arg "OPENTUTOR_CLIENT_VERSION=$(OPENTUTOR_CLIENT_VERSION)" \
+	.
 
 
 

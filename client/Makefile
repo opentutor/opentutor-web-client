@@ -1,7 +1,3 @@
-CYPRESS_IMAGE?=cypress/base:12
-CYPRESS_DOCKER_ENTRYPOINT?=/bin/bash
-CYPRESS_DOCKER_CACHE=$(PWD)/.cypress-docker
-
 .env.development:
 	@echo "DIALOG_ENDPOINT=https://dev-opentutor.pal3.org/dialog/" >> .env.development
 	@echo "Set up  a default .env.development file"
