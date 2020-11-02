@@ -11,10 +11,10 @@ jobs:
         run: docker ps
       - name: Cypress run tests
         run: make test-e2e-exec
-      - name: Cypress failed, retrieve image diffs
+      - name: If Cypress failed, retrieve image diffs
         run: make test-e2e-image-snapshots-copy
         if: ${{ failure() }}
-      - name: Cypress failed, upload image-diff artifacts
+      - name: If Cypress failed, upload image-diff artifacts
         uses: actions/upload-artifact@v1
         with:
           name: snapshot_failed_diffs
