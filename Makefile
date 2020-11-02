@@ -61,3 +61,50 @@ license: LICENSE LICENSE_HEADER
 test-license: LICENSE LICENSE_HEADER
 	cd client && npm ci && npm run test:license
 	cd docker && npm ci && npm run test:license
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST_E2E_DOCKER_COMPOSE=docker-compose
+TEST_E2E_IMAGE_SNAPSHOTS_PATH?=cypress/snapshots
+TEST_E2E_DOCKER_IMAGE_SNAPSHOTS_PATH?=/app/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
+TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH?=$(PWD)/client/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
+
+.PHONY: test-e2e-image-snapshots-update
+test-e2e-exec:
+	$(TEST_E2E_DOCKER_COMPOSE) exec cypress npx cypress run --env updateSnapshots=true
+
+.PHONY: test-e2e-image-snapshots-clean
+test-e2e-image-snapshots-clean:
+	rm -rf ${TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH}
+
+.PHONY: test-e2e-image-snapshots-copy
+test-e2e-image-snapshots-copy:
+	docker cp $(shell $(TEST_E2E_DOCKER_COMPOSE) ps -a -q cypress):$(TEST_E2E_DOCKER_IMAGE_SNAPSHOTS_PATH)/ $(TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH)
+
+.PHONY: test-e2e-image-snapshots-update
+test-e2e-image-snapshots-update:
+	$(MAKE) test-e2e-image-snapshots-clean
+	$(TEST_E2E_DOCKER_COMPOSE) build
+	$(TEST_E2E_DOCKER_COMPOSE) up -d
+	$(TEST_E2E_DOCKER_COMPOSE) exec cypress npx cypress run --env updateSnapshots=true
+	rm -rf $(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
+	$(MAKE) test-e2e-image-snapshots-copy

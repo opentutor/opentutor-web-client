@@ -1,4 +1,8 @@
 FROM cypress/base:12
-COPY fail.sh fail.sh
-COPY pass.sh pass.sh
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+COPY cypress ./cypress
+COPY cypress.json .
 ENTRYPOINT ["tail", "-f", "/dev/null"]

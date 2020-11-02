@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  opentutor:
+    container_name: opentutor
+    build:
+      context: docker
+    ports:
+      - "3000:3000"
+  cypress:
+    container_name: cypress
+    depends_on:
+      - opentutor
+    build:
+      context: client
+      dockerfile: ./cypress.Dockerfile
+    environment:
+      - "CYPRESS_BASE_URL=http://opentutor:3000"
+      - "CYPRESS_SNAPSHOT_DIFF_DIR=/app/cypress/snapshot/snapshot_failed_diffs"

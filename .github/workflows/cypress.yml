@@ -6,14 +6,16 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build the docker-compose stack
-        run: cd client && docker-compose up -d
-      - name: Sleep
-        uses: jakejarvis/wait-action@master
-        with:
-          time: "5s"
+        run: docker-compose up -d
       - name: Check running containers
         run: docker ps
-      - name: test can pass
-        run: cd client && docker-compose exec -T cypress sh ./pass.sh
-      - name: test can fail
-        run: cd client && docker-compose exec -T cypress sh ./fail.sh
+      - name: Cypress run tests
+        run: make test-e2e-exec
+      - name: Cypress failed, retrieve image diffs
+        run: make test-e2e-image-snapshots-copy
+        if: ${{ failure() }}
+      - name: Cypress failed, upload image-diff artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: snapshot_failed_diffs
+          path: client/cypress/snapshot/snapshot_failed_diffs
