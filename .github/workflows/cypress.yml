@@ -1,0 +1,22 @@
+name: Cypress
+on: [push]
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Check running containers
+        run: docker ps
+      - name: Cypress run tests
+        run: make test-e2e-exec
+      - name: If Cypress failed, retrieve image diffs
+        run: TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH=/tmp/snapshots/ make test-e2e-image-snapshots-copy && ls -la /tmp/snapshots/ && mkdir -p /tmp/snapshots
+        if: ${{ failure() }}
+      - name: If Cypress failed, upload image-diff artifacts
+        uses: actions/upload-artifact@v1
+        if: ${{ failure() }}
+        with:
+          name: snapshot_failed_diffs
+          path: /tmp/snapshots/__diff_output__

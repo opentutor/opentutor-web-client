@@ -1,7 +1,3 @@
-CYPRESS_IMAGE?=cypress/base:12
-CYPRESS_DOCKER_ENTRYPOINT?=/bin/bash
-CYPRESS_DOCKER_CACHE=$(PWD)/.cypress-docker
-
 .env.development:
 	@echo "DIALOG_ENDPOINT=https://dev-opentutor.pal3.org/dialog/" >> .env.development
 	@echo "Set up  a default .env.development file"
@@ -9,31 +5,13 @@ CYPRESS_DOCKER_CACHE=$(PWD)/.cypress-docker
 	@echo "This file should not be committed. "
 	@echo "Feel free to change to point to a local server if you're running one."
 
-.PHONY: clean-cypress-snapshot-cache
-clean-cypress-snapshot-cache:
-	rm -rf $(CYPRESS_DOCKER_CACHE)
-
 .PHONY: clean
-clean: clean-cypress-snapshot-cache
+clean:
 	rm -rf .cache public node_modules
-
-.PHONY: cypress-docker
-cypress-docker:
-	mkdir -p $(CYPRESS_DOCKER_CACHE)/.gatsby.cache
-	docker run \
-		--rm \
-		-it \
-		--entrypoint $(CYPRESS_DOCKER_ENTRYPOINT) \
-		-v $(PWD):/client \
-		-v /client/node_modules \
-		-v /client/public \
-		--mount type=bind,source="$(CYPRESS_DOCKER_CACHE)"/.gatsby.cache,destination=/client/.cache,consistency=delegated \
-		--workdir /client \
-	$(CYPRESS_IMAGE)
 
 .PHONY: cypress-update-snapshots
 cypress-update-snapshots:
-	CYPRESS_DOCKER_ENTRYPOINT=bin/cypress_update_snapshots.sh $(MAKE) cypress-docker
+	cd .. && $(MAKE) test-e2e-image-snapshots-update
 
 .PHONY: develop
 develop: .env.development node_modules/gatsby-cli
@@ -71,8 +49,6 @@ test-all:
 	$(MAKE) test-format
 	$(MAKE) test-lint
 	$(MAKE) test-types
-	# $(MAKE) test-cypress
-	# $(MAKE) test
 
 .PHONY: test-audit
 test-audit:
