@@ -4,7 +4,8 @@ services:
   opentutor:
     container_name: opentutor
     build:
-      context: docker
+      context: .
+      dockerfile: ./docker/Dockerfile
     ports:
       - "3000:3000"
   cypress:
