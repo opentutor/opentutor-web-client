@@ -7,13 +7,13 @@ The full terms of this copyright and license should always be found in the root 
 import { cySetup } from "../support/functions";
 
 describe("Expectation summary pop-up", () => {
-  // it("opens with View Summary button", () => {
-  //   cySetup(cy);
-  //   cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-  //   cy.visit("/?lesson=q2&guest=guest");
-  //   cy.get("#view-summary-btn").click();
-  //   cy.get("#summary-popup");
-  // });
+  it("opens with View Summary button", () => {
+    cySetup(cy);
+    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cy.visit("/?lesson=q2&guest=guest");
+    cy.get("#view-summary-btn").trigger("mouseover").click();
+    cy.get("#summary-popup");
+  });
 
   [
     {
@@ -31,7 +31,7 @@ describe("Expectation summary pop-up", () => {
       cySetup(cy);
       cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
       cy.visit(`/?lesson=${x.lesson}&guest=guest`);
-      cy.get("#view-summary-btn").click();
+      cy.get("#view-summary-btn").trigger("mouseover").click();
       cy.get("#summary-popup");
       cy.get("#summary-targets")
         .children()
@@ -48,7 +48,9 @@ describe("Expectation summary pop-up", () => {
         `#target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
         ).toFixed()}`
-      ).click();
+      )
+        .trigger("mouseover")
+        .click();
       cy.get("#summary-popup");
       cy.get("#summary-targets").children().should("have.length", 1);
     });
@@ -62,7 +64,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("#outlined-multiline-static").type(
       "Current flows in the same direction as the arrow"
     );
-    cy.get("#submit-button").click();
+    cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
   });
 
@@ -70,7 +72,7 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").click();
+    cy.get("#view-summary-btn").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
     cy.get("#exp-locked-0");
@@ -80,7 +82,7 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").click();
+    cy.get("#view-summary-btn").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
     cy.get("#summary-target-0-0");
@@ -94,7 +96,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("#outlined-multiline-static").type(
       "Current flows in the same direction as the arrow"
     );
-    cy.get("#submit-button").click();
+    cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
     cy.get("#exp-0").contains(
@@ -110,7 +112,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("#outlined-multiline-static").type(
       "Current flows in the same direction as the arrow"
     );
-    cy.get("#submit-button").click();
+    cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
     cy.get("#summary-target-0-1");
