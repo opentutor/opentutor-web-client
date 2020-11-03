@@ -2,6 +2,7 @@ name: Test
 on: [pull_request]
 jobs:
   test:
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,15 +19,22 @@ jobs:
       - name: Run license test
         run: cd client && npm run test:license
 
-      - name: Run cypress test
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: client
-          env: CYPRESS_SNAPSHOT_DIFF_DIR=cypress/snapshot/snapshot_failed_diffs
-          start: npm run develop
-      - name: Cypress snapshot tests
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Check running containers
+        run: docker ps
+      - name: Cypress run tests
+        run: make test-e2e-exec
+      - name: If Cypress failed, retrieve image diffs
+        run: make test-e2e-image-snapshots-copy && mkdir -p client/cypress/snapshots/snapshot_failed_diffs
+        if: ${{ failure() }}
+      - name: If Cypress failed, upload image-diff artifacts
         uses: actions/upload-artifact@v1
-        if: failure()
+        if: ${{ failure() }}
         with:
           name: snapshot_failed_diffs
-          path: client/cypress/snapshot/snapshot_failed_diffs
+          path: client/cypress/snapshots

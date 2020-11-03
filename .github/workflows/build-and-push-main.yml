@@ -1,11 +1,10 @@
-name: Publish docker image
+name: Publish docker image for push to main branch
 on:
   push:
     branches: main
 
 jobs:
   test:
-    name: Run tests
     runs-on: ubuntu-latest
     steps:
       - name: Reject forked repositories
@@ -24,12 +23,12 @@ jobs:
         run: cd client && npm run test:types
       - name: Run license test
         run: cd client && npm run test:license
-      - name: Run cypress test
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: client
-          env: CYPRESS_SNAPSHOT_DIFF_DIR=cypress/snapshot/snapshot_failed_diffs
-          start: npm run develop  
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Check running containers
+        run: docker ps
+      - name: Cypress run tests
+        run: make test-e2e-exec
 
   build-and-publish:
     needs: test
@@ -51,7 +50,7 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker build
-        run: cd node && DOCKER_BUILDKIT=1 docker build -t uscictdocker/opentutor-web-client:${{ steps.tag.outputs.image_tag }} .
+        run: cd docker && docker build -t uscictdocker/opentutor-web-client:${{ steps.tag.outputs.image_tag }} .
 
       - name: Docker push
         run: docker push uscictdocker/opentutor-web-client

@@ -34,8 +34,10 @@ import "cypress-fill-command";
 import { addMatchImageSnapshotCommand } from "cypress-image-snapshot/command";
 
 addMatchImageSnapshotCommand({
-  customDiffDir: Cypress.env("CYPRESS_SNAPSHOT_DIFF_DIR"),
+  customDiffDir:
+    Cypress.env("CYPRESS_SNAPSHOT_DIFF_DIR") ||
+    "cypress/snapshots/__diff_output__",
   comparisonMethod: "ssim",
-  failureThreshold: 0.01,
+  failureThreshold: 0.0001,
   failureThresholdType: "percent",
 });
