@@ -1,4 +1,4 @@
-name: Build and publish docker release from main
+name: web client - build/pub release
 on:
   push:
     branches: main
