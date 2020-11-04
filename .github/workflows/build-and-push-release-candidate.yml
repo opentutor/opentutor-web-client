@@ -1,4 +1,4 @@
-name: web client - build/pub candidate
+name: build/pub candidate
 on:
   push:
     tags:
