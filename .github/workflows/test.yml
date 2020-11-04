@@ -20,7 +20,7 @@ jobs:
         run: cd client && npm run test:license
 
   cypress:
-    name: Run cypress e2e tests and upload any failing snapshots
+    name: Run cypress tests and upload any failing snapshots
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

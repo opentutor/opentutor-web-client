@@ -78,7 +78,7 @@ test-license: LICENSE LICENSE_HEADER
 	cd client && npm ci && npm run test:license
 	cd docker && npm ci && npm run test:license
 
-.PHONY: test-e2e-exec
+.PHONY: test-e2e
 test-e2e:
 	$(TEST_E2E_DOCKER_COMPOSE) up -d
 	$(TEST_E2E_DOCKER_COMPOSE) exec cypress npx cypress run

@@ -40,7 +40,7 @@ jobs:
       - name: Docker login
         run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker build
-        run: cd docker && docker build -t uscictdocker/opentutor-web-client:${{ steps.tag.outputs.image_tag }} .
+        run: export DOCKER_IMAGE=uscictdocker/opentutor-web-client:${{ steps.tag.outputs.image_tag }} && make docker-build
       - name: Docker tag
         if: startsWith(github.ref, 'refs/tags/')
         run: docker tag "uscictdocker/opentutor-web-client:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-web-client:${GITHUB_REF#refs/tags/}"
