@@ -58,3 +58,5 @@ typings/
 .DS_Store
 
 .cypress-*
+__diff_output__
+snapshot_failed_diffs

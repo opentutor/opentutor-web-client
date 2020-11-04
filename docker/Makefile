@@ -20,7 +20,7 @@ build/client:
 build: build/client
 
 .PHONY docker-build:
-docker-build: clean build/client
+docker-build:
 	docker build \
 		-t $(DOCKER_IMAGE) \
 		--build-arg "OPENTUTOR_CLIENT_VERSION=$(OPENTUTOR_CLIENT_VERSION)" \
