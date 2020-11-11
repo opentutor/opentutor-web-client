@@ -1,4 +1,4 @@
-FROM node:12.18.1 as builder
+FROM node:14.15.0 as builder
 ARG NODE_ENV
 ARG OPENTUTOR_CLIENT_VERSION
 ENV OPENTUTOR_CLIENT_VERSION=${OPENTUTOR_CLIENT_VERSION}
@@ -17,7 +17,7 @@ COPY client ./client
 RUN cd client && \
     npm ci && \
     npm run build
-FROM node:12.18.1-slim
+FROM node:14.15.0-slim
 ENV TINI_VERSION=v0.16.1
 ENV CYPRESS_INSTALL_BINARY=0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
