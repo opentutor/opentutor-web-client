@@ -12,8 +12,7 @@ services:
     depends_on:
       - opentutor
     build:
-      context: client
-      dockerfile: ./cypress.Dockerfile
+      context: cypress
     environment:
       - "CYPRESS_BASE_URL=http://opentutor:3000"
     # make sure these are commented out before commit/push
