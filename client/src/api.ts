@@ -28,21 +28,8 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
     query: `
       query {
         lesson(lessonId: "${lessonId}") {
-          lessonId
-          intro
           name
-          question
           image
-          conclusion
-          expectations {
-            expectation
-            hints {
-              text
-            }
-          }
-          lastTrainedAt
-          isTrainable
-          createdBy
         }
       }
 `,
