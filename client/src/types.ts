@@ -38,29 +38,8 @@ export interface Target {
 }
 
 export interface Lesson {
-  id: string;
-  lessonId: string;
   name: string;
-  intro: string;
-  question: string;
   image: string;
-  conclusion: string[];
-  expectations: LessonExpectation[];
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-  lastTrainedAt: string;
-  isTrainable: boolean;
-  deleted: boolean;
-}
-
-export interface LessonExpectation {
-  expectation: string;
-  hints: Hint[];
-}
-
-export interface Hint {
-  text: string;
 }
 
 export interface ExpectationData {
