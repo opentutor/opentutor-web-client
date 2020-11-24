@@ -76,25 +76,21 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 export default function SummaryPopup(props: {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onCloseRequested: () => void;
   message: string;
   buttonText: string;
   targets: Target[];
 }): JSX.Element {
-  const { open, setOpen, message, buttonText, targets } = props;
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
+  const { open, onCloseRequested, message, buttonText, targets } = props;
 
   return (
     <Dialog
       id="summary-popup"
-      onClose={handleClose}
+      onClose={onCloseRequested}
       aria-labelledby="customized-dialog-title"
       open={open}
     >
-      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <DialogTitle id="customized-dialog-title" onClose={onCloseRequested}>
         Lesson Summary
       </DialogTitle>
       <DialogContent dividers>
@@ -102,7 +98,7 @@ export default function SummaryPopup(props: {
       </DialogContent>
       <SummaryIndicator targets={targets} />
       <DialogActions>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button onClick={onCloseRequested} color="primary" variant="contained">
           {buttonText}
         </Button>
       </DialogActions>

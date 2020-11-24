@@ -111,3 +111,10 @@ export type DialogResponse = DialogData | DialogError;
 export interface FetchLesson {
   lesson: Lesson;
 }
+
+export interface SessionSummary {
+  showSummary: boolean;
+  summaryMessage?: string;
+  sendResultsPending?: boolean;
+  score?: number;
+}

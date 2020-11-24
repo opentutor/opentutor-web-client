@@ -5,30 +5,63 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/layout.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Cmi5 from "@xapi/cmi5";
+import cmi5 from "cmi-singleton";
+import { makeStyles } from "@material-ui/core/styles";
+import logo from "assets/logo.png";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
 import withLocation from "wrap-with-location";
 
-const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
-  const [guest, setGuest] = React.useState(props.search.guest);
+const useStyles = makeStyles(() => ({
+  logo: {
+    width: 200,
+    height: 75,
+  },
+}));
 
-  const onNameEntered = (val: string): void => {
-    const name = val ? val : "guest";
-    setGuest(name);
+const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
+  const styles = useStyles();
+  const [guest, setGuest] = useState(props.search.guest);
+
+  useEffect(() => {
+    if (Cmi5.isCmiAvailable) {
+      cmi5().initialize();
+    }
+  }, []);
+
+  const hasSessionUser = (): boolean => {
+    if (typeof window === "undefined") {
+      return Boolean(guest);
+    }
+    return Boolean(Cmi5.isCmiAvailable || guest);
+  };
+
+  const setQueryString = (qs: string, qsValue: string): string => {
     let url = `${window.location.protocol}//${window.location.host}${window.location.pathname}${window.location.search}`;
     if (window.location.search) {
-      url += `&guest=${name}`;
+      url += `&${qs}=${qsValue}`;
     } else {
-      url += `?guest=${name}`;
+      url += `?${qs}=${qsValue}`;
     }
-    window.location.href = url;
+    window.history.pushState({ path: url }, "", url);
+    return url;
+  };
+
+  const onNameEntered = (name: string): void => {
+    if (!name) {
+      name = "guest";
+    }
+    setGuest(name);
+    window.location.href = setQueryString("guest", name);
   };
 
   return (
     <div>
+      <img src={String(logo)} className={styles.logo}></img>
       <App />
-      {guest ? undefined : <GuestPrompt submit={onNameEntered} />}
+      {hasSessionUser() ? undefined : <GuestPrompt submit={onNameEntered} />}
     </div>
   );
 };

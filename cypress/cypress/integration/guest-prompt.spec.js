@@ -27,7 +27,8 @@ describe("Guest prompt", () => {
     cy.visit("/?lesson=q1");
     cy.get("#guest-prompt-input").type("username");
     cy.get("#guest-prompt-input-send").click();
-    cy.location("search").should("eq", "?lesson=q1&guest=username");
+    cy.location("search").should("contain", "lesson=q1");
+    cy.location("search").should("contain", "guest=username");
   });
 
   it("no input defaults to 'guest'", () => {
@@ -35,6 +36,7 @@ describe("Guest prompt", () => {
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.visit("/?lesson=q1");
     cy.get("#guest-prompt-input-send").click();
-    cy.location("search").should("eq", "?lesson=q1&guest=guest");
+    cy.location("search").should("contain", "lesson=q1");
+    cy.location("search").should("contain", "guest=guest");
   });
 });
