@@ -6,6 +6,7 @@ The full terms of this copyright and license should always be found in the root 
 */
 import axios, { AxiosResponse } from "axios";
 import { Lesson, FetchLesson, DialogResponse, SessionData } from "types";
+import { getApiKey } from "config";
 
 interface GQLResponse<T> {
   errors?: { message: string }[];
@@ -16,17 +17,24 @@ const DIALOG_ENDPOINT = process.env.DIALOG_ENDPOINT || "/dialog";
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
 
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
+  const API_SECRET = await getApiKey();
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
+    headers: {
+      Authorization: `bearer ${API_SECRET}`,
+      "opentutor-api-req": "true",
+    },
     query: `
       query {
-        lesson(lessonId: "${lessonId}") {
-          name
-          image
+        me {
+          lesson(lessonId: "${lessonId}") {
+            name
+            image
+          }  
         }
       }
-`,
+    `,
   });
-  return result.data.data!.lesson;
+  return result.data.data!.me.lesson;
 }
 
 export async function createSession(
