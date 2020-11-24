@@ -3,6 +3,8 @@
   "description": "cypress testing",
   "version": "1.0.0",
   "dependencies": {
+    "@xapi/cmi5": "^0.3.0",
+    "@xapi/xapi": "^0.6.9",
     "cypress": "^5.6.0",
     "cypress-fill-command": "^0.1.0",
     "cypress-image-snapshot": "^3.1.1",

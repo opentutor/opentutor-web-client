@@ -5,6 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import { cySetup } from "../support/functions";
+import { addCmi5LaunchParams } from "../support/cmi5";
 
 describe("Guest prompt", () => {
   it("appears when no guest param", () => {
@@ -18,6 +19,13 @@ describe("Guest prompt", () => {
     cySetup(cy);
     cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.get("#guest-prompt").should("not.exist");
+  });
+
+  it("does not appear when cmi5 launch params present", () => {
+    cySetup(cy);
+    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cy.visit(addCmi5LaunchParams("/?lesson=q1"));
     cy.get("#guest-prompt").should("not.exist");
   });
 
