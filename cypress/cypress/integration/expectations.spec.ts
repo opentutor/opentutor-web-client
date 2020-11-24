@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import { cyMockDialog, cySetup } from "../support/functions";
 
 describe("Expectation indicators", () => {
   [
@@ -21,7 +21,7 @@ describe("Expectation indicators", () => {
   ].forEach((x) => {
     it(`shows an icon for each expectation for a lesson with ${x.expectedExpCount}`, () => {
       cySetup(cy);
-      cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
+      cyMockDialog(cy, x.lesson, x.fixture);
       cy.visit(`/?lesson=${x.lesson}&guest=guest`);
       cy.get("#targets").children().should("have.length", x.expectedExpCount);
     });

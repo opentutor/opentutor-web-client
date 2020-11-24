@@ -4,12 +4,12 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import { cyMockDialog, cyMockSession, cySetup } from "../support/functions";
 
 describe("Input field", () => {
   it("disables send button when no input", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("#outlined-multiline-static").should("not.be.disabled");
     cy.get("#submit-button").should("be.disabled");
@@ -17,11 +17,11 @@ describe("Input field", () => {
 
   it("disables send button when session finished", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
-    cy.route("POST", "**/dialog/q1/session", "fixture:q1-1-p2.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("#outlined-multiline-static").type(
-      "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular."
+      "fake short answer."
     );
     cy.get("#submit-button").click();
     cy.get("#submit-button").should("be.disabled");
@@ -30,7 +30,7 @@ describe("Input field", () => {
 
   it("enables send button when input and session not finished", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("#outlined-multiline-static").type("hi");
     cy.get("#outlined-multiline-static").should("not.be.disabled");
@@ -39,21 +39,24 @@ describe("Input field", () => {
 
   it("can send input with button", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json");
     cy.visit("/?lesson=q2&guest=guest");
-    const userInput = "Current flows in the same direction as the arrow";
+    const userInput = "some fake answer";
+    cy.get("#outlined-multiline-static").should("be.visible")
     cy.get("#outlined-multiline-static").type(userInput);
+    cy.get("#submit-button").should("be.visible")
     cy.get("#submit-button").click();
     cy.get("#chat-msg-3").contains(userInput);
   });
 
   it("can send input with enter", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json");
     cy.visit("/?lesson=q2&guest=guest");
-    const userInput = "Current flows in the same direction as the arrow";
+    const userInput = "another fake answer";
+    cy.get("#outlined-multiline-static").should("be.visible")
     cy.get("#outlined-multiline-static").type(userInput);
     cy.get("#outlined-multiline-static").type("{enter}");
     cy.get("#chat-msg-3").contains(userInput);

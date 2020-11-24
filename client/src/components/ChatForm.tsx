@@ -11,7 +11,14 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
-import { Target, ChatMsg, ErrorData, SessionData, DialogData } from "types";
+import {
+  ChatMsg,
+  DialogData,
+  DialogError,
+  ErrorData,
+  SessionData,
+  Target,
+} from "types";
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {
@@ -23,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatForm(props: {
+const ChatForm = (props: {
   lesson: string;
   username: string;
   messages: { senderId: string; type: string; text: string }[];
@@ -31,18 +38,20 @@ export default function ChatForm(props: {
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
   session: SessionData;
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
-  handleSummaryOpen: () => void;
-  setSummaryMessage: React.Dispatch<React.SetStateAction<string>>;
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
   handleErrorOpen: () => void;
-}): JSX.Element {
+  handleSessionDone: (session: SessionData) => void;
+}): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
   const [outboundChat, setOutboundChat] = useState("");
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
+    if (!sessionAlive) {
+      return;
+    }
+    async function fetchData(): Promise<void> {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
           lesson: props.lesson,
@@ -51,8 +60,9 @@ export default function ChatForm(props: {
           outboundChat: outboundChat,
         });
         if (response.status !== 200) {
-          const error: any = response.data;
-          props.setErrorProps(errorForStatus(error.status, error.message));
+          props.setErrorProps(
+            errorForStatus(response.status, (response.data as DialogError).data)
+          );
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
@@ -76,18 +86,16 @@ export default function ChatForm(props: {
               };
             })
           );
+          // Session complete.
+          // Show summary then send score on summary close
           if (dialogData.completed) {
-            //Session ending. Show Summary
             setSessionAlive(false);
-            props.setSummaryMessage(
-              "That's a wrap! Let's see how you did on this lesson!"
-            );
-            props.handleSummaryOpen();
+            props.handleSessionDone(dialogData.sessionInfo);
           }
           props.setSession(dialogData.sessionInfo);
         }
       }
-    };
+    }
     fetchData();
   }, [outboundChat]); //Watches for vars in array to make updates. If none only updates on comp. mount
 
@@ -148,4 +156,6 @@ export default function ChatForm(props: {
       </Button>
     </form>
   );
-}
+};
+
+export default ChatForm;

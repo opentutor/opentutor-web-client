@@ -4,12 +4,12 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import { cyMockDialog, cyMockSession, cySetup } from "../support/functions";
 
 describe("Expectation summary pop-up", () => {
   it("opens with View Summary button", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#view-summary-btn").trigger("mouseover").click();
     cy.get("#summary-popup");
@@ -29,7 +29,7 @@ describe("Expectation summary pop-up", () => {
   ].forEach((x) => {
     it(`shows an icon for each expectation for lesson with ${x.expectedExpectations}`, () => {
       cySetup(cy);
-      cy.route("POST", `**/dialog/${x.lesson}`, `fixture:${x.fixture}`);
+      cyMockDialog(cy, x.lesson, x.fixture);
       cy.visit(`/?lesson=${x.lesson}&guest=guest`);
       cy.get("#view-summary-btn").trigger("mouseover").click();
       cy.get("#summary-popup");
@@ -41,7 +41,7 @@ describe("Expectation summary pop-up", () => {
 
   it("displays on tap any expectation-progress indicator", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.get(
@@ -58,11 +58,11 @@ describe("Expectation summary pop-up", () => {
 
   it("displays at when lesson is completed", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#outlined-multiline-static").type(
-      "Current flows in the same direction as the arrow"
+      "fake answer"
     );
     cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
@@ -70,7 +70,7 @@ describe("Expectation summary pop-up", () => {
 
   it("hides text for expectations that have not been completed", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#view-summary-btn").trigger("mouseover").click();
     cy.get("#summary-popup");
@@ -80,7 +80,7 @@ describe("Expectation summary pop-up", () => {
 
   it("shows no progress for expectations that have not been completed", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#view-summary-btn").trigger("mouseover").click();
     cy.get("#summary-popup");
@@ -90,12 +90,13 @@ describe("Expectation summary pop-up", () => {
 
   it("shows text for expectations that have been completed", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#outlined-multiline-static").type(
-      "Current flows in the same direction as the arrow"
+      "fake answer"
     );
+    cy.get("#submit-button").should("be.visible")
     cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);
@@ -106,12 +107,13 @@ describe("Expectation summary pop-up", () => {
 
   it("shows progress for expectations that have been completed", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q2", "fixture:q2-1-p1.json");
-    cy.route("POST", "**/dialog/q2/session", "fixture:q2-1-p2.json");
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json");
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("#outlined-multiline-static").type(
-      "Current flows in the same direction as the arrow"
+      "fake answer"
     );
+    cy.get("#submit-button").should("be.visible")
     cy.get("#submit-button").trigger("mouseover").click();
     cy.get("#summary-popup");
     cy.get("#summary-targets").children().should("have.length", 1);

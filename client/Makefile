@@ -9,10 +9,6 @@
 clean:
 	rm -rf .cache public node_modules
 
-.PHONY: cypress-update-snapshots
-cypress-update-snapshots:
-	cd .. && $(MAKE) test-e2e-image-snapshots-update
-
 .PHONY: develop
 develop: .env.development node_modules/gatsby-cli
 	npx gatsby develop
@@ -21,27 +17,20 @@ develop: .env.development node_modules/gatsby-cli
 format: node_modules/prettier
 	npm run format
 
-node_modules/cypress:
-	npm install --frozen-lockfile
-
 node_modules/eslint:
-	npm install --frozen-lockfile
+	npm ci
 
 node_modules/gatsby-cli:
-	npm install --frozen-lockfile
+	npm ci
 
 node_modules/jest:
-	npm install --frozen-lockfile
+	npm ci
 
 node_modules/prettier:
-	npm install --frozen-lockfile
+	npm ci
 
 node_modules/typescript:
-	npm install --frozen-lockfile
-
-.PHONY: test
-test: node_modules/jest
-	npm run test
+	npm ci
 
 PHONY: test-all
 test-all:
@@ -66,6 +55,3 @@ test-lint: node_modules/eslint
 test-types: node_modules/typescript
 	npm run test:types
 
-.PHONY: test-cypress
-test-cypress: node_modules/cypress
-	npm run test:cypress

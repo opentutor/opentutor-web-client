@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import { cyMockDialog, cyMockSession, cySetup } from "../support/functions";
 
 describe("Lesson query parameter", () => {
   [
@@ -20,7 +20,7 @@ describe("Lesson query parameter", () => {
     it(`displays intro messages on start for lesson ${x.lesson}`, () => {
       cySetup(cy);
       cy.fixture(x.fixture).then((expectedServerResponse) => {
-        cy.route("POST", `**/dialog/${x.lesson}`, expectedServerResponse);
+        cyMockDialog(cy, x.lesson, x.fixture);
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         cy.get("#chat-msg-0").contains("Welcome to OpenTutor");
         expectedServerResponse.response.forEach((r, i) => {
@@ -36,28 +36,20 @@ describe("Lesson query parameter", () => {
       fixtureLessonStart: "q1-1-p1.json",
       fixtureLessonContinue: "q1-1-p2.json",
       userInput:
-        "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.",
+        "fake user answer",
     },
     {
       lesson: "q2",
       fixtureLessonStart: "q2-1-p1.json",
       fixtureLessonContinue: "q2-1-p2.json",
-      userInput: "Current flows in the same direction as the arrow.",
+      userInput: "diff fake answer",
     },
   ].forEach((x) => {
     it(`sends message and gets response for lesson ${x.lesson}`, () => {
       cySetup(cy);
-      cy.route(
-        "POST",
-        `**/dialog/${x.lesson}`,
-        `fixture:${x.fixtureLessonStart}`
-      );
+      cyMockDialog(cy, x.lesson, x.fixtureLessonStart);
+      cyMockSession(cy, x.lesson, x.fixtureLessonContinue);
       cy.fixture(x.fixtureLessonContinue).then((expectedServerResponse) => {
-        cy.route(
-          "POST",
-          `**/dialog/${x.lesson}/session`,
-          expectedServerResponse
-        );
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         cy.get("#outlined-multiline-static").type(x.userInput);
         cy.get("#submit-button").click();

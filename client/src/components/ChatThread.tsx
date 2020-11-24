@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/chat.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { animateScroll } from "react-scroll";
 import {
   Avatar,
@@ -97,14 +97,27 @@ export default function ChatThread(props: {
       </div>
     );
   };
-
   useEffect(() => {
     document.title = `New Msg: ${
       props.messages[props.messages.length - 1].text
     }`;
-    animateScroll.scrollToBottom({
-      containerId: "thread",
-    });
+    if (
+      /**
+       * HACK: cypress image-snapshot tests fail
+       * with auto scroll as of cypress@6.0 and cypress-image-snapshot@4.0
+       * Haven't been able to fix with any form of event checking
+       * or brute-force waiting.
+       * Revisit/remove this check when possible.
+       */
+      !(
+        window &&
+        Boolean(new URLSearchParams(window.location.search).get("e2e"))
+      )
+    ) {
+      animateScroll.scrollToBottom({
+        containerId: "thread",
+      });
+    }
   });
 
   return (

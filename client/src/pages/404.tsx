@@ -8,7 +8,6 @@ import "styles/layout.css";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import logo from "assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -65,7 +64,6 @@ const NotFoundPage: React.FC = () => {
   const styles = useStyles();
   return (
     <div>
-      <img src={String(logo)} className={styles.logo}></img>
       <div className={styles.foreground}>
         <img
           src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"

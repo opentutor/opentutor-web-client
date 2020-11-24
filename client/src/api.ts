@@ -12,8 +12,16 @@ interface GQLResponse<T> {
   data?: T;
 }
 
-const DIALOG_ENDPOINT = process.env.DIALOG_ENDPOINT || "/dialog";
-const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
+function ensureEndSlashIfExists(u?: string): string | null {
+  if (!u) {
+    return "";
+  }
+  return u.endsWith("/") ? u : `${u}/`;
+}
+
+const DIALOG_ENDPOINT =
+  ensureEndSlashIfExists(process.env.DIALOG_ENDPOINT) || "/dialog/";
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql/";
 
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
@@ -46,7 +54,7 @@ export async function createSession(
   lesson: string
 ): Promise<AxiosResponse<DialogResponse>> {
   try {
-    return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}/${lesson}`, {});
+    return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
   } catch (error) {
     console.log(error.response);
     return error.response;
@@ -61,7 +69,7 @@ export async function continueSession(props: {
 }): Promise<AxiosResponse<DialogResponse>> {
   try {
     return await axios.post<DialogResponse>(
-      `${DIALOG_ENDPOINT}/${props.lesson}/session`,
+      `${DIALOG_ENDPOINT}${props.lesson}/session`,
       {
         sessionInfo: props.session,
         message: props.outboundChat,

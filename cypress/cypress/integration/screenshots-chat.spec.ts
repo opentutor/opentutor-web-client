@@ -4,17 +4,18 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import {
+  cyMockDialog,
+  cyMockSession,
+  cySetup,
+  cyVisitWithE2eParam,
+} from "../support/functions";
 
-function snapname(n) {
+function snapname(n: string): string {
   return `screenshots-chat-${n}`;
 }
 
 describe("screenshots - chat responses", () => {
-  beforeEach(() => {
-    cy.viewport(1280, 720);
-  });
-
   [
     {
       lesson: "q1",
@@ -44,24 +45,18 @@ describe("screenshots - chat responses", () => {
   ].forEach((x, i) => {
     it(`sends message and displays response for lesson ${x.lesson}`, () => {
       cySetup(cy);
-      cy.route(
-        "POST",
-        `**/dialog/${x.lesson}`,
-        `fixture:${x.fixtureLessonStart}`
-      ).as("start");
-      cy.fixture(x.fixtureLessonContinue).then((expectedServerResponse) => {
-        cy.route(
-          "POST",
-          `**/dialog/${x.lesson}/session`,
-          expectedServerResponse
-        ).as("response");
-        cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
-        cy.wait("@start");
-        cy.get("#outlined-multiline-static").type(x.userInput);
-        cy.get("#submit-button").click();
-        cy.wait("@response");
-        cy.matchImageSnapshot(snapname(`lesson-${x.lesson}-response-${i}`));
-      });
+      cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
+      cyMockSession(cy, x.lesson, x.fixtureLessonContinue).as("response");
+      cyVisitWithE2eParam(cy, `/?lesson=${x.lesson}&guest=guest`);
+      cy.wait("@start");
+      cy.get("#outlined-multiline-static").type(x.userInput);
+      cy.get("#submit-button").click();
+      cy.wait("@response");
+      cy.get("#thread").should("be.visible");
+      // cy.get("[data-cy=chat-thread-scroll-done]");
+      (cy as any).matchImageSnapshot(
+        snapname(`lesson-${x.lesson}-response-${i}`)
+      );
     });
   });
 });
