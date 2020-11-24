@@ -4,26 +4,12 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-"use strict";
-require("dotenv").config()
-const express = require("express");
-const path = require("path");
-const app = express();
-const http = require("http");
-const cors = require("cors");
-var server = http.createServer(app);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
-app.use("/", express.static(path.join(__dirname, "public", "tutor")));
-app.get("/config", (req, res) => {
-  res.send({
-      API_SECRET: process.env.API_SECRET || "",
-  });
-});
-const port = process.env.NODE_PORT || 3000;
-server.listen(port, function() {
-  console.log(`node listening on port ${port}`);
-});
-module.exports = app;
+import axios from "axios";
+
+export async function getApiKey(): Promise<string> {
+  if (process.env.API_SECRET) {
+    return process.env.API_SECRET;
+  }
+  const config = await axios.get("/config");
+  return config.data["API_SECRET"];
+}

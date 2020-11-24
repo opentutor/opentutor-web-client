@@ -88,7 +88,9 @@ export interface DialogError {
 export type DialogResponse = DialogData | DialogError;
 
 export interface FetchLesson {
-  lesson: Lesson;
+  me: {
+    lesson: Lesson;
+  };
 }
 
 export interface SessionSummary {
