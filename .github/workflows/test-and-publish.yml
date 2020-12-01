@@ -32,14 +32,16 @@ jobs:
       - name: cypress - run tests
         run: make test-e2e-exec
       - name: cypress failed - retrieve image diffs
-        run: make test-e2e-image-snapshots-copy && mkdir -p client/cypress/snapshots/snapshot_failed_diffs
+        run: |
+          make test-e2e-image-snapshots-copy
+          mkdir -p cypress/cypress/snapshots/snapshots/__diff_output__
         if: ${{ failure() }}
-      - name: cypress failed - upload image-diff artifacts
+      - name: cypress failed - upload image-diff artifacts2
         uses: actions/upload-artifact@v1
         if: ${{ failure() }}
         with:
           name: snapshot_failed_diffs
-          path: client/cypress/snapshots
+          path: cypress/cypress/snapshots/snapshots/__diff_output__
   publish-check:
     name: publish check
     needs:

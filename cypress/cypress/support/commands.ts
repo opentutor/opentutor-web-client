@@ -34,10 +34,28 @@ import "cypress-fill-command";
 import { addMatchImageSnapshotCommand } from "cypress-image-snapshot/command";
 
 addMatchImageSnapshotCommand({
+  comparisonMethod: "ssim",
   customDiffDir:
     Cypress.env("CYPRESS_SNAPSHOT_DIFF_DIR") ||
     "cypress/snapshots/__diff_output__",
-  comparisonMethod: "ssim",
-  failureThreshold: 0.0001,
+  failureThreshold: 0.001,
   failureThresholdType: "percent",
 });
+
+// Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
+//   /**
+//    * Currently unable to get visual-regression tests
+//    * (matchImageSnapshot) to match on chat area because
+//    * of animated scrolling.
+//    *
+//    * On current cypress@6.0, and cypress-image-snapshot@4.0.0,
+//    * all attempts to wait for scrolling to complete have failed,
+//    * including capture scroll-end event and mark `data-cy` and also
+//    * brute-force waiting for even several seconds.
+//    *
+//    * So temp/hack fix is to disable auto chat scroll via query param.
+//    * We should revisions this problem as new releases of cypress
+//    * and cypress-image-snapshot are released (maybe fixing)
+//    */
+//   originalFn(`${url}${url.indexOf("?") == -1 ? "?" : "&"}e2e=true`);
+// });

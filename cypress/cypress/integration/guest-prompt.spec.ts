@@ -4,37 +4,42 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cySetup } from "../support/functions";
+import { cyMockDialog, cySetup } from "../support/functions";
 
 describe("Guest prompt", () => {
   it("appears when no guest param", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
     cy.get("#guest-prompt");
   });
 
   it("does not appear when guest param", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("#guest-prompt").should("not.exist");
   });
 
   it("sets guest name", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
+    cy.get("#guest-prompt-input").should("be.visible");
     cy.get("#guest-prompt-input").type("username");
+    cy.get("#guest-prompt-input-send").should("be.visible");
     cy.get("#guest-prompt-input-send").click();
-    cy.location("search").should("eq", "?lesson=q1&guest=username");
+    cy.location("search").should("contain", "lesson=q1");
+    cy.location("search").should("contain", "guest=username");
   });
 
   it("no input defaults to 'guest'", () => {
     cySetup(cy);
-    cy.route("POST", "**/dialog/q1", "fixture:q1-1-p1.json");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
+    cy.get("#guest-prompt-input-send").should("be.visible");
     cy.get("#guest-prompt-input-send").click();
-    cy.location("search").should("eq", "?lesson=q1&guest=guest");
+    cy.location("search").should("contain", "lesson=q1");
+    cy.location("search").should("contain", "guest=guest");
   });
 });

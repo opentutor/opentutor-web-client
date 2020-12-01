@@ -5,8 +5,9 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
+import Cmi5 from "@xapi/cmi5";
 import { makeStyles } from "@material-ui/core/styles";
+import { Button, Typography } from "@material-ui/core";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
@@ -16,16 +17,19 @@ import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
 import {
   ChatMsg,
-  ErrorData,
-  Target,
   ChatMsgType,
-  SessionData,
   DialogData,
+  ErrorData,
+  ExpectationData,
   Lesson,
+  SessionData,
+  SessionSummary,
+  Target,
 } from "types";
+import cmi5 from "cmi-singleton";
 import withLocation from "wrap-with-location";
-import HeaderBar from "./HeaderBar";
 import LessonImage from "./LessonImage";
+import HeaderBar from "./HeaderBar";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -48,15 +52,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = (props: {
-  search: { lesson: string; guest: string; noheader: string };
-}): JSX.Element => {
+function App(props: {
+  search: { lesson: string; guest: string; actor: string; noheader: string };
+}): JSX.Element {
   const styles = useStyles();
-  const { lesson, guest, noheader } = props.search;
-  const [summaryOpen, setSummaryOpen] = React.useState(false);
-  const [summaryMessage, setSummaryMessage] = React.useState(
-    "Let's see how you're doing so far!"
-  );
+  const { lesson, guest, actor, noheader } = props.search;
+  const username = actor ? JSON.parse(actor).name : guest;
+  const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
+    showSummary: false,
+    summaryMessage: "Let's see how you're doing so far!",
+  });
   const [targets, setTargets] = React.useState<Target[]>([]);
   const [session, setSession] = React.useState<SessionData>({
     sessionId: "",
@@ -85,8 +90,47 @@ const App = (props: {
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [image, setImage] = React.useState<string>();
 
-  const handleSummaryOpen = (): void => {
-    setSummaryOpen(true);
+  function handleSessionDone(session: SessionData): void {
+    setSessionSummary({
+      summaryMessage: "That's a wrap! Let's see how you did on this lesson!",
+      showSummary: true,
+      sendResultsPending: true,
+      score:
+        session.dialogState.expectationData.reduce(
+          (total: number, exp: ExpectationData) => {
+            return total + (exp.satisfied ? 1 : exp.score);
+          },
+          0
+        ) / targets.length,
+    });
+  }
+
+  async function sendCmi5Results(): Promise<void> {
+    if (!Cmi5.isCmiAvailable) {
+      return;
+    }
+    await cmi5().moveOn({ score: sessionSummary.score || 0 });
+  }
+
+  const onSummaryOpenRequested = (): void => {
+    setSessionSummary({
+      ...sessionSummary,
+      showSummary: true,
+    });
+  };
+
+  const onSummaryCloseRequested = (): void => {
+    const sendResults = sessionSummary.sendResultsPending;
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        showSummary: false,
+        sendResultsPending: false,
+      };
+    });
+    if (sendResults) {
+      sendCmi5Results();
+    }
   };
 
   const handleErrorOpen = (): void => {
@@ -145,25 +189,27 @@ const App = (props: {
         className={styles.chatWindow}
         style={{ height: image ? "65%" : "100%" }}
       >
-        <TargetIndicator targets={targets} showSummary={handleSummaryOpen} />
+        <TargetIndicator
+          targets={targets}
+          showSummary={onSummaryOpenRequested}
+        />
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
-          username={guest}
+          username={username}
           messages={messages}
           setMessages={setMessages}
           setTargets={setTargets}
           session={session}
           setSession={setSession}
-          handleSummaryOpen={handleSummaryOpen}
-          setSummaryMessage={setSummaryMessage}
           setErrorProps={setErrorProps}
           handleErrorOpen={handleErrorOpen}
+          handleSessionDone={handleSessionDone}
         />
         <SummaryPopup
-          open={summaryOpen}
-          setOpen={setSummaryOpen}
-          message={summaryMessage}
+          open={sessionSummary.showSummary}
+          onCloseRequested={onSummaryCloseRequested}
+          message={sessionSummary.summaryMessage || ""}
           buttonText={"Close"}
           targets={targets}
         />
@@ -172,7 +218,7 @@ const App = (props: {
           setOpen={setErrorOpen}
           errorProps={errorProps}
         />
-        <Button id="view-summary-btn" onClick={handleSummaryOpen}>
+        <Button id="view-summary-btn" onClick={onSummaryOpenRequested}>
           View Summary
         </Button>
       </div>
@@ -181,6 +227,6 @@ const App = (props: {
       </Typography>
     </div>
   );
-};
+}
 
 export default withLocation(App);
