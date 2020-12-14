@@ -1,4 +1,4 @@
-FROM node:14.15.0 as builder
+FROM node:14.15.1 as builder
 ARG NODE_ENV
 ARG OPENTUTOR_CLIENT_VERSION
 ENV OPENTUTOR_CLIENT_VERSION=${OPENTUTOR_CLIENT_VERSION}
@@ -16,7 +16,7 @@ COPY client ./client
 RUN cd client && \
     npm ci && \
     npm run build
-FROM node:14.15.0-slim
+FROM node:14.15.1-slim
 ENV TINI_VERSION=v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini 

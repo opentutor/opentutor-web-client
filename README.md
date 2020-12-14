@@ -52,7 +52,7 @@ cd client && make develop
 cd cypress && npm run cy:open
 ```
 
-...then in the cypress browser window, click a spec to run it.
+...then in the cypress browser window, click a spec to run it (or run all).
 
 ## Releases
 
