@@ -8,6 +8,7 @@ import React from "react";
 import Cmi5 from "@xapi/cmi5";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
+import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
@@ -29,6 +30,7 @@ import {
 import withLocation from "wrap-with-location";
 import LessonImage from "./LessonImage";
 import HeaderBar from "./HeaderBar";
+import { isTesting } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -92,7 +94,18 @@ function App(props: {
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
       summaryMessage: "That's a wrap! Let's see how you did on this lesson!",
-      showSummary: true,
+      // show the summary immediately if testing, otherwise...
+      showSummary: isTesting(),
+      // get the `readTime` for the concat string
+      // of all messages sent from the server
+      // after last user input
+      showSummaryTimer: !isTesting()
+        ? readTime(
+            (session.previousSystemResponse || []).reduce((acc, cur) => {
+              return `${cur}${acc}`;
+            }, "")
+          ).time
+        : undefined,
       sendResultsPending: true,
       score:
         session.dialogState.expectationData.reduce(
@@ -137,8 +150,12 @@ function App(props: {
   };
 
   React.useEffect(() => {
+    let mounted = true;
     const fetchData = async (): Promise<void> => {
       const response = await createSession(lesson || "");
+      if (!mounted) {
+        return;
+      }
       if (response.status !== 200) {
         setErrorProps(errorForStatus(response.status));
         handleErrorOpen();
@@ -168,17 +185,49 @@ function App(props: {
       }
     };
     fetchData();
+    return () => {
+      mounted = false;
+    };
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
 
   React.useEffect(() => {
+    let mounted = true;
     fetchLesson(lesson)
       .then((lesson: Lesson) => {
+        if (!mounted) {
+          return;
+        }
         if (lesson) {
           setImage(lesson.image);
         }
       })
       .catch((err: string) => console.error(err));
+    return () => {
+      mounted = false;
+    };
   }, [lesson]);
+
+  React.useEffect(() => {
+    let mounted = true;
+    if (
+      sessionSummary.showSummaryTimer &&
+      sessionSummary.showSummaryTimer > 0
+    ) {
+      setTimeout(() => {
+        if (!mounted) {
+          return;
+        }
+        setSessionSummary({
+          ...sessionSummary,
+          showSummaryTimer: undefined,
+          showSummary: true,
+        });
+      }, sessionSummary.showSummaryTimer);
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [sessionSummary]);
 
   return (
     <div className={styles.foreground}>
