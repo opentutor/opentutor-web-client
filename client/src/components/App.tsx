@@ -26,7 +26,6 @@ import {
   SessionSummary,
   Target,
 } from "types";
-import cmi5 from "cmi-singleton";
 import withLocation from "wrap-with-location";
 import LessonImage from "./LessonImage";
 import HeaderBar from "./HeaderBar";
@@ -109,7 +108,7 @@ function App(props: {
     if (!Cmi5.isCmiAvailable) {
       return;
     }
-    await cmi5().moveOn({ score: sessionSummary.score || 0 });
+    await Cmi5.instance.moveOn({ score: sessionSummary.score || 0 });
   }
 
   const onSummaryOpenRequested = (): void => {

@@ -7,7 +7,6 @@ The full terms of this copyright and license should always be found in the root 
 import "styles/layout.css";
 import React, { useEffect, useState } from "react";
 import Cmi5 from "@xapi/cmi5";
-import cmi5 from "cmi-singleton";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
 import withLocation from "wrap-with-location";
@@ -17,7 +16,7 @@ const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
 
   useEffect(() => {
     if (Cmi5.isCmiAvailable) {
-      cmi5().initialize();
+      Cmi5.instance.initialize();
     }
   }, []);
 
