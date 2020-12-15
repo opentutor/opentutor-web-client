@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cyMockDialog, cyMockSession, cySetup, cyVisitWithE2eParam } from "../support/functions";
+import { cyMockDialog, cyMockSession, cySetup, cyVisitWithTestingParam } from "../support/functions";
 
 function snapname(n: string): string {
   return `screenshots-summary-popup-${n}`;
@@ -24,7 +24,7 @@ describe("screenshots - summary popup", () => {
     it(`opens and displays summary popup for lesson ${x.lesson}`, () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
-      cyVisitWithE2eParam(cy, `/?lesson=${x.lesson}&guest=guest`);
+      cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
       cy.get("#thread").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
@@ -55,7 +55,7 @@ describe("screenshots - summary popup", () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
       cyMockSession(cy, x.lesson, x.fixtureLessonStart).as("response");
-      cyVisitWithE2eParam(cy, `/?lesson=${x.lesson}&guest=guest`);
+      cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
       cy.get("#outlined-multiline-static").type(x.userInput);
       cy.get("#submit-button").should("be.visible");
