@@ -74,6 +74,6 @@ export function cyMockSession(cy, lesson: string, fixture: string) {
   return cyMockDialog(cy, `${lesson}/session`, fixture);
 }
 
-export function cyVisitWithE2eParam(cy, url, options = {}) {
-  cy.visit(`${url}${url.indexOf("?") == -1 ? "?" : "&"}e2e=true`, options)
+export function cyVisitWithTestingParam(cy, url, options = {}) {
+  cy.visit(`${url}${url.indexOf("?") == -1 ? "?" : "&"}testing=true`, options)
 }

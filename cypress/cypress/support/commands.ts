@@ -57,5 +57,5 @@ addMatchImageSnapshotCommand({
 //    * We should revisions this problem as new releases of cypress
 //    * and cypress-image-snapshot are released (maybe fixing)
 //    */
-//   originalFn(`${url}${url.indexOf("?") == -1 ? "?" : "&"}e2e=true`);
+//   originalFn(`${url}${url.indexOf("?") == -1 ? "?" : "&"}testing=true`);
 // });
