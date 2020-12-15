@@ -8,7 +8,7 @@ import {
   cyMockDialog,
   cyMockSession,
   cySetup,
-  cyVisitWithE2eParam,
+  cyVisitWithTestingParam,
 } from "../support/functions";
 
 function snapname(n: string): string {
@@ -47,7 +47,7 @@ describe("screenshots - chat responses", () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
       cyMockSession(cy, x.lesson, x.fixtureLessonContinue).as("response");
-      cyVisitWithE2eParam(cy, `/?lesson=${x.lesson}&guest=guest`);
+      cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
       cy.get("#outlined-multiline-static").type(x.userInput);
       cy.get("#submit-button").click();

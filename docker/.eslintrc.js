@@ -2,7 +2,6 @@ module.exports = {
   parser: "@typescript-eslint/parser", // Specifies the ESLint parser
   extends: [
     "eslint:recommended",
-    "plugin:jest/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
   ],
@@ -10,9 +9,8 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    "jest/globals": true,
   },
-  plugins: ["@typescript-eslint", "jest"],
+  plugins: ["@typescript-eslint"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -21,11 +19,6 @@ module.exports = {
     sourceType: "module", // Allows for the use of imports
   },
   rules: {
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error",
     "no-prototype-builtins": "off",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

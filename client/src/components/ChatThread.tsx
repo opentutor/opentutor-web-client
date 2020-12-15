@@ -22,6 +22,7 @@ import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import { ChatMsg, ChatMsgType } from "types";
+import { isTesting } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,10 +110,7 @@ export default function ChatThread(props: {
        * or brute-force waiting.
        * Revisit/remove this check when possible.
        */
-      !(
-        window &&
-        Boolean(new URLSearchParams(window.location.search).get("e2e"))
-      )
+      !isTesting()
     ) {
       animateScroll.scrollToBottom({
         containerId: "thread",
