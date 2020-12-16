@@ -100,11 +100,14 @@ function App(props: {
       // of all messages sent from the server
       // after last user input
       showSummaryTimer: !isTesting()
-        ? readTime(
-            (session.previousSystemResponse || []).reduce((acc, cur) => {
-              return `${cur}${acc}`;
-            }, "")
-          ).time
+        ? Math.max(
+            readTime(
+              (session.previousSystemResponse || []).reduce((acc, cur) => {
+                return `${cur}${acc}`;
+              }, "")
+            ).time,
+            1000 // at least 1 second
+          )
         : undefined,
       sendResultsPending: true,
       score:
