@@ -70,13 +70,13 @@ test-lint:
 PHONY: test-types
 test-types:
 	cd client && $(MAKE) test-types
-	cd docker && $(MAKE) test-types
+	# cd docker && $(MAKE) test-types
 
 
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
-	cd client && npm ci && npm run test:license
-	cd docker && npm ci && npm run test:license
+	cd client && make test-license
+	cd docker && make test-license
 
 .PHONY: test-e2e
 test-e2e:
