@@ -62,6 +62,9 @@ format:
 node_modules/eslint:
 	npm install
 
+node_modules/license-check-and-add:
+	npm ci
+
 node_modules/prettier:
 	npm install
 
@@ -72,8 +75,9 @@ node_modules/typescript:
 test-all:
 	$(MAKE) test-audit
 	$(MAKE) test-format
+	$(MAKE) test-license
 	$(MAKE) test-lint
-	$(MAKE) test-types
+	# $(MAKE) test-types
 
 .PHONY: test-audit
 test-audit:
@@ -82,6 +86,10 @@ test-audit:
 .PHONY: test-format
 test-format:
 	npm run test:format
+
+.PHONY: test-license
+test-license: node_modules/license-check-and-add
+	npm run test:license
 
 .PHONY: test-lint
 test-lint:
