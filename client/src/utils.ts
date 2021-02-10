@@ -4,15 +4,9 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-// tmp singleton impl for cmi5
-// replace with singleton in real @xapi/cmi5 once released (0.4.0)
-import Cmi5 from "@xapi/cmi5";
-
-let _cmi: Cmi5 | null = null;
-
-export default function cmi5(): Cmi5 {
-  if (!_cmi) {
-    _cmi = new Cmi5();
-  }
-  return _cmi;
+export function isTesting(): boolean {
+  return (
+    window &&
+    Boolean(new URLSearchParams(window.location.search).get("testing"))
+  );
 }

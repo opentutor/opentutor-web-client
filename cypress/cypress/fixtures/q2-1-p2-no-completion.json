@@ -1,0 +1,38 @@
+{
+  "status": "ok",
+  "sessionInfo": {
+    "sessionId": "8c13c9e0-8b4e-4a6d-b650-f41d82ebe454",
+    "sessionHistory": "{\"userResponses\":[\"Current flows in the same direction as the arrow\"]],\"userScores\":[],\"classifierGrades\":[{\"expectationResults\":[{\"evaluation\":\"Good\",\"expectation\":0,\"score\":0.7877823480773107}]}]}",
+    "previousUserResponse": "Current flows in the same direction as the arrow",
+    "previousSystemResponse": [
+      "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode.",
+      "Let's try a different problem."
+    ],
+    "dialogState": {
+      "expectationsCompleted": [false],
+      "expectationData": [
+        {
+          "ideal": "",
+          "score": 0,
+          "satisfied": false,
+          "status": ""
+        }
+      ],
+      "hints": false
+    },
+    "hash": "807c0483cbaa95e0e7e7a1b8908e04f6ecb2d83a66c2d2d27e0496063c0f976b"
+  },
+  "response": [
+    {
+      "author": "them",
+      "type": "text",
+      "data": {
+        "text": "some server response."
+      }
+    }
+  ],
+  "sentToGrader": true,
+  "completed": false,
+  "score": null,
+  "expectationActive": -1
+}

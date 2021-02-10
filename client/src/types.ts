@@ -95,6 +95,7 @@ export interface FetchLesson {
 
 export interface SessionSummary {
   showSummary: boolean;
+  showSummaryTimer?: number;
   summaryMessage?: string;
   sendResultsPending?: boolean;
   score?: number;

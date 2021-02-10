@@ -30,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface OutboundChat {
+  text: string;
+  seq: number;
+}
+
 const ChatForm = (props: {
   lesson: string;
   username: string;
@@ -44,7 +49,10 @@ const ChatForm = (props: {
 }): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
-  const [outboundChat, setOutboundChat] = useState("");
+  const [outboundChat, setOutboundChat] = useState<OutboundChat>({
+    text: "",
+    seq: 0,
+  });
   const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
@@ -57,7 +65,7 @@ const ChatForm = (props: {
           lesson: props.lesson,
           username: props.username,
           session: props.session,
-          outboundChat: outboundChat,
+          outboundChat: outboundChat.text,
         });
         if (response.status !== 200) {
           props.setErrorProps(
@@ -106,7 +114,10 @@ const ChatForm = (props: {
         ...props.messages,
         { senderId: "user", type: "", text: chat },
       ]);
-      setOutboundChat(chat);
+      setOutboundChat({
+        text: chat,
+        seq: outboundChat.seq + 1,
+      });
       setChat("");
     }
   }
