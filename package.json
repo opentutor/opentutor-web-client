@@ -1,0 +1,23 @@
+{
+  "name": "opentutor-web-client",
+  "version": "1.0.0",
+  "description": "react/gatsby web client for opentutor",
+  "main": "index.js",
+  "scripts": {
+    "license:fix": "license-check-and-add remove -f license-config.json && license-check-and-add add -f license-config.json",
+    "test:license": "license-check-and-add check -f license-config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opentutor/opentutor-web-client.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/opentutor/opentutor-web-client/issues"
+  },
+  "homepage": "https://github.com/opentutor/opentutor-web-client#readme",
+  "devDependencies": {
+    "license-check-and-add": "^4.0.2"
+  }
+}

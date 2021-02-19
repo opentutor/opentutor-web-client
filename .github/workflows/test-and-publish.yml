@@ -9,6 +9,8 @@ jobs:
         with:
           node-version: "14.15"
       - name: Install
+        run: npm ci
+      - name: Install client
         run: cd client && npm ci
       - name: Run audit
         run: cd client && npm run test:audit
@@ -19,7 +21,7 @@ jobs:
       - name: Run types test
         run: cd client && npm run test:types
       - name: Run license test
-        run: cd client && npm run test:license
+        run: npm run test:license
   test-e2e:
     name: test e2e
     runs-on: ubuntu-latest
