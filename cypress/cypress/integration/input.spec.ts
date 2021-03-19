@@ -45,9 +45,9 @@ describe("Input field", () => {
     cy.get("#outlined-multiline-static").type(userInput);
     cy.get("#submit-button").should("be.visible");
     cy.get("#submit-button").click();
-    cy.get("#chat-msg-3").contains(userInput);
+    cy.get("#chat-msg-2").contains(userInput);
     cy.wait("@session");
-    cy.get("#chat-msg-4").contains(
+    cy.get("#chat-msg-3").contains(
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
@@ -61,9 +61,9 @@ describe("Input field", () => {
     cy.get("#outlined-multiline-static").should("be.visible");
     cy.get("#outlined-multiline-static").type(userInput);
     cy.get("#outlined-multiline-static").type("{enter}");
-    cy.get("#chat-msg-3").contains(userInput);
+    cy.get("#chat-msg-2").contains(userInput);
     cy.wait("@session");
-    cy.get("#chat-msg-4").contains(
+    cy.get("#chat-msg-3").contains(
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
@@ -77,16 +77,16 @@ describe("Input field", () => {
     cy.get("#outlined-multiline-static").should("be.visible");
     cy.get("#outlined-multiline-static").type(userInput);
     cy.get("#outlined-multiline-static").type("{enter}");
-    cy.get("#chat-msg-3").contains(userInput);
+    cy.get("#chat-msg-2").contains(userInput);
     cy.wait("@session");
-    cy.get("#chat-msg-4").contains(
+    cy.get("#chat-msg-3").contains(
       "some server response."
     );
     cy.get("#outlined-multiline-static").type(userInput);
     cy.get("#outlined-multiline-static").type("{enter}");
-    cy.get("#chat-msg-5").contains(userInput);
+    cy.get("#chat-msg-4").contains(userInput);
     cy.wait("@session");
-    cy.get("#chat-msg-6").contains(
+    cy.get("#chat-msg-5").contains(
       "some server response."
     );
   });
