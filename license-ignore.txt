@@ -1,0 +1,26 @@
+# Ignore everything
+*
+
+# But not these files...
+!client/src/*.js
+!client/src/*.ts
+!client/src/*.jsx
+!client/src/*.tsx
+!client/src/*/*.js
+!client/src/*/*.ts
+!client/src/*/*.jsx
+!client/src/*/*.tsx
+
+!cypress/cypress/*.js
+!cypress/cypress/*.ts
+!cypress/cypress/*.jsx
+!cypress/cypress/*.tsx
+!cypress/cypress/*/*.js
+!cypress/cypress/*/*.ts
+!cypress/cypress/*/*.jsx
+!cypress/cypress/*/*.tsx
+
+!docker/*.js
+!docker/*.ts
+!docker/*.jsx
+!docker/*.tsx

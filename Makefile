@@ -36,8 +36,7 @@ LICENSE_HEADER:
 
 .PHONY: license
 license: LICENSE LICENSE_HEADER
-	cd client && npm ci && npm run license:fix
-	cd docker && npm ci && npm run license:fix
+	npm ci && npm run license:fix
 
 PHONY: test
 test:
@@ -75,8 +74,7 @@ test-types:
 
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
-	cd client && make test-license
-	cd docker && make test-license
+	npm run test:license
 
 .PHONY: test-e2e
 test-e2e:
