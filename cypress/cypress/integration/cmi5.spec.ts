@@ -8,7 +8,6 @@ The full terms of this copyright and license should always be found in the root 
 import {
   addCmi5LaunchParams,
   cyMockCmi5Initialize,
-  LAUNCH_DATA_DEFAULT,
 } from "../support/cmi5";
 import { cyMockDialog, cySetup } from "../support/functions";
 
@@ -20,7 +19,7 @@ describe("Cmi5 integration", () => {
     cy.get("#guest-prompt").should("not.exist");
   });
 
-  it("completes cmi5 initialization when launch params present", () => {
+  it.skip("completes cmi5 initialization when launch params present", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));
