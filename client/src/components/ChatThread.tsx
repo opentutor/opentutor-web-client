@@ -99,6 +99,7 @@ export default function ChatThread(props: {
     );
   };
   useEffect(() => {
+    if (props.messages.length === 0) return;
     document.title = `New Msg: ${
       props.messages[props.messages.length - 1].text
     }`;

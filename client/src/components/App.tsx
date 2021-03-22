@@ -76,13 +76,7 @@ function App(props: {
     },
     hash: "",
   });
-  const [messages, setMessages] = React.useState<ChatMsg[]>([
-    {
-      senderId: "system",
-      type: ChatMsgType.Opening,
-      text: "Welcome to OpenTutor!",
-    },
-  ]);
+  const [messages, setMessages] = React.useState<ChatMsg[]>([]);
   const [errorProps, setErrorProps] = React.useState<ErrorData>({
     title: "",
     message: "",
