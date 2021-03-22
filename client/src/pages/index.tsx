@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/layout.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Cmi5 from "@xapi/cmi5";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
@@ -13,12 +13,6 @@ import withLocation from "wrap-with-location";
 
 const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
   const [guest, setGuest] = useState(props.search.guest);
-
-  useEffect(() => {
-    if (Cmi5.isCmiAvailable) {
-      Cmi5.instance.initialize();
-    }
-  }, []);
 
   const hasSessionUser = (): boolean => {
     if (typeof window === "undefined") {

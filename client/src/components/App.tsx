@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React from "react";
+import React, { useContext } from "react";
 import Cmi5 from "@xapi/cmi5";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
@@ -31,6 +31,7 @@ import withLocation from "wrap-with-location";
 import LessonImage from "./LessonImage";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
+import Cmi5Context from "context/cmi5";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -84,6 +85,7 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [image, setImage] = React.useState<string>();
+  const context = useContext(Cmi5Context);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -115,10 +117,11 @@ function App(props: {
   }
 
   async function sendCmi5Results(): Promise<void> {
-    if (!Cmi5.isCmiAvailable) {
+    if (!Cmi5.isCmiAvailable || !context.cmi5) {
       return;
     }
-    await Cmi5.instance.moveOn({ score: sessionSummary.score || 0 });
+    await context.cmi5.moveOn({ score: sessionSummary.score || 0 });
+    await context.cmi5.terminate();
   }
 
   const onSummaryOpenRequested = (): void => {
