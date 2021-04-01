@@ -23,8 +23,8 @@ describe("Cmi5 integration", () => {
   it("completes cmi5 initialization when launch params present", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cyMockCmi5Initialize(cy);
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));
-    const calls = cyMockCmi5Initialize(cy);
     cy.wait("@fetch")
       .its("response.body")
       .should("have.property", "auth-token", "fake-auth-token");

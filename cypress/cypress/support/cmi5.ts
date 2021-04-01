@@ -61,7 +61,7 @@ export function cyMockCmi5Initialize(
   cy.intercept(
     {
       method: "GET",
-      url: `${lp.endpoint}activities/state**`,
+      url: `**/activities/state**`,
     },
     staticResponse({
       body: LAUNCH_DATA_DEFAULT,
@@ -70,16 +70,7 @@ export function cyMockCmi5Initialize(
   cy.intercept(
     {
       method: "GET",
-      url: `${lp.endpoint}activities/profile**`,
-    },
-    staticResponse({
-      body: {},
-    })
-  ).as("getProfile");
-  cy.intercept(
-    {
-      method: "GET",
-      url: `${lp.endpoint}activities/profile**`,
+      url: `**/activities/profile**`,
     },
     staticResponse({
       body: {},
@@ -88,7 +79,7 @@ export function cyMockCmi5Initialize(
   cy.intercept(
     {
       method: "POST",
-      url: `${lp.endpoint}statements`,
+      url: `**/statements`,
     },
     staticResponse({
       body: ["fake-initialized-statement-id"],

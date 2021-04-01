@@ -18,7 +18,6 @@ import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
 import {
   ChatMsg,
-  ChatMsgType,
   DialogData,
   ErrorData,
   ExpectationData,
