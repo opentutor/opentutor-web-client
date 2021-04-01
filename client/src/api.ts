@@ -46,6 +46,7 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
     },
     { headers: headers }
   );
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return result.data.data!.me.lesson;
 }
 

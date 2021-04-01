@@ -31,11 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GuestPrompt({ submit }) {
+interface GuestPromptArgs {
+  submit: (name: string) => void;
+}
+export default function GuestPrompt(args: GuestPromptArgs): JSX.Element {
   const classes = useStyles();
   const [name, setName] = useState("");
+  const { submit } = args;
 
-  function onInput(name) {
+  function onInput(name: string) {
     const polished = name ? name.trim() : "";
     setName(polished);
     if (name.includes("\n")) {
@@ -58,7 +62,7 @@ export default function GuestPrompt({ submit }) {
           <h2 id="guest-prompt-header">Enter a guest name:</h2>
           <InputBase
             id="guest-prompt-input"
-            multiline="true"
+            multiline={true}
             className={classes.inputField}
             value={name}
             placeholder={"guest"}
