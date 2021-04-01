@@ -78,15 +78,6 @@ export function cyMockCmi5Initialize(
   ).as("getProfile");
   cy.intercept(
     {
-      method: "GET",
-      url: `${lp.endpoint}activities/profile**`,
-    },
-    staticResponse({
-      body: {},
-    })
-  ).as("getProfile");
-  cy.intercept(
-    {
       method: "POST",
       url: `${lp.endpoint}statements`,
     },
