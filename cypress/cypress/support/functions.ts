@@ -70,10 +70,15 @@ export function cyMockDialog(cy, lesson: string, fixture: string) {
   );
 }
 
+export function cyMockGraphQL(cy, fixture = "lesson-graphql-default.json") {
+  cy.intercept("**/lesson1/image.png", { fixture: "lesson1.png" });
+  return cy.intercept("POST", `**/graphql`, staticResponse({ fixture }));
+}
+
 export function cyMockSession(cy, lesson: string, fixture: string) {
   return cyMockDialog(cy, `${lesson}/session`, fixture);
 }
 
 export function cyVisitWithTestingParam(cy, url, options = {}) {
-  cy.visit(`${url}${url.indexOf("?") == -1 ? "?" : "&"}testing=true`, options)
+  cy.visit(`${url}${url.indexOf("?") == -1 ? "?" : "&"}testing=true`, options);
 }
