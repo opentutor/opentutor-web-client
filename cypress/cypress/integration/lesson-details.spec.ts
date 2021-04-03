@@ -4,12 +4,22 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import axios from "axios";
+import { cyMockDialog, cyMockGraphQL, cySetup } from "../support/functions";
 
-export async function getApiKey(): Promise<string> {
-  if (process.env.API_SECRET) {
-    return process.env.API_SECRET;
-  }
-  const config = await axios.get("/config");
-  return config.data["API_SECRET"];
-}
+describe("lesson details", () => {
+  it(`displays name for a lesson`, () => {
+    cySetup(cy);
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cyMockGraphQL(cy);
+    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+    cy.get("#title").contains("lesson 1");
+  });
+
+  it(`displays image for a lesson`, () => {
+    cySetup(cy);
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cyMockGraphQL(cy);
+    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+    cy.get("#image img").should("have.attr", "src", "lesson1/image.png");
+  });
+});
