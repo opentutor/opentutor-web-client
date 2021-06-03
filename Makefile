@@ -54,22 +54,18 @@ test-all:
 PHONY: test-audit
 test-audit:
 	cd client && $(MAKE) test-audit
-	cd docker && $(MAKE) test-audit
 
 PHONY: test-format
 test-format:
 	cd client && $(MAKE) test-format
-	# cd docker && $(MAKE) test-format
 
 PHONY: test-lint
 test-lint:
 	cd client && $(MAKE) test-lint
-	# cd docker && $(MAKE) test-lint
 
 PHONY: test-types
 test-types:
 	cd client && $(MAKE) test-types
-	# cd docker && $(MAKE) test-types
 
 
 .PHONY: test-license

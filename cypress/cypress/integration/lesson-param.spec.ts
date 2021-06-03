@@ -24,7 +24,7 @@ describe("Lesson query parameter", () => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         expectedServerResponse.response.forEach((r, i) => {
 
-          cy.get('[data-cy=' + `chat-msg-${i}` + ']').contains(r.data.text);
+          cy.get(`[data-cy=chat-msg-${i}]`).contains(r.data.text);
         });
       });
     });
@@ -55,7 +55,7 @@ describe("Lesson query parameter", () => {
         cy.get('[data-cy=submit-button]').click();
         cy.get('[data-cy=chat-msg-2]').contains(x.userInput);
         expectedServerResponse.response.forEach((r, i) => {
-          cy.get('[data-cy=' + `chat-msg-${i+3}` + ']').contains(r.data.text);
+          cy.get(`[data-cy=chat-msg-${i+3}]`).contains(r.data.text);
         });
       });
     });

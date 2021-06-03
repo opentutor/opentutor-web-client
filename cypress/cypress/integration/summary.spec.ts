@@ -50,9 +50,9 @@ describe("Expectation summary pop-up", () => {
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.get(
-        '[data-cy=target-0-' + `${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}` + ']'
+        ).toFixed()}]`
       )
         .trigger("mouseover")
         .click();
