@@ -53,7 +53,7 @@ export default function TargetIcon(props: {
 
   return (
     <Box
-      id={`target-${props.index}-${Number(props.target.score).toFixed()}`}
+      data-cy={`target-${props.index}-${Number(props.target.score).toFixed()}`}
       position="relative"
       display="inline-flex"
     >

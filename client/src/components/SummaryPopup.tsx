@@ -85,14 +85,18 @@ export default function SummaryPopup(props: {
   const [tranState, setTranState] = useState("summary-popup-trans-none");
   return (
     <Dialog
-      id="summary-popup"
+      data-cy="summary-popup"
       onClose={onCloseRequested}
       onEntered={() => setTranState("summary-popup-trans-done")}
       aria-labelledby="customized-dialog-title"
       open={open}
     >
       <div data-cy={tranState} />
-      <DialogTitle id="customized-dialog-title" onClose={onCloseRequested}>
+      <DialogTitle
+        id="customized-dialog-title"
+        data-cy="customized-dialog-title"
+        onClose={onCloseRequested}
+      >
         Lesson Summary
       </DialogTitle>
       <DialogContent dividers>

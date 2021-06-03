@@ -134,9 +134,9 @@ const ChatForm = (props: {
   }
 
   return (
-    <form id="chat-form" noValidate autoComplete="off">
+    <form data-cy="chat-form" noValidate autoComplete="off">
       <TextField
-        id="outlined-multiline-static"
+        data-cy="outlined-multiline-static"
         label={
           sessionAlive
             ? "Chat with OpenTutor"
@@ -155,7 +155,7 @@ const ChatForm = (props: {
       />
       <br />
       <Button
-        id="submit-button"
+        data-cy="submit-button"
         variant="contained"
         color="primary"
         className={styles.button}

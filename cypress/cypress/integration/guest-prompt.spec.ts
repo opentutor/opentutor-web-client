@@ -11,24 +11,24 @@ describe("Guest prompt", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
-    cy.get("#guest-prompt");
+    cy.get('[data-cy=guest-prompt]');
   });
 
   it("does not appear when guest param", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
-    cy.get("#guest-prompt").should("not.exist");
+    cy.get('[data-cy=guest-prompt]').should("not.exist");
   });
 
   it("sets guest name", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
-    cy.get("#guest-prompt-input").should("be.visible");
-    cy.get("#guest-prompt-input").type("username");
-    cy.get("#guest-prompt-input-send").should("be.visible");
-    cy.get("#guest-prompt-input-send").click();
+    cy.get('[data-cy=guest-prompt-input]').should("be.visible");
+    cy.get('[data-cy=guest-prompt-input]').type("username");
+    cy.get('[data-cy=guest-prompt-input-send]').should("be.visible");
+    cy.get('[data-cy=guest-prompt-input-send]').click();
     cy.location("search").should("contain", "lesson=q1");
     cy.location("search").should("contain", "guest=username");
   });
@@ -37,8 +37,8 @@ describe("Guest prompt", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
-    cy.get("#guest-prompt-input-send").should("be.visible");
-    cy.get("#guest-prompt-input-send").click();
+    cy.get('[data-cy=guest-prompt-input-send]').should("be.visible");
+    cy.get('[data-cy=guest-prompt-input-send]').click();
     cy.location("search").should("contain", "lesson=q1");
     cy.location("search").should("contain", "guest=guest");
   });

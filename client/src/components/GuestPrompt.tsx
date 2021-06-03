@@ -48,7 +48,7 @@ export default function GuestPrompt(args: GuestPromptArgs): JSX.Element {
   }
 
   return (
-    <div id="guest-prompt">
+    <div data-cy="guest-prompt">
       <Modal
         open={true}
         onClose={() => submit(name)}
@@ -59,9 +59,9 @@ export default function GuestPrompt(args: GuestPromptArgs): JSX.Element {
         }}
       >
         <Paper className={classes.paper}>
-          <h2 id="guest-prompt-header">Enter a guest name:</h2>
+          <h2 data-cy="guest-prompt-header">Enter a guest name:</h2>
           <InputBase
-            id="guest-prompt-input"
+            data-cy="guest-prompt-input"
             multiline={true}
             className={classes.inputField}
             value={name}
@@ -71,7 +71,7 @@ export default function GuestPrompt(args: GuestPromptArgs): JSX.Element {
             }}
           />
           <Button
-            id="guest-prompt-input-send"
+            data-cy="guest-prompt-input-send"
             className={classes.button}
             onClick={() => submit(name)}
             variant="contained"

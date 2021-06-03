@@ -98,7 +98,7 @@ const LessonImage = (props: { search: { lesson: string } }): JSX.Element => {
   }, [lesson]);
 
   return image ? (
-    <div id="image" className={styles.scroll} onClick={handleImageExpand}>
+    <div data-cy="image" className={styles.scroll} onClick={handleImageExpand}>
       {getImage()}
       {getZoom()}
     </div>

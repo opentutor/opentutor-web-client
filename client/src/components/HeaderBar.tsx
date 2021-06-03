@@ -42,7 +42,7 @@ const HeaderBar = (props: {
       <div>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography id="title" variant="h6">
+            <Typography data-cy="title" variant="h6">
               {lessonName}
             </Typography>
           </Toolbar>
@@ -57,7 +57,7 @@ const HeaderBar = (props: {
       <AppBar position="fixed">
         <Toolbar>
           <IconButton
-            id="back-button"
+            data-cy="back-button"
             edge="start"
             color="inherit"
             aria-label="menu"
@@ -65,7 +65,7 @@ const HeaderBar = (props: {
           >
             <CloseIcon />
           </IconButton>
-          <Typography id="title" variant="h6">
+          <Typography data-cy="title" variant="h6">
             Preview {lessonName}
           </Typography>
         </Toolbar>

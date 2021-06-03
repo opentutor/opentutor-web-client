@@ -16,8 +16,8 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").trigger("mouseover").click();
-    cy.get("#summary-popup");
+    cy.get('[data-cy=view-summary-btn]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
   });
 
   [
@@ -36,9 +36,9 @@ describe("Expectation summary pop-up", () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixture);
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
-      cy.get("#view-summary-btn").trigger("mouseover").click();
-      cy.get("#summary-popup");
-      cy.get("#summary-targets")
+      cy.get('[data-cy=view-summary-btn]').trigger("mouseover").click();
+      cy.get('[data-cy=summary-popup]');
+      cy.get('[data-cy=summary-targets]')
         .children()
         .should("have.length", x.expectedExpectations);
     });
@@ -50,14 +50,14 @@ describe("Expectation summary pop-up", () => {
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
       cy.get(
-        `#target-0-${Number(
+        '[data-cy=target-0-' + `${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}` + ']'
       )
         .trigger("mouseover")
         .click();
-      cy.get("#summary-popup");
-      cy.get("#summary-targets").children().should("have.length", 1);
+      cy.get('[data-cy=summary-popup]');
+      cy.get('[data-cy=summary-targets]').children().should("have.length", 1);
     });
   });
 
@@ -66,29 +66,29 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#outlined-multiline-static").type("fake answer");
-    cy.get("#submit-button").trigger("mouseover").click();
-    cy.get("#summary-popup");
+    cy.get('[data-cy=outlined-multiline-static]').type("fake answer");
+    cy.get('[data-cy=submit-button]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
   });
 
   it("hides text for expectations that have not been completed", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").trigger("mouseover").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 1);
-    cy.get("#exp-locked-0");
+    cy.get('[data-cy=view-summary-btn]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
+    cy.get('[data-cy=summary-targets]').children().should("have.length", 1);
+    cy.get('[data-cy=exp-locked-0]');
   });
 
   it("shows no progress for expectations that have not been completed", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#view-summary-btn").trigger("mouseover").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 1);
-    cy.get("#summary-target-0-0");
+    cy.get('[data-cy=view-summary-btn]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
+    cy.get('[data-cy=summary-targets]').children().should("have.length", 1);
+    cy.get('[data-cy=summary-target-0-0]');
   });
 
   it("shows text for expectations that have been completed", () => {
@@ -96,12 +96,12 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#outlined-multiline-static").type("fake answer");
-    cy.get("#submit-button").should("be.visible");
-    cy.get("#submit-button").trigger("mouseover").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 1);
-    cy.get("#exp-0").contains(
+    cy.get('[data-cy=outlined-multiline-static]').type("fake answer");
+    cy.get('[data-cy=submit-button]').should("be.visible");
+    cy.get('[data-cy=submit-button]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
+    cy.get('[data-cy=summary-targets]').children().should("have.length", 1);
+    cy.get('[data-cy=exp-0]').contains(
       "Current flows in the same direction as the arrow."
     );
   });
@@ -111,11 +111,11 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("#outlined-multiline-static").type("fake answer");
-    cy.get("#submit-button").should("be.visible");
-    cy.get("#submit-button").trigger("mouseover").click();
-    cy.get("#summary-popup");
-    cy.get("#summary-targets").children().should("have.length", 1);
-    cy.get("#summary-target-0-1");
+    cy.get('[data-cy=outlined-multiline-static]').type("fake answer");
+    cy.get('[data-cy=submit-button]').should("be.visible");
+    cy.get('[data-cy=submit-button]').trigger("mouseover").click();
+    cy.get('[data-cy=summary-popup]');
+    cy.get('[data-cy=summary-targets]').children().should("have.length", 1);
+    cy.get('[data-cy=summary-target-0-1]');
   });
 });
