@@ -23,7 +23,9 @@ describe("Input field", () => {
     cy.get('[data-cy=outlined-multiline-static]').type("fake short answer.");
     cy.get('[data-cy=submit-button]').click();
     cy.get('[data-cy=submit-button]').should("be.disabled");
-    cy.get('[data-cy=outlined-multiline-static]').should('be.disabled');
+    cy.get("[data-cy=outlined-multiline-static]").within(($el) => {
+      cy.get("textarea").should('be.disabled');
+    });
   });
 
   it("enables send button when input and session not finished", () => {
