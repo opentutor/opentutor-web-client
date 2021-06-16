@@ -25,17 +25,17 @@ export default function ErrorPopup(props: {
   return (
     <div>
       <Dialog
-        id="error-popup"
+        data-cy="error-popup"
         open={props.open}
         onClose={handleErrorClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle data-cy="alert-dialog-title">
           {props.errorProps.title}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText data-cy="alert-dialog-description">
             {props.errorProps.message}
           </DialogContentText>
         </DialogContent>

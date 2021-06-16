@@ -12,7 +12,7 @@ describe("lesson details", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockGraphQL(cy);
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("#title").contains("lesson 1");
+    cy.get("[data-cy=title]").contains("lesson 1");
   });
 
   it(`displays image for a lesson`, () => {
@@ -20,6 +20,8 @@ describe("lesson details", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockGraphQL(cy);
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("#image img").should("have.attr", "src", "lesson1/image.png");
+    cy.get("[data-cy=image]").within(($image) => {
+      cy.get("img").should("have.attr", "src", "lesson1/image.png");
+    });
   });
 });

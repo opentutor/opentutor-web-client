@@ -49,10 +49,10 @@ describe("screenshots - chat responses", () => {
       cyMockSession(cy, x.lesson, x.fixtureLessonContinue).as("response");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
-      cy.get("#outlined-multiline-static").type(x.userInput);
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
+      cy.get("[data-cy=submit-button]").click();
       cy.wait("@response");
-      cy.get("#thread").should("be.visible");
+      cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-response-${i}`)

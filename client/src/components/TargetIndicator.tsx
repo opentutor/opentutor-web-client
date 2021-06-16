@@ -59,7 +59,7 @@ export function TargetIndicator(props: {
     );
   }
   return (
-    <div id="targets">
+    <div data-cy="targets">
       {props.targets.map((target, index) => {
         return (
           <TargetIcon
@@ -77,12 +77,14 @@ export function TargetIndicator(props: {
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
   const styles = useStyles();
   return (
-    <List id="summary-targets">
+    <List data-cy="summary-targets">
       {props.targets.map((target, index) => {
         return (
           <ListItem key={`summary-target-${index}`}>
             <ListItemIcon
-              id={`summary-target-${index}-${Number(target.score).toFixed()}`}
+              data-cy={`summary-target-${index}-${Number(
+                target.score
+              ).toFixed()}`}
             >
               <TargetIcon
                 target={target}
@@ -93,13 +95,15 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
               />
             </ListItemIcon>
             {target.text ? (
-              <ListItemText id={`exp-${index}`}>{target.text}</ListItemText>
+              <ListItemText data-cy={`exp-${index}`}>
+                {target.text}
+              </ListItemText>
             ) : (
               <ListItemText>
                 <div className={styles.censored}>
                   <LockIcon
                     className={styles.centerLock}
-                    id={`exp-locked-${index}`}
+                    data-cy={`exp-locked-${index}`}
                   />
                 </div>
               </ListItemText>

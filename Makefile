@@ -44,7 +44,7 @@ test:
 
 .PHONY: test-all
 test-all:
-	$(MAKE) test-audit
+	#$(MAKE) test-audit
 	$(MAKE) test-format
 	$(MAKE) test-lint
 	$(MAKE) test-license
@@ -60,7 +60,6 @@ node_modules/prettier:
 .PHONY: test-audit
 test-audit:
 	cd client && $(MAKE) test-audit
-	cd docker && $(MAKE) test-audit
 
 .PHONY: test-format
 test-format: node_modules/prettier
@@ -69,12 +68,10 @@ test-format: node_modules/prettier
 .PHONY: test-lint
 test-lint:
 	cd client && $(MAKE) test-lint
-	cd docker && $(MAKE) test-lint
 
 .PHONY: test-types
 test-types:
 	cd client && $(MAKE) test-types
-	# cd docker && $(MAKE) test-types
 
 
 .PHONY: test-license

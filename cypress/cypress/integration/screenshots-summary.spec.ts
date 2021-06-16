@@ -31,10 +31,10 @@ describe("screenshots - summary popup", () => {
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
-      cy.get("#thread").should("be.visible");
+      cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("#view-summary-btn").should("be.visible");
-      cy.get("#view-summary-btn").click();
+      cy.get("[data-cy=view-summary-btn]").should("be.visible");
+      cy.get("[data-cy=view-summary-btn]").click();
       cy.get("[data-cy=summary-popup-trans-done]");
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-open-summary-${i}`)
@@ -62,14 +62,14 @@ describe("screenshots - summary popup", () => {
       cyMockSession(cy, x.lesson, x.fixtureLessonStart).as("response");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
-      cy.get("#outlined-multiline-static").type(x.userInput);
-      cy.get("#submit-button").should("be.visible");
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
+      cy.get("[data-cy=submit-button]").should("be.visible");
+      cy.get("[data-cy=submit-button]").click();
       cy.wait("@response");
-      cy.get("#thread").should("be.visible");
+      cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("#view-summary-btn").should("be.visible");
-      cy.get("#view-summary-btn").click();
+      cy.get("[data-cy=view-summary-btn]").should("be.visible");
+      cy.get("[data-cy=view-summary-btn]").click();
       cy.get("[data-cy=summary-popup-trans-done]");
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-summary-feedback-${i}`)

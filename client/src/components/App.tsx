@@ -262,7 +262,7 @@ function App(props: {
           setOpen={setErrorOpen}
           errorProps={errorProps}
         />
-        <Button id="view-summary-btn" onClick={onSummaryOpenRequested}>
+        <Button data-cy="view-summary-btn" onClick={onSummaryOpenRequested}>
           View Summary
         </Button>
       </div>

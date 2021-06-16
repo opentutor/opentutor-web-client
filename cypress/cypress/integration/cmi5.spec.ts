@@ -17,7 +17,7 @@ describe("Cmi5 integration", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));
-    cy.get("#guest-prompt").should("not.exist");
+    cy.get("[data-cy=guest-prompt]").should("not.exist");
   });
 
   it("completes cmi5 initialization when launch params present", () => {

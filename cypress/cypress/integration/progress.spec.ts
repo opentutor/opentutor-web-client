@@ -13,19 +13,19 @@ describe("Expectation-progress Indicators", () => {
       cyMockDialog(cy, "q1", "q1-1-p1.json");
       cy.visit("/?lesson=q1&guest=guest");
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-1-${Number(
+        `[data-cy=target-1-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[1].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-2-${Number(
+        `[data-cy=target-2-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[2].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
@@ -36,22 +36,22 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-2-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-2-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
-      cy.get("#outlined-multiline-static").type("Peer pressure");
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
+      cy.get("[data-cy=submit-button]").click();
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-1-${Number(
+        `[data-cy=target-1-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[1].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-2-${Number(
+        `[data-cy=target-2-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[2].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
@@ -63,22 +63,22 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-1-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
-      cy.get("#outlined-multiline-static").type("short fake answer");
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type("short fake answer");
+      cy.get("[data-cy=submit-button]").click();
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-1-${Number(
+        `[data-cy=target-1-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[1].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
       cy.get(
-        `#target-2-${Number(
+        `[data-cy=target-2-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[2].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
@@ -89,9 +89,9 @@ describe("Expectation-progress Indicators", () => {
       cyMockDialog(cy, "q2", "q1-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
@@ -102,12 +102,12 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-2-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-2-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
-      cy.get("#outlined-multiline-static").type("Peer pressure");
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
+      cy.get("[data-cy=submit-button]").click();
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
@@ -118,12 +118,12 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
-      cy.get("#outlined-multiline-static").type("very short answer");
-      cy.get("#submit-button").click();
+      cy.get("[data-cy=outlined-multiline-static]").type("very short answer");
+      cy.get("[data-cy=submit-button]").click();
       cy.get(
-        `#target-0-${Number(
+        `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}`
+        ).toFixed()}]`
       );
     });
   });
