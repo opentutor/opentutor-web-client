@@ -57,15 +57,12 @@ exec-shell:
 
 .PHONY: format
 format:
-	npm run format
+	cd .. && $(MAKE) format
 
+.PHONY: license
+license:
+	cd .. && $(MAKE) license
 node_modules/eslint:
-	npm install
-
-node_modules/license-check-and-add:
-	npm ci
-
-node_modules/prettier:
 	npm install
 
 node_modules/typescript:
@@ -85,11 +82,11 @@ test-audit:
 
 .PHONY: test-format
 test-format:
-	npm run test:format
+	cd .. && $(MAKE) test-format
 
 .PHONY: test-license
-test-license: node_modules/license-check-and-add
-	npm run test:license
+test-license:
+	cd .. && $(MAKE) test-license
 
 .PHONY: test-lint
 test-lint:

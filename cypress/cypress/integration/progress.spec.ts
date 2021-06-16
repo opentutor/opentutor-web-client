@@ -63,9 +63,7 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-1-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
-      cy.get("#outlined-multiline-static").type(
-        "short fake answer"
-      );
+      cy.get("#outlined-multiline-static").type("short fake answer");
       cy.get("#submit-button").click();
       cy.get(
         `#target-0-${Number(
@@ -120,9 +118,7 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
-      cy.get("#outlined-multiline-static").type(
-        "very short answer"
-      );
+      cy.get("#outlined-multiline-static").type("very short answer");
       cy.get("#submit-button").click();
       cy.get(
         `#target-0-${Number(
