@@ -65,12 +65,6 @@ license:
 node_modules/eslint:
 	npm install
 
-node_modules/license-check-and-add:
-	npm ci
-
-node_modules/prettier:
-	npm install
-
 node_modules/typescript:
 	npm install
 

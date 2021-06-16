@@ -27,12 +27,6 @@ node_modules/eslint:
 node_modules/gatsby-cli:
 	npm ci
 
-node_modules/license-check-and-add:
-	npm ci
-
-node_modules/prettier:
-	npm ci
-
 node_modules/typescript:
 	npm ci
 

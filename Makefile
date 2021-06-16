@@ -51,6 +51,12 @@ test-all:
 	$(MAKE) test-types
 	# $(MAKE) test
 
+node_modules/license-check-and-add:
+	npm ci
+
+node_modules/prettier:
+	npm ci
+
 .PHONY: test-audit
 test-audit:
 	cd client && $(MAKE) test-audit
