@@ -35,8 +35,7 @@ describe("Lesson query parameter", () => {
       lesson: "q1",
       fixtureLessonStart: "q1-1-p1.json",
       fixtureLessonContinue: "q1-1-p2.json",
-      userInput:
-        "fake user answer",
+      userInput: "fake user answer",
     },
     {
       lesson: "q2",

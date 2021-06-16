@@ -40,7 +40,7 @@ describe("Input field", () => {
   it("can send input with button", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
-    cyMockSession(cy, "q2", "q2-1-p2.json").as("session");;
+    cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "some fake answer";
     cy.get('[data-cy=outlined-multiline-static]').should("be.visible");
@@ -57,7 +57,7 @@ describe("Input field", () => {
   it("can send input with enter", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
-    cyMockSession(cy, "q2", "q2-1-p2.json").as("session");;
+    cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "another fake answer";
     cy.get('[data-cy=outlined-multiline-static]').should("be.visible");
