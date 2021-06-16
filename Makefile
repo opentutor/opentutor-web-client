@@ -5,12 +5,12 @@ TEST_E2E_IMAGE_SNAPSHOTS_PATH?=cypress/snapshots
 TEST_E2E_DOCKER_IMAGE_SNAPSHOTS_PATH?=/app/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
 TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH?=$(PWD)/cypress/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
 
-PHONY: clean
+.PHONY: clean
 clean:
 	cd client && $(MAKE) clean
 	cd docker && $(MAKE) clean
 
-PHONY: develop
+.PHONY: develop
 develop:
 	cd client && $(MAKE) develop
 
@@ -22,9 +22,9 @@ docker-build:
 		--build-arg "OPENTUTOR_CLIENT_VERSION=$(OPENTUTOR_CLIENT_VERSION)" \
 	.
 
-PHONY: format
-format:
-	cd client && $(MAKE) format
+.PHONY: format
+format: node_modules/prettier
+	npm run format
 
 LICENSE:
 	@echo "you must have a LICENSE file" 1>&2
@@ -36,13 +36,13 @@ LICENSE_HEADER:
 
 .PHONY: license
 license: LICENSE LICENSE_HEADER
-	npm ci && npm run license:fix
+	npm run license:fix
 
-PHONY: test
+.PHONY: test
 test:
 	cd client && $(MAKE) test
 
-PHONY: test-all
+.PHONY: test-all
 test-all:
 	$(MAKE) test-audit
 	$(MAKE) test-format
@@ -51,22 +51,21 @@ test-all:
 	$(MAKE) test-types
 	# $(MAKE) test
 
-PHONY: test-audit
+.PHONY: test-audit
 test-audit:
 	cd client && $(MAKE) test-audit
 	cd docker && $(MAKE) test-audit
 
-PHONY: test-format
-test-format:
-	cd client && $(MAKE) test-format
-	cd docker && $(MAKE) test-format
+.PHONY: test-format
+test-format: node_modules/prettier
+	npm run test:format
 
-PHONY: test-lint
+.PHONY: test-lint
 test-lint:
 	cd client && $(MAKE) test-lint
 	cd docker && $(MAKE) test-lint
 
-PHONY: test-types
+.PHONY: test-types
 test-types:
 	cd client && $(MAKE) test-types
 	# cd docker && $(MAKE) test-types
@@ -97,7 +96,7 @@ test-e2e-image-snapshots-clean:
 test-e2e-image-snapshots-copy:
 	docker cp $(shell $(TEST_E2E_DOCKER_COMPOSE) ps -a -q cypress):$(TEST_E2E_DOCKER_IMAGE_SNAPSHOTS_PATH) $(TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH)
 
-PHONY: test-e2e-exec-image-snapshots-update
+.PHONY: test-e2e-exec-image-snapshots-update
 test-e2e-exec-image-snapshots-update:
 	$(TEST_E2E_DOCKER_COMPOSE) exec cypress npx cypress run --env updateSnapshots=true
 

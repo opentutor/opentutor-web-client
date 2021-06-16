@@ -37,7 +37,6 @@
     "gatsby-plugin-typescript": "^3.2.0",
     "license-check-and-add": "^4.0.2",
     "npm-check-updates": "^11.3.0",
-    "prettier": "^2.2.1",
     "typescript": "^4.2.3"
   },
   "keywords": [
@@ -54,10 +53,8 @@
     "serve": "gatsby serve --prefix-paths",
     "deps:update": "ncu -u",
     "test": "echo 'all tests currently cypress'",
-    "test:all": "npx run test:format && npx run test:lint && npx run test:audit && npx run test:types && npx run test:cypress && npx test",
     "test:audit": "npm audit --audit-level=moderate --production",
     "test:cypress": "npx run cy:run --spec 'cypress/**/*.spec.js'",
-    "test:format": "prettier --check '**/*.{js,jsx,json,ts,tsx}'",
     "test:lint": "eslint src --ext ts --ext tsx --ext js --ext jsx",
     "test:types": "tsc --noEmit"
   },
