@@ -23,7 +23,9 @@ describe("Expectation indicators", () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixture);
       cy.visit(`/?lesson=${x.lesson}&guest=guest`);
-      cy.get('[data-cy=targets]').children().should("have.length", x.expectedExpCount);
+      cy.get("[data-cy=targets]")
+        .children()
+        .should("have.length", x.expectedExpCount);
     });
   });
 });

@@ -20,7 +20,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?guest=guest");
-    cy.get('[data-cy=error-popup]').contains("Lesson not provided");
+    cy.get("[data-cy=error-popup]").contains("Lesson not provided");
   });
 
   it("prompts 'not found' on 404 response", () => {
@@ -36,7 +36,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q12312&guest=guest");
-    cy.get('[data-cy=error-popup]').contains("Lesson not found");
+    cy.get("[data-cy=error-popup]").contains("Lesson not found");
   });
 
   it("prompts 'Could not continue lesson' on 403 response (cheating)", () => {
@@ -53,9 +53,9 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
-    cy.get('[data-cy=outlined-multiline-static]').type("PLACEHOLDER");
-    cy.get('[data-cy=submit-button]').click();
-    cy.get('[data-cy=error-popup]').contains("Could not continue lesson");
+    cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=error-popup]").contains("Could not continue lesson");
   });
 
   it("prompts 'already ended' on 410 response", () => {
@@ -72,9 +72,9 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q2&guest=guest");
-    cy.get('[data-cy=outlined-multiline-static]').type("PLACEHOLDER");
-    cy.get('[data-cy=submit-button]').click();
-    cy.get('[data-cy=error-popup]').contains("Lesson session ended");
+    cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=error-popup]").contains("Lesson session ended");
   });
 
   it("prompts 'server error' on any 5xx error response", () => {
@@ -90,6 +90,6 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q2&guest=guest");
-    cy.get('[data-cy=error-popup]').contains("Server Error");
+    cy.get("[data-cy=error-popup]").contains("Server Error");
   });
 });
