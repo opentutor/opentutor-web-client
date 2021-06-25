@@ -13,6 +13,10 @@ clean:
 develop: .env.development node_modules/gatsby-cli
 	npx gatsby develop
 
+.PHONY: pretty
+pretty:
+	cd .. && $(MAKE) pretty
+	
 .PHONY: format
 format:
 	cd .. && $(MAKE) format
