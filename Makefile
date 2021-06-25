@@ -22,9 +22,14 @@ docker-build:
 		--build-arg "OPENTUTOR_CLIENT_VERSION=$(OPENTUTOR_CLIENT_VERSION)" \
 	.
 
-.PHONY: format
-format: node_modules/prettier
-	npm run format
+PHONY: format
+format: LICENSE LICENSE_HEADER node_modules/license-check-and-add
+	npm ci && npm run license:fix
+	cd client && $(MAKE) format
+
+PHONY: pretty
+pretty:
+	cd client && $(MAKE) format
 
 LICENSE:
 	@echo "you must have a LICENSE file" 1>&2
