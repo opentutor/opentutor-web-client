@@ -15,20 +15,23 @@ describe("Input field", () => {
     cy.get("[data-cy=submit-button]").should("be.disabled");
   });
 
-  it("disables send button when session finished", () => {
+  it("hides send button, enables continue, and hides summary button when session finished", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
     cy.get("[data-cy=submit-button]").click();
-    cy.get("[data-cy=submit-button]").should("be.disabled");
+    cy.get("[data-cy=submit-button]").should("not.exist");
+    cy.get("[data-cy=view-summary-btn]").should("not.exist");
+    cy.get("[data-cy=continue-button]").should("be.visible");
+    cy.get("[data-cy=continue-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").within(($el) => {
       cy.get("textarea").should("be.disabled");
     });
   });
 
-  it("enables send button when input and session not finished", () => {
+  it.only("enables send button when input and session not finished", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
