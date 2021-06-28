@@ -158,22 +158,9 @@ const ChatForm = (props: {
         onKeyPress={onKeyPress}
       />
       <br />
-<<<<<<< Updated upstream
-      <Button
-        data-cy="submit-button"
-        variant="contained"
-        color="primary"
-        className={styles.button}
-        endIcon={<SendIcon />}
-        onClick={handleClick}
-        disabled={chat.trim().length === 0 || !sessionAlive}
-      >
-        Send
-      </Button>
-=======
       {props.sessionAlive ? (
         <Button
-          id="submit-button"
+          data-cy="submit-button"
           variant="contained"
           color="primary"
           className={styles.button}
@@ -185,7 +172,7 @@ const ChatForm = (props: {
         </Button>
       ) : (
         <Button
-          id="continue-button"
+          data-cy="continue-button"
           variant="contained"
           color="primary"
           className={styles.button}
@@ -196,7 +183,6 @@ const ChatForm = (props: {
           Continue
         </Button>
       )}
->>>>>>> Stashed changes
     </form>
   );
 };

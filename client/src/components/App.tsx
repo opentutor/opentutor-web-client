@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "70%",
     backgroundColor: theme.palette.primary.main,
-    textAlign: "left"
+    textAlign: "left",
   },
 }));
 
