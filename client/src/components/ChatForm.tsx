@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import {
@@ -175,7 +175,7 @@ const ChatForm = (props: {
           variant="contained"
           color="primary"
           className={styles.button}
-          endIcon={<ArrowForwardIosIcon />}
+          endIcon={<ArrowForwardIcon />}
           onClick={props.onSummaryOpenRequested}
           disabled={props.sessionAlive}
         >
