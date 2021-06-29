@@ -57,7 +57,6 @@ const ChatForm = (props: {
     text: "",
     seq: 0,
   });
-  // const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
     if (!props.sessionAlive) {
