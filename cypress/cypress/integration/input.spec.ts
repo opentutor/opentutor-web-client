@@ -31,7 +31,7 @@ describe("Input field", () => {
     });
   });
 
-  it.only("enables send button when input and session not finished", () => {
+  it("enables send button when input and session not finished", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
