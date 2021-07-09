@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import {
@@ -46,6 +47,9 @@ const ChatForm = (props: {
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
   handleErrorOpen: () => void;
   handleSessionDone: (session: SessionData) => void;
+  sessionAlive: boolean;
+  setSessionAlive: React.Dispatch<React.SetStateAction<boolean>>;
+  onSummaryOpenRequested: () => void;
 }): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
@@ -53,10 +57,9 @@ const ChatForm = (props: {
     text: "",
     seq: 0,
   });
-  const [sessionAlive, setSessionAlive] = useState(true);
 
   useEffect(() => {
-    if (!sessionAlive) {
+    if (!props.sessionAlive) {
       return;
     }
     async function fetchData(): Promise<void> {
@@ -97,7 +100,7 @@ const ChatForm = (props: {
           // Session complete.
           // Show summary then send score on summary close
           if (dialogData.completed) {
-            setSessionAlive(false);
+            props.setSessionAlive(false);
             props.handleSessionDone(dialogData.sessionInfo);
           }
           props.setSession(dialogData.sessionInfo);
@@ -127,7 +130,7 @@ const ChatForm = (props: {
       return;
     }
     e.preventDefault();
-    if (chat.trim().length === 0 || !sessionAlive) {
+    if (chat.trim().length === 0 || !props.sessionAlive) {
       return;
     }
     handleClick(e);
@@ -138,7 +141,7 @@ const ChatForm = (props: {
       <TextField
         data-cy="outlined-multiline-static"
         label={
-          sessionAlive
+          props.sessionAlive
             ? "Chat with OpenTutor"
             : "Thanks for chatting with OpenTutor!"
         }
@@ -147,24 +150,38 @@ const ChatForm = (props: {
         variant="outlined"
         className={styles.chatbox}
         value={chat}
-        disabled={!sessionAlive}
+        disabled={!props.sessionAlive}
         onChange={(e): void => {
           setChat(e.target.value);
         }}
         onKeyPress={onKeyPress}
       />
       <br />
-      <Button
-        data-cy="submit-button"
-        variant="contained"
-        color="primary"
-        className={styles.button}
-        endIcon={<SendIcon />}
-        onClick={handleClick}
-        disabled={chat.trim().length === 0 || !sessionAlive}
-      >
-        Send
-      </Button>
+      {props.sessionAlive ? (
+        <Button
+          data-cy="submit-button"
+          variant="contained"
+          color="primary"
+          className={styles.button}
+          endIcon={<SendIcon />}
+          onClick={handleClick}
+          disabled={chat.trim().length === 0 || !props.sessionAlive}
+        >
+          Send
+        </Button>
+      ) : (
+        <Button
+          data-cy="continue-button"
+          variant="contained"
+          color="primary"
+          className={styles.button}
+          endIcon={<ArrowForwardIcon />}
+          onClick={props.onSummaryOpenRequested}
+          disabled={props.sessionAlive}
+        >
+          Continue
+        </Button>
+      )}
     </form>
   );
 };

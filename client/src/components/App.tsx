@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontWeight: "bold",
     fontSize: "70%",
+    backgroundColor: theme.palette.primary.main,
+    textAlign: "left",
   },
 }));
 
@@ -62,6 +64,7 @@ function App(props: {
     showSummary: false,
     summaryMessage: "Let's see how you're doing so far!",
   });
+  const [sessionAlive, setSessionAlive] = React.useState(true);
   const [targets, setTargets] = React.useState<Target[]>([]);
   const [session, setSession] = React.useState<SessionData>({
     sessionId: "",
@@ -249,6 +252,9 @@ function App(props: {
           setErrorProps={setErrorProps}
           handleErrorOpen={handleErrorOpen}
           handleSessionDone={handleSessionDone}
+          sessionAlive={sessionAlive}
+          setSessionAlive={setSessionAlive}
+          onSummaryOpenRequested={onSummaryOpenRequested}
         />
         <SummaryPopup
           open={sessionSummary.showSummary}
@@ -262,12 +268,16 @@ function App(props: {
           setOpen={setErrorOpen}
           errorProps={errorProps}
         />
-        <Button data-cy="view-summary-btn" onClick={onSummaryOpenRequested}>
-          View Summary
-        </Button>
+        {sessionAlive ? (
+          <Button data-cy="view-summary-btn" onClick={onSummaryOpenRequested}>
+            Preview Summary
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
       <Typography className={styles.buildInfo}>
-        OpenTutor Client {process.env.OPENTUTOR_CLIENT_VERSION}
+        OpenTutor {process.env.OPENTUTOR_CLIENT_VERSION}
       </Typography>
     </div>
   );

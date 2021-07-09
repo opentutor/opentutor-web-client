@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontWeight: "bold",
     fontSize: "70%",
+    backgroundColor: theme.palette.primary.main,
+    textAlign: "left",
   },
   backButton: {
     marginTop: 25,
@@ -85,7 +87,7 @@ const NotFoundPage: React.FC = () => {
           </Button>
         </div>
         <Typography className={styles.buildInfo}>
-          OpenTutor Client {process.env.OPENTUTOR_CLIENT_VERSION}
+          OpenTutor {process.env.OPENTUTOR_CLIENT_VERSION}
         </Typography>
       </div>
     </div>
