@@ -26,7 +26,7 @@ const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql/";
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
     query: `
-      query {
+      query FetchLessonInfo {
         lessonInfo(lessonId: "${lessonId}") {
           name
           image

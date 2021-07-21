@@ -4,21 +4,34 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cyMockDialog, cyMockGraphQL, cySetup } from "../support/functions";
+import {
+  cyMockDefault,
+  cyMockDialog,
+  cyMockImage,
+  cySetup,
+  mockGQL,
+} from "../support/functions";
+import { lessonInfo } from "../fixtures/lesson-graphql-default";
 
 describe("lesson details", () => {
   it(`displays name for a lesson`, () => {
-    cySetup(cy);
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
     cyMockDialog(cy, "q1", "q1-1-p1.json");
-    cyMockGraphQL(cy);
+
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=title]").contains("lesson 1");
   });
 
   it(`displays image for a lesson`, () => {
-    cySetup(cy);
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
     cyMockDialog(cy, "q1", "q1-1-p1.json");
-    cyMockGraphQL(cy);
+
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=image]").within(($image) => {
       cy.get("img").should("have.attr", "src", "lesson1/image.png");
