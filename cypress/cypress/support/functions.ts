@@ -70,9 +70,70 @@ export function cyMockDialog(cy, lesson: string, fixture: string) {
   );
 }
 
-export function cyMockGraphQL(cy, fixture = "lesson-graphql-default.json") {
-  cy.intercept("**/lesson1/image.png", { fixture: "lesson1.png" });
-  return cy.intercept("POST", `**/graphql`, staticResponse({ fixture }));
+export function cyMockImage(cy, path, fixture) {
+  cy.intercept(path, { fixture: fixture });
+}
+
+export function cyMockDefault(
+  cy,
+  args: {
+    gqlQueries?: MockGraphQLQuery[];
+  } = {}
+) {
+  const gqlQueries = args?.gqlQueries || [];
+  cySetup(cy);
+
+  cyInterceptGraphQL(cy, [...gqlQueries]);
+}
+
+interface MockGraphQLQuery {
+  query: string;
+  data: any | any[];
+}
+
+export function mockGQL(query: string, data: any | any[]): MockGraphQLQuery {
+  return {
+    query,
+    data,
+  };
+}
+
+export function cyInterceptGraphQL(cy, mocks: MockGraphQLQuery[]): void {
+  const queryCalls: any = {};
+  for (const mock of mocks) {
+    queryCalls[mock.query] = 0;
+  }
+  cy.intercept("/graphql", (req) => {
+    const { body } = req;
+    const queryBody = body.query.replace(/\s+/g, " ").replace("\n", "").trim();
+    let handled = false;
+    for (const mock of mocks) {
+      if (
+        queryBody.match(new RegExp(`^(mutation|query) ${mock.query}[{(\\s]`))
+      ) {
+        const data = Array.isArray(mock.data) ? mock.data : [mock.data];
+        const bodyContent =
+          data[Math.min(queryCalls[mock.query], data.length - 1)];
+        let body = bodyContent;
+        req.alias = mock.query;
+        req.reply(
+          staticResponse({
+            body: {
+              data: body,
+              errors: null,
+            },
+          })
+        );
+        queryCalls[mock.query] += 1;
+        handled = true;
+        break;
+      }
+    }
+    if (!handled) {
+      console.error(`failed to handle query for...`);
+      console.error(req);
+    }
+  });
 }
 
 export function cyMockSession(cy, lesson: string, fixture: string) {
