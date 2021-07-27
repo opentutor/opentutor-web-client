@@ -27,7 +27,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import LessonImage from "./LessonImage";
+import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 
@@ -231,7 +231,7 @@ function App(props: {
   return (
     <div className={styles.foreground}>
       {noheader ? undefined : <HeaderBar />}
-      <LessonImage />
+      <LessonMedia />
       <div
         className={styles.chatWindow}
         style={{ height: image ? "65%" : "100%" }}

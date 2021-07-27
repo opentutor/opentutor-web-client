@@ -40,6 +40,13 @@ export interface Target {
 export interface Lesson {
   name: string;
   image: string;
+  video: Video;
+}
+
+export interface Video {
+  link: string;
+  start: number;
+  end: number;
 }
 
 export interface ExpectationData {
