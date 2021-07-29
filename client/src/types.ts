@@ -41,6 +41,13 @@ export interface Lesson {
   name: string;
   image: string;
   video: Video;
+  mediaType: string;
+}
+
+export enum MediaType {
+  NONE = "none",
+  IMAGE = "image",
+  VIDEO = "video",
 }
 
 export interface Video {

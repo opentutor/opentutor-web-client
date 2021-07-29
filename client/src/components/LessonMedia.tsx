@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
-import { Lesson, Video } from "types";
+import { Lesson, Video, MediaType } from "types";
 import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +48,7 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
   const { lesson } = props.search;
   const [image, setImage] = React.useState<string>();
   const [video, setVideo] = React.useState<Video>();
+  const [mediaType, setMediaType] = React.useState<string>(MediaType.NONE);
   const [imgDims, setImgDims] = React.useState({ width: 0, height: 0 });
   const [isImgExpanded, setImgExpanded] = React.useState(false);
   const [isVideoOver, setIsVideoOver] = React.useState(false);
@@ -91,6 +92,7 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
         if (lesson) {
           setImage(lesson.image);
           setVideo(lesson.video);
+          setMediaType(lesson.mediaType);
           const img = new Image();
           img.addEventListener("load", function () {
             setImgDims({
@@ -104,9 +106,10 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
       .catch((err: string) => console.error(err));
   }, [lesson]);
 
-  const videoPlayer:any = useRef(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const videoPlayer: any = useRef(null);
 
-  if (image) {
+  if (mediaType === MediaType.IMAGE) {
     return (
       <div
         data-cy="image"
@@ -117,8 +120,7 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
         {getZoom()}
       </div>
     );
-  } else if (video) {
-    // } else {
+  } else if (mediaType === MediaType.VIDEO) {
     return (
       <div
         style={{
@@ -132,22 +134,22 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
             ref={videoPlayer}
             playing={!isVideoOver}
             data-cy="video"
-            // url='https://www.youtube.com/watch?v=ysz5S6PUM-U'
-            url={video.link}
-            // controls={true}
+            url={video?.link ?? "https://www.youtube.com/watch?v=KcMlPl9jArM"}
             config={{
               playerVars: {
                 modestbranding: 1,
-                start: video.start,
-                end: video.end,
+                start: video?.start ?? 0,
+                end: video?.end ?? videoPlayer.current.getDuration(),
                 disablekb: 1,
-                // autoplay: 1
               },
             }}
             onProgress={(player) => {
               console.log(player);
-              if(player.playedSeconds > video.end) {
-                setIsVideoOver(true)
+              if (
+                player.playedSeconds >
+                (video?.end ?? videoPlayer.current.getDuration())
+              ) {
+                setIsVideoOver(true);
               }
             }}
           />
@@ -171,14 +173,14 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                   }}
-                  onClick={()=>{
-                    setIsVideoOver(false)
-                    console.log(videoPlayer)
-                    videoPlayer.current.seekTo(video.start, 'seconds')
+                  onClick={() => {
+                    setIsVideoOver(false);
+                    console.log(videoPlayer);
+                    videoPlayer.current.seekTo(video?.start ?? 0, "seconds");
                   }}
                 >
                   <ReplayIcon style={{ color: "white", fontSize: 40 }} />
-                  <Typography style={{ color: "white"}} >Replay</Typography>
+                  <Typography style={{ color: "white" }}>Replay</Typography>
                 </IconButton>
               </div>
             </div>
