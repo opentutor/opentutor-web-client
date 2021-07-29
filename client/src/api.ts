@@ -34,7 +34,7 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
           video {
             link
             start
-            stop
+            end
           }
         }  
       }
