@@ -6,5 +6,11 @@ The full terms of this copyright and license should always be found in the root 
 */
 export const lessonInfo = {
   name: "lesson 1",
+  mediaType: "image",
   image: "lesson1/image.png",
+  video: {
+    link: "",
+    start: 0,
+    end: 90,
+  },
 };

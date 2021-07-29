@@ -44,6 +44,7 @@ describe("lesson details", () => {
         mockGQL("FetchLessonInfo", {
           lessonInfo: {
             name: "lesson 1",
+            mediaType: "video",
             image: "",
             video: {
               link: "https://www.youtube.com/watch?v=-lLr7Fhh67c",
@@ -54,15 +55,9 @@ describe("lesson details", () => {
         }),
       ],
     });
-    // cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
     cyMockDialog(cy, "q1", "q1-1-p1.json");
 
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=video]");
-    cy.wait(10000);
-    cy.get("[data-cy=replay-button]");
-    // .within(($image) => {
-    //   cy.get("img").should("have.attr", "src", "lesson1/image.png");
-    // });
   });
 });
