@@ -10,11 +10,12 @@ import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { makeStyles } from "@material-ui/core/styles";
-import { IconButton } from "@material-ui/core";
+import { Grid, IconButton } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
 import { Lesson, Video, MediaType } from "types";
 import withLocation from "wrap-with-location";
+import LockIcon from "@material-ui/icons/Lock";
 
 const useStyles = makeStyles((theme) => ({
   scroll: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     width: "100%",
-    height: "35%",
+    height: "50%",
     overflow: "auto",
     whiteSpace: "nowrap",
   },
@@ -41,6 +42,39 @@ const useStyles = makeStyles((theme) => ({
     width: 50,
     color: "white",
   },
+  centerLock: {
+    position: "absolute",
+    top: "50%",
+    left: "calc(50% + 0px)",
+    transform: "translate(-50%, -50%)",
+  },
+  released: {
+    marginTop: "-30",
+    transform: "translate(0%, -60%)",
+    padding: 10,
+    height: 10,
+    width: "140%",
+  },
+  censored: {
+    borderRadius: 10,
+    background: "#929fad",
+    // background: theme.palette.primary.light,
+    // background: "#0084ff",
+    color: "black",
+    padding: 10,
+    height: 10,
+    width: "calc(100% - 20px)",
+    position: "relative",
+    borderColor: theme.palette.primary.main,
+    borderWidth: 2,
+    borderStyle: "solid"
+  },
+  survey: {
+    padding: theme.spacing(2),
+    maxWidth: 500,
+    marginLeft: "auto",
+    marginRight: "auto",
+  }
 }));
 
 const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
@@ -111,13 +145,51 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
 
   if (mediaType === MediaType.IMAGE) {
     return (
-      <div
-        data-cy="image"
-        className={styles.scroll}
-        onClick={handleImageExpand}
-      >
-        {getImage()}
-        {getZoom()}
+      <div style={{height:"35%"}}>
+        <div
+          data-cy="image"
+          className={styles.scroll}
+          onClick={handleImageExpand}
+        >
+          {getImage()}
+          {getZoom()}
+        </div>
+        <div className={styles.survey}>
+          <Grid container spacing={2} >
+            <Grid container item spacing={2} >
+              <Grid item xs={12} >
+                <div className={styles.censored}>
+                  {/* <LockIcon
+                    className={styles.centerLock}
+                  /> */}
+                  <Typography className={styles.centerLock} variant="h6">
+                    1
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+
+            <Grid container item spacing={2} >
+              <Grid item xs={12} >
+                <div className={styles.censored}>
+                  <Typography className={styles.centerLock} variant="body1" style={{width:"100%"}}>
+                    Sailors should be well-rounded team-players
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+
+            <Grid container item spacing={2} >
+              <Grid item xs={12}>
+                <div className={styles.censored}>
+                  <Typography className={styles.centerLock} variant="h6">
+                    3
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+          </Grid>
+        </div>
       </div>
     );
   } else if (mediaType === MediaType.VIDEO) {

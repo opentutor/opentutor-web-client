@@ -236,11 +236,11 @@ function App(props: {
         className={styles.chatWindow}
         style={{ height: image ? "65%" : "100%" }}
       >
-        <TargetIndicator
+        {/* <TargetIndicator
           targets={targets}
           showSummary={onSummaryOpenRequested}
-        />
-        <ChatThread messages={messages} />
+        /> */}
+        <ChatThread messages={messages}/>
         <ChatForm
           lesson={lesson}
           username={username}

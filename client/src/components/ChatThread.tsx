@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
   },
   body: {
+    marginTop: 5,
     width: "90%",
     maxWidth: 400,
     height: "calc(100% - 295px)",
