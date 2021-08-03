@@ -25,7 +25,7 @@ describe("lesson details", () => {
     cy.get("[data-cy=title]").contains("lesson 1");
   });
 
-  it.only(`displays image for a lesson`, () => {
+  it(`displays image for a lesson`, () => {
     cyMockDefault(cy, {
       gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
     });

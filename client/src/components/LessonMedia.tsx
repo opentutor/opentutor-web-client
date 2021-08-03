@@ -13,9 +13,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, IconButton } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
-import { Lesson, Video, MediaType } from "types";
+import { Lesson, Video, MediaType, Target } from "types";
 import withLocation from "wrap-with-location";
-import LockIcon from "@material-ui/icons/Lock";
 
 const useStyles = makeStyles((theme) => ({
   scroll: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     width: "100%",
-    height: "50%",
+    height: "100%",
     overflow: "auto",
     whiteSpace: "nowrap",
   },
@@ -57,29 +56,34 @@ const useStyles = makeStyles((theme) => ({
   },
   censored: {
     borderRadius: 10,
-    background: "#929fad",
-    // background: theme.palette.primary.light,
+    // background: "#929fad",
+    background: theme.palette.primary.main,
     // background: "#0084ff",
-    color: "black",
+    color: "white",
     padding: 10,
     height: 10,
     width: "calc(100% - 20px)",
     position: "relative",
-    borderColor: theme.palette.primary.main,
+    borderColor: "orange",
     borderWidth: 2,
-    borderStyle: "solid"
+    borderStyle: "solid",
   },
   survey: {
     padding: theme.spacing(2),
     maxWidth: 500,
     marginLeft: "auto",
     marginRight: "auto",
-  }
+  },
 }));
 
-const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
+const LessonMedia = (props: {
+  search: { lesson: string };
+  surveySays: boolean;
+  targets: Target[];
+}): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
+  const { surveySays, targets } = props;
   const [image, setImage] = React.useState<string>();
   const [video, setVideo] = React.useState<Video>();
   const [mediaType, setMediaType] = React.useState<string>(MediaType.NONE);
@@ -145,125 +149,210 @@ const LessonMedia = (props: { search: { lesson: string } }): JSX.Element => {
 
   if (mediaType === MediaType.IMAGE) {
     return (
-      <div style={{height:"35%"}}>
-        <div
-          data-cy="image"
-          className={styles.scroll}
-          onClick={handleImageExpand}
-        >
-          {getImage()}
-          {getZoom()}
-        </div>
-        <div className={styles.survey}>
-          <Grid container spacing={2} >
-            <Grid container item spacing={2} >
-              <Grid item xs={12} >
-                <div className={styles.censored}>
-                  {/* <LockIcon
-                    className={styles.centerLock}
-                  /> */}
-                  <Typography className={styles.centerLock} variant="h6">
-                    1
-                  </Typography>
-                </div>
+      <>
+        <div style={{ height: "35%" }}>
+          <div
+            data-cy="image"
+            className={styles.scroll}
+            style={surveySays ? { height: "50%" } : {}}
+            onClick={handleImageExpand}
+          >
+            {getImage()}
+            {getZoom()}
+          </div>
+          {surveySays ? (
+            <div className={styles.survey}>
+              <Grid container spacing={2}>
+                {targets.map((target, idx) => {
+                  return (
+                    <Grid container item spacing={2} key={idx}>
+                      <Grid item xs={12}>
+                        <div className={styles.censored}>
+                          <Typography
+                            className={styles.centerLock}
+                            variant={!target.achieved ? "h6" : "caption"}
+                            style={{ width: "100%" }}
+                          >
+                            {target.achieved ? target.text : idx + 1}
+                          </Typography>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  );
+                })}
+                {/* <Grid container item spacing={2}>
+                <Grid item xs={12}>
+                  <div className={styles.censored}>
+                    <Typography className={styles.centerLock} variant="h6">
+                      1
+                    </Typography>
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Grid container item spacing={2} >
-              <Grid item xs={12} >
-                <div className={styles.censored}>
-                  <Typography className={styles.centerLock} variant="body1" style={{width:"100%"}}>
-                    Sailors should be well-rounded team-players
-                  </Typography>
-                </div>
+              <Grid container item spacing={2}>
+                <Grid item xs={12}>
+                  <div className={styles.censored}>
+                    <Typography
+                      className={styles.centerLock}
+                      variant="body1"
+                      style={{ width: "100%" }}
+                    >
+                      Sailors should be well-rounded team-players
+                    </Typography>
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Grid container item spacing={2} >
-              <Grid item xs={12}>
-                <div className={styles.censored}>
-                  <Typography className={styles.centerLock} variant="h6">
-                    3
-                  </Typography>
-                </div>
+              <Grid container item spacing={2}>
+                <Grid item xs={12}>
+                  <div className={styles.censored}>
+                    <Typography className={styles.centerLock} variant="h6">
+                      3
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid> */}
               </Grid>
-            </Grid>
-          </Grid>
-        </div>
-      </div>
-    );
-  } else if (mediaType === MediaType.VIDEO) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#000000",
-        }}
-      >
-        <div style={{ position: "relative" }}>
-          <ReactPlayer
-            ref={videoPlayer}
-            playing={!isVideoOver}
-            data-cy="video"
-            url={video?.link ?? "https://www.youtube.com/watch?v=KcMlPl9jArM"}
-            config={{
-              playerVars: {
-                modestbranding: 1,
-                start: video?.start ?? 0,
-                end: video?.end ?? videoPlayer.current.getDuration(),
-                disablekb: 1,
-              },
-            }}
-            onProgress={(player) => {
-              console.log(player);
-              if (
-                player.playedSeconds >
-                (video?.end ?? videoPlayer.current.getDuration())
-              ) {
-                setIsVideoOver(true);
-              }
-            }}
-          />
-          {isVideoOver ? (
-            <div
-              style={{
-                position: "absolute",
-                backgroundColor: "#000000",
-                width: "100%",
-                height: "100%",
-                top: 0,
-                left: 0,
-              }}
-            >
-              <div style={{ position: "relative", height: "100%" }}>
-                <IconButton
-                  data-cy="replay-button"
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                  onClick={() => {
-                    setIsVideoOver(false);
-                    console.log(videoPlayer);
-                    videoPlayer.current.seekTo(video?.start ?? 0, "seconds");
-                  }}
-                >
-                  <ReplayIcon style={{ color: "white", fontSize: 40 }} />
-                  <Typography style={{ color: "white" }}>Replay</Typography>
-                </IconButton>
-              </div>
             </div>
           ) : (
             <></>
           )}
         </div>
+      </>
+    );
+  } else if (mediaType === MediaType.VIDEO) {
+    const videoHeight = surveySays ? "50%" : "100%";
+    return (
+      <div style={{ height: "35%" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "#000000",
+            height: videoHeight,
+          }}
+        >
+          <div style={{ position: "relative" }}>
+            <ReactPlayer
+              ref={videoPlayer}
+              playing={!isVideoOver}
+              data-cy="video"
+              height="100%"
+              url={video?.link ?? "https://www.youtube.com/watch?v=KcMlPl9jArM"}
+              config={{
+                playerVars: {
+                  modestbranding: 1,
+                  start: video?.start ?? 0,
+                  end: video?.end ?? videoPlayer.current.getDuration(),
+                  disablekb: 1,
+                },
+              }}
+              onProgress={(player) => {
+                console.log(player);
+                if (
+                  player.playedSeconds >
+                  (video?.end ?? videoPlayer.current.getDuration())
+                ) {
+                  setIsVideoOver(true);
+                }
+              }}
+            />
+            {isVideoOver ? (
+              <div
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#000000",
+                  width: "100%",
+                  height: "100%",
+                  top: 0,
+                  left: 0,
+                }}
+              >
+                <div style={{ position: "relative", height: "100%" }}>
+                  <IconButton
+                    data-cy="replay-button"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    onClick={() => {
+                      setIsVideoOver(false);
+                      console.log(videoPlayer);
+                      videoPlayer.current.seekTo(video?.start ?? 0, "seconds");
+                    }}
+                  >
+                    <ReplayIcon style={{ color: "white", fontSize: 40 }} />
+                    <Typography style={{ color: "white" }}>Replay</Typography>
+                  </IconButton>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+        {surveySays ? (
+          <div className={styles.survey}>
+            <Grid container spacing={2}>
+              {targets.map((target, idx) => {
+                return (
+                  <Grid container item spacing={2} key={idx}>
+                    <Grid item xs={12}>
+                      <div className={styles.censored}>
+                        <Typography
+                          className={styles.centerLock}
+                          variant={!target.achieved ? "h6" : "caption"}
+                          style={{ width: "100%" }}
+                        >
+                          {target.achieved ? target.text : idx + 1}
+                        </Typography>
+                      </div>
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     );
   } else {
-    return <></>;
+    return (
+      <>
+        {surveySays ? (
+          <div style={{ height: "35%" }}>
+            <div className={styles.survey}>
+              <Grid container spacing={2}>
+                {targets.map((target, idx) => {
+                  return (
+                    <Grid container item spacing={2} key={idx}>
+                      <Grid item xs={12}>
+                        <div className={styles.censored}>
+                          <Typography
+                            className={styles.centerLock}
+                            variant={!target.achieved ? "h6" : "caption"}
+                            style={{ width: "100%" }}
+                          >
+                            {target.achieved ? target.text : idx + 1}
+                          </Typography>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
+    );
   }
 };
 

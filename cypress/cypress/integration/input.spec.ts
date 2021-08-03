@@ -40,7 +40,7 @@ describe("Input field", () => {
     cy.get("[data-cy=submit-button]").should("not.be.disabled");
   });
 
-  it("can send input with button", () => {
+  it.only("can send input with button", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");

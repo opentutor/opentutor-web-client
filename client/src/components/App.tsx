@@ -86,6 +86,8 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [image, setImage] = React.useState<string>();
+  const [surveySays, setSurveySays] = React.useState(false);
+  setSurveySays(false)
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -231,16 +233,22 @@ function App(props: {
   return (
     <div className={styles.foreground}>
       {noheader ? undefined : <HeaderBar />}
-      <LessonMedia />
+      <LessonMedia surveySays={surveySays} targets={targets} />
       <div
         className={styles.chatWindow}
         style={{ height: image ? "65%" : "100%" }}
       >
-        {/* <TargetIndicator
-          targets={targets}
-          showSummary={onSummaryOpenRequested}
-        /> */}
-        <ChatThread messages={messages}/>
+        {!surveySays ? (
+          <>
+            <TargetIndicator
+              targets={targets}
+              showSummary={onSummaryOpenRequested}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+        <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}
           username={username}
