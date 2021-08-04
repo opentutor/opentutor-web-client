@@ -39,9 +39,7 @@ export interface Target {
 
 export interface Lesson {
   name: string;
-  image: string;
-  video: Video;
-  mediaType: string;
+  media: Media;
 }
 
 export enum MediaType {
@@ -50,10 +48,10 @@ export enum MediaType {
   VIDEO = "video",
 }
 
-export interface Video {
+export interface Media {
   link: string;
-  start: number;
-  end: number;
+  type: string;
+  props: Array<{ name: string; value: any }>;
 }
 
 export interface ExpectationData {

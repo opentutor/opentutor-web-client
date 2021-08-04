@@ -29,12 +29,10 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
       query FetchLessonInfo {
         lessonInfo(lessonId: "${lessonId}") {
           name
-          mediaType
-          image
-          video {
+          media {
             link
-            start
-            end
+            type
+            props
           }
         }  
       }

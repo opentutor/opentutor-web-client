@@ -44,12 +44,13 @@ describe("lesson details", () => {
         mockGQL("FetchLessonInfo", {
           lessonInfo: {
             name: "lesson 1",
-            mediaType: "video",
-            image: "",
-            video: {
+            media: {
               link: "https://www.youtube.com/watch?v=-lLr7Fhh67c",
-              start: 71,
-              end: 72.5,
+              mediaType: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
             },
           },
         }),

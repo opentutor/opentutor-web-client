@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, IconButton } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
-import { Lesson, Video, MediaType, Target } from "types";
+import { Lesson, Media, MediaType, Target } from "types";
 import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,9 +84,14 @@ const LessonMedia = (props: {
   const styles = useStyles();
   const { lesson } = props.search;
   const { surveySays, targets } = props;
-  const [image, setImage] = React.useState<string>();
-  const [video, setVideo] = React.useState<Video>();
-  const [mediaType, setMediaType] = React.useState<string>(MediaType.NONE);
+  // const [image, setImage] = React.useState<string>();
+  // const [video, setVideo] = React.useState<Video>();
+  const [media, setMedia] = React.useState<Media>({
+    link: "",
+    type: MediaType.NONE,
+    props: [],
+  });
+  // const [mediaType, setMediaType] = React.useState<string>(MediaType.NONE);
   const [imgDims, setImgDims] = React.useState({ width: 0, height: 0 });
   const [isImgExpanded, setImgExpanded] = React.useState(false);
   const [isVideoOver, setIsVideoOver] = React.useState(false);
@@ -98,7 +103,7 @@ const LessonMedia = (props: {
   const getImage = (): JSX.Element => {
     return isImgExpanded ? (
       <img
-        src={image}
+        src={media.link}
         className={styles.image}
         style={{
           width: imgDims.height > imgDims.width ? 400 : "",
@@ -106,7 +111,7 @@ const LessonMedia = (props: {
       ></img>
     ) : (
       <img
-        src={image}
+        src={media.link}
         style={{
           objectFit: "contain",
           height: "100%",
@@ -128,26 +133,33 @@ const LessonMedia = (props: {
     fetchLesson(lesson)
       .then((lesson: Lesson) => {
         if (lesson) {
-          setImage(lesson.image);
-          setVideo(lesson.video);
-          setMediaType(lesson.mediaType);
-          const img = new Image();
-          img.addEventListener("load", function () {
-            setImgDims({
-              width: this.naturalWidth,
-              height: this.naturalHeight,
+          setMedia(lesson.media);
+          if (lesson.media.type === MediaType.IMAGE) {
+            const img = new Image();
+            img.addEventListener("load", function () {
+              setImgDims({
+                width: this.naturalWidth,
+                height: this.naturalHeight,
+              });
             });
-          });
-          img.src = lesson.image;
+            img.src = lesson.media.link;
+          }
         }
       })
       .catch((err: string) => console.error(err));
   }, [lesson]);
 
+  function parseProps(
+    props: Array<{ name: string; value: any }>,
+    key: string
+  ): string {
+    return props.find((p) => p.name === key)?.value;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const videoPlayer: any = useRef(null);
 
-  if (mediaType === MediaType.IMAGE) {
+  if (media.type === MediaType.IMAGE) {
     return (
       <>
         <div style={{ height: "35%" }}>
@@ -221,7 +233,7 @@ const LessonMedia = (props: {
         </div>
       </>
     );
-  } else if (mediaType === MediaType.VIDEO) {
+  } else if (media.type === MediaType.VIDEO) {
     const videoHeight = surveySays ? "50%" : "100%";
     return (
       <div style={{ height: "35%" }}>
@@ -239,12 +251,14 @@ const LessonMedia = (props: {
               playing={!isVideoOver}
               data-cy="video"
               height="100%"
-              url={video?.link ?? "https://www.youtube.com/watch?v=KcMlPl9jArM"}
+              url={media?.link ?? "https://www.youtube.com/watch?v=KcMlPl9jArM"}
               config={{
                 playerVars: {
                   modestbranding: 1,
-                  start: video?.start ?? 0,
-                  end: video?.end ?? videoPlayer.current.getDuration(),
+                  start: parseFloat(parseProps(media.props, "start")) ?? 0,
+                  end:
+                    parseFloat(parseProps(media.props, "end")) ??
+                    videoPlayer.current.getDuration(),
                   disablekb: 1,
                 },
               }}
@@ -252,7 +266,8 @@ const LessonMedia = (props: {
                 console.log(player);
                 if (
                   player.playedSeconds >
-                  (video?.end ?? videoPlayer.current.getDuration())
+                  (parseFloat(parseProps(media.props, "end")) ??
+                    videoPlayer.current.getDuration())
                 ) {
                   setIsVideoOver(true);
                 }
@@ -281,7 +296,10 @@ const LessonMedia = (props: {
                     onClick={() => {
                       setIsVideoOver(false);
                       console.log(videoPlayer);
-                      videoPlayer.current.seekTo(video?.start ?? 0, "seconds");
+                      videoPlayer.current.seekTo(
+                        parseFloat(parseProps(media.props, "start")) ?? 0,
+                        "seconds"
+                      );
                     }}
                   >
                     <ReplayIcon style={{ color: "white", fontSize: 40 }} />

@@ -22,6 +22,7 @@ import {
   ErrorData,
   ExpectationData,
   Lesson,
+  MediaType,
   SessionData,
   SessionSummary,
   Target,
@@ -85,9 +86,9 @@ function App(props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
-  const [image, setImage] = React.useState<string>();
+  const [hasMedia, setHasMedia] = React.useState<boolean>();
   const [surveySays, setSurveySays] = React.useState(false);
-  setSurveySays(false)
+  setSurveySays(false);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -199,7 +200,11 @@ function App(props: {
           return;
         }
         if (lesson) {
-          setImage(lesson.image);
+          if (lesson.media.type === MediaType.NONE) {
+            setHasMedia(false);
+          } else {
+            setHasMedia(true);
+          }
         }
       })
       .catch((err: string) => console.error(err));
@@ -236,7 +241,7 @@ function App(props: {
       <LessonMedia surveySays={surveySays} targets={targets} />
       <div
         className={styles.chatWindow}
-        style={{ height: image ? "65%" : "100%" }}
+        style={{ height: hasMedia ? "65%" : "100%" }}
       >
         {!surveySays ? (
           <>
