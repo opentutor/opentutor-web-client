@@ -77,9 +77,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LessonMedia = (props: {
-  search: { lesson: string },
-  surveySays: boolean,
-  targets: Target[]
+  search: { lesson: string };
+  surveySays: boolean;
+  targets: Target[];
 }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
