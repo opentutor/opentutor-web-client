@@ -8,7 +8,7 @@ export const lessonInfo = {
   name: "lesson 1",
   media: {
     link: "lesson1/image.png",
-    mediaType: "image",
+    type: "image",
     props: [],
   },
 };

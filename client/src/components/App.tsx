@@ -86,7 +86,7 @@ function App(props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
-  const [hasMedia, setHasMedia] = React.useState<boolean>();
+  const [hasMedia, setHasMedia] = React.useState(false);
   const [surveySays, setSurveySays] = React.useState(false);
   setSurveySays(false);
 

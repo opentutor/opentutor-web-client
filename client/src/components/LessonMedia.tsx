@@ -77,9 +77,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LessonMedia = (props: {
-  search: { lesson: string };
-  surveySays: boolean;
-  targets: Target[];
+  search: { lesson: string },
+  surveySays: boolean,
+  targets: Target[]
 }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
@@ -150,10 +150,10 @@ const LessonMedia = (props: {
   }, [lesson]);
 
   function parseProps(
-    props: Array<{ name: string; value: any }>,
+    props: Array<{ name: string; value: string }>,
     key: string
   ): string {
-    return props.find((p) => p.name === key)?.value;
+    return props.find((p) => p.name === key)?.value ?? "";
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

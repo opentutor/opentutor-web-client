@@ -51,7 +51,7 @@ export enum MediaType {
 export interface Media {
   link: string;
   type: string;
-  props: Array<{ name: string; value: any }>;
+  props: Array<{ name: string; value: string }>;
 }
 
 export interface ExpectationData {

@@ -46,7 +46,7 @@ describe("lesson details", () => {
             name: "lesson 1",
             media: {
               link: "https://www.youtube.com/watch?v=-lLr7Fhh67c",
-              mediaType: "video",
+              type: "video",
               props: [
                 { name: "start", value: "71" },
                 { name: "end", value: "72.5" },
