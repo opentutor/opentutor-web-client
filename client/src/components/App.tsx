@@ -87,8 +87,8 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [hasMedia, setHasMedia] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [surveySays, setSurveySays] = React.useState(false);
-  setSurveySays(false);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
