@@ -122,7 +122,7 @@ export default function ChatThread(props: {
 
   return (
     <div data-cy="chat-thread" className={styles.body}>
-      <List data-cy="thread" disablePadding={true}>
+      <List data-cy="thread" id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (
             <ListItem

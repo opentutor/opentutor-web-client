@@ -241,7 +241,7 @@ function App(props: {
       <LessonMedia surveySays={surveySays} targets={targets} />
       <div
         className={styles.chatWindow}
-        style={{ height: hasMedia ? "65%" : "100%" }}
+        style={{ height: hasMedia ? "calc(65% - 82.66px)" : "calc(100% - 82.66px)" }}
       >
         {!surveySays ? (
           <>
