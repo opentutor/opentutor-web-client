@@ -11,4 +11,5 @@ export const lessonInfo = {
     type: "image",
     props: [],
   },
+  surveySays: false,
 };

@@ -87,7 +87,6 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [hasMedia, setHasMedia] = React.useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [surveySays, setSurveySays] = React.useState(false);
 
   function handleSessionDone(session: SessionData): void {
@@ -200,6 +199,7 @@ function App(props: {
           return;
         }
         if (lesson) {
+          setSurveySays(lesson.surveySays)
           if (lesson.media.type === MediaType.NONE) {
             setHasMedia(false);
           } else {

@@ -40,6 +40,7 @@ export interface Target {
 export interface Lesson {
   name: string;
   media: Media;
+  surveySays: boolean;
 }
 
 export enum MediaType {
