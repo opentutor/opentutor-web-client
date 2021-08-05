@@ -199,7 +199,7 @@ function App(props: {
           return;
         }
         if (lesson) {
-          setSurveySays(lesson.surveySays)
+          setSurveySays(lesson.surveySays);
           if (lesson.media.type === MediaType.NONE) {
             setHasMedia(false);
           } else {
@@ -241,7 +241,9 @@ function App(props: {
       <LessonMedia surveySays={surveySays} targets={targets} />
       <div
         className={styles.chatWindow}
-        style={{ height: hasMedia ? "calc(65% - 82.66px)" : "calc(100% - 82.66px)" }}
+        style={{
+          height: hasMedia ? "calc(65% - 82.66px)" : "calc(100% - 82.66px)",
+        }}
       >
         {!surveySays ? (
           <>
