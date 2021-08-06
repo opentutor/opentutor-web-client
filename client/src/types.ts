@@ -39,12 +39,12 @@ export interface Target {
 
 export interface Lesson {
   name: string;
-  media: Media;
+  media?: Media;
   surveySays: boolean;
 }
 
 export enum MediaType {
-  NONE = "none",
+  NONE = "",
   IMAGE = "image",
   VIDEO = "video",
 }
@@ -52,7 +52,7 @@ export enum MediaType {
 export interface Media {
   link: string;
   type: string;
-  props: Array<{ name: string; value: string }>;
+  props?: Array<{ name: string; value: string }>;
 }
 
 export interface ExpectationData {

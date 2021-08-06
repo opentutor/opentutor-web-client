@@ -200,10 +200,10 @@ function App(props: {
         }
         if (lesson) {
           setSurveySays(lesson.surveySays);
-          if (lesson.media.type === MediaType.NONE) {
-            setHasMedia(false);
-          } else {
+          if (lesson.media) {
             setHasMedia(true);
+          } else {
+            setHasMedia(false);
           }
         }
       })

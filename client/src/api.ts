@@ -32,7 +32,10 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
           media {
             link
             type
-            props
+            props {
+              name
+              value
+            }
           }
           surveySays
         }  

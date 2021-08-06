@@ -9,7 +9,7 @@ export const lessonInfo = {
   media: {
     link: "lesson1/image.png",
     type: "image",
-    props: [],
+    props: null,
   },
   surveySays: false,
 };
