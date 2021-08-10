@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 export const lessonInfo = {
   name: "lesson 1",
   media: {
-    link: "lesson1/image.png",
+    url: "lesson1/image.png",
     type: "image",
     props: null,
   },

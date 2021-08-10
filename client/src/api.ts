@@ -30,14 +30,13 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
         lessonInfo(lessonId: "${lessonId}") {
           name
           media {
-            link
+            url
             type
             props {
               name
               value
             }
           }
-          surveySays
         }  
       }
     `,

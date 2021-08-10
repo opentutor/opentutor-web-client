@@ -50,7 +50,7 @@ export enum MediaType {
 }
 
 export interface Media {
-  link: string;
+  url: string;
   type: string;
   props?: Array<{ name: string; value: string }>;
 }

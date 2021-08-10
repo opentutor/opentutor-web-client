@@ -103,7 +103,7 @@ const LessonMedia = (props: {
   const getImage = (): JSX.Element => {
     return isImgExpanded ? (
       <img
-        src={media ? media.link : ""}
+        src={media ? media.url : ""}
         className={styles.image}
         style={{
           width: imgDims.height > imgDims.width ? 400 : "",
@@ -111,7 +111,7 @@ const LessonMedia = (props: {
       ></img>
     ) : (
       <img
-        src={media ? media.link : ""}
+        src={media ? media.url : ""}
         style={{
           objectFit: "contain",
           height: "100%",
@@ -142,7 +142,7 @@ const LessonMedia = (props: {
                 height: this.naturalHeight,
               });
             });
-            img.src = lesson.media.link;
+            img.src = lesson.media.url;
           }
         }
       })
@@ -211,7 +211,7 @@ const LessonMedia = (props: {
               playing={!isVideoOver}
               data-cy="video"
               height="100%"
-              url={media.link || "https://www.youtube.com/watch?v=KcMlPl9jArM"}
+              url={media.url || "https://www.youtube.com/watch?v=KcMlPl9jArM"}
               config={{
                 playerVars: {
                   modestbranding: 1,
