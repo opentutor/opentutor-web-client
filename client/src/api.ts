@@ -32,6 +32,7 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
           media {
             url
             type
+            learningFormat
             props {
               name
               value

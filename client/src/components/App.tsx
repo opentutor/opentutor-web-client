@@ -199,7 +199,7 @@ function App(props: {
           return;
         }
         if (lesson) {
-          setSurveySays(lesson.surveySays);
+          setSurveySays(lesson.learningFormat === "surveySays");
           if (lesson.media) {
             setHasMedia(true);
           } else {

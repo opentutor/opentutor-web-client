@@ -52,7 +52,7 @@ describe("lesson details", () => {
                 { name: "end", value: "72.5" },
               ],
             },
-            surveySays: false,
+            learningFormat: null,
           },
         }),
       ],
