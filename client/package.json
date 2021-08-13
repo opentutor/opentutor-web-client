@@ -31,7 +31,6 @@
     "gatsby-cli": "^3.7.1",
     "gatsby-plugin-env-variables": "^2.1.0",
     "gatsby-plugin-eslint": "^3.0.0",
-    "gatsby-plugin-manifest": "^3.7.1",
     "gatsby-plugin-material-ui": "^3.0.1",
     "gatsby-plugin-styled-components": "^4.7.1",
     "gatsby-plugin-typescript": "^3.7.1",
