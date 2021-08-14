@@ -200,11 +200,7 @@ function App(props: {
         }
         if (lesson) {
           setSurveySays(lesson.learningFormat === "surveySays");
-          if (lesson.media) {
-            setHasMedia(true);
-          } else {
-            setHasMedia(false);
-          }
+          setHasMedia(Boolean(lesson.media));
         }
       })
       .catch((err: string) => console.error(err));
