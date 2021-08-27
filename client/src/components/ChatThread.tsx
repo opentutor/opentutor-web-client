@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
   },
   body: {
+    marginTop: 5,
     width: "90%",
     maxWidth: 400,
     height: "calc(100% - 295px)",
@@ -121,7 +122,7 @@ export default function ChatThread(props: {
 
   return (
     <div data-cy="chat-thread" className={styles.body}>
-      <List id="thread" data-cy="thread" disablePadding={true}>
+      <List data-cy="thread" id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (
             <ListItem

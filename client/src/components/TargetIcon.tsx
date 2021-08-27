@@ -62,7 +62,7 @@ export default function TargetIcon(props: {
           styles.circleProgress,
           props.target.score === 1 ? styles.complete : styles.inProgress,
         ].join(" ")}
-        variant="static"
+        variant="determinate"
         value={props.target.score * 100}
       />
       <Box

@@ -39,7 +39,20 @@ export interface Target {
 
 export interface Lesson {
   name: string;
-  image: string;
+  media?: Media;
+  learningFormat: string;
+}
+
+export enum MediaType {
+  NONE = "",
+  IMAGE = "image",
+  VIDEO = "video",
+}
+
+export interface Media {
+  url: string;
+  type: string;
+  props?: Array<{ name: string; value: string }>;
 }
 
 export interface ExpectationData {

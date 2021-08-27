@@ -37,4 +37,29 @@ describe("lesson details", () => {
       cy.get("img").should("have.attr", "src", "lesson1/image.png");
     });
   });
+
+  it(`displays video for a lesson`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [
+        mockGQL("FetchLessonInfo", {
+          lessonInfo: {
+            name: "lesson 1",
+            media: {
+              url: "https://www.youtube.com/watch?v=-lLr7Fhh67c",
+              type: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
+            },
+            learningFormat: null,
+          },
+        }),
+      ],
+    });
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+
+    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+    cy.get("[data-cy=video]");
+  });
 });

@@ -27,7 +27,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import LessonImage from "./LessonImage";
+import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 
@@ -85,7 +85,8 @@ function App(props: {
     buttonText: "",
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
-  const [image, setImage] = React.useState<string>();
+  const [hasMedia, setHasMedia] = React.useState(false);
+  const [surveySays, setSurveySays] = React.useState(false);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -197,7 +198,8 @@ function App(props: {
           return;
         }
         if (lesson) {
-          setImage(lesson.image);
+          setSurveySays(lesson.learningFormat === "surveySays");
+          setHasMedia(Boolean(lesson.media));
         }
       })
       .catch((err: string) => console.error(err));
@@ -231,15 +233,23 @@ function App(props: {
   return (
     <div className={styles.foreground}>
       {noheader ? undefined : <HeaderBar />}
-      <LessonImage />
+      <LessonMedia surveySays={surveySays} targets={targets} />
       <div
         className={styles.chatWindow}
-        style={{ height: image ? "65%" : "100%" }}
+        style={{
+          height: hasMedia ? "calc(65% - 82.66px)" : "calc(100% - 82.66px)",
+        }}
       >
-        <TargetIndicator
-          targets={targets}
-          showSummary={onSummaryOpenRequested}
-        />
+        {!surveySays ? (
+          <>
+            <TargetIndicator
+              targets={targets}
+              showSummary={onSummaryOpenRequested}
+            />
+          </>
+        ) : (
+          <></>
+        )}
         <ChatThread messages={messages} />
         <ChatForm
           lesson={lesson}

@@ -29,7 +29,15 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
       query FetchLessonInfo {
         lessonInfo(lessonId: "${lessonId}") {
           name
-          image
+          learningFormat
+          media {
+            url
+            type
+            props {
+              name
+              value
+            }
+          }
         }  
       }
     `,
