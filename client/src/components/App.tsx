@@ -22,7 +22,6 @@ import {
   ErrorData,
   ExpectationData,
   Lesson,
-  MediaType,
   SessionData,
   SessionSummary,
   Target,
