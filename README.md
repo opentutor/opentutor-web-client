@@ -62,10 +62,10 @@ To build/push a pre-release semver tag of `opentutor-web-client` for the current
 
 - create a [github release](https://github.com/ICTLearningSciences/opentutor-web-client/releases/new) **from your development branch** with tag format `/^\d+\.\d+\.\d+(-[a-z\d\-.]+)?$/` (e.g. `1.0.0-alpha.1`)
 - find the `docker_tag_release` workflow for your git tag in [github actions](https://github.com/ICTLearningSciences/opentutor-web-client/actions?query=workflow%3A%22build%2Fpub+candidate%22)
-- this will create a tag like `uscictdocker/opentutor-web-client:1.0.0-alpha.1`
+- this will create a tag like `opentutor/opentutor-web-client:1.0.0-alpha.1`
 
 Once your changes are approved and merged to master, you should create a release tag in semver format as follows:
 
 - create a [github release](https://github.com/ICTLearningSciences/opentutor-web-client/releases/new) **from master** with tag format `/^\d+\.\d+\.\d$/` (e.g. `1.0.0`)
 - find the `docker_tag_release` workflow for your git tag in [github actions](https://github.com/ICTLearningSciences/opentutor-web-client/actions?query=workflow%3A%22build%2Fpub+release%22)
-- this will create a tag like `uscictdocker/opentutor-web-client:1.0.0`
+- this will create a tag like `opentutor/opentutor-web-client:1.0.0`
