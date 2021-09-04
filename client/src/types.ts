@@ -49,6 +49,10 @@ export enum MediaType {
   VIDEO = "video",
 }
 
+export enum LessonFormat {
+  SURVEY_SAYS = "surveySays",
+}
+
 export interface Media {
   url: string;
   type: string;

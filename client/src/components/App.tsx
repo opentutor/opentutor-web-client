@@ -6,8 +6,8 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Typography } from "@material-ui/core";
 import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
@@ -22,6 +22,7 @@ import {
   ErrorData,
   ExpectationData,
   Lesson,
+  LessonFormat,
   SessionData,
   SessionSummary,
   Target,
@@ -39,11 +40,22 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  chatWindow: {
-    flex: 1,
-    backgroundColor: theme.palette.background.default,
+  appRoot: {
     width: "100%",
+    paddingBottom: 10,
+    boxSizing: "border-box",
   },
+  appRootDefault: {
+    height: "calc(100% - 64px)",
+  },
+  appRootNoHeader: {
+    height: "calc(100%)",
+  },
+  // chatWindow: {
+  //   flex: 1,
+  //   backgroundColor: theme.palette.background.default,
+  //   width: "100%",
+  // },
   buildInfo: {
     padding: 5,
     color: "white",
@@ -86,7 +98,7 @@ function App(props: {
   });
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [hasMedia, setHasMedia] = React.useState(false);
-  const [surveySays, setSurveySays] = React.useState(false);
+  const [lessonFormat, setLessonFormat] = React.useState("");
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -198,7 +210,9 @@ function App(props: {
           return;
         }
         if (lesson) {
-          setSurveySays(lesson.learningFormat === "surveySays");
+          if (lesson.learningFormat === "surveySays") {
+            setLessonFormat(LessonFormat.SURVEY_SAYS);
+          }
           setHasMedia(Boolean(lesson.media));
         }
       })
@@ -231,65 +245,65 @@ function App(props: {
   }, [sessionSummary]);
 
   return (
-    <div className={styles.foreground}>
-      {noheader ? undefined : <HeaderBar />}
-      <LessonMedia surveySays={surveySays} targets={targets} />
-      <div
-        className={styles.chatWindow}
-        style={{
-          height: hasMedia ? "calc(65% - 82.66px)" : "calc(100% - 82.66px)",
-        }}
-      >
-        {!surveySays ? (
-          <>
-            <TargetIndicator
-              targets={targets}
-              showSummary={onSummaryOpenRequested}
-            />
-          </>
-        ) : (
-          <></>
-        )}
-        <ChatThread messages={messages} />
-        <ChatForm
-          lesson={lesson}
-          username={username}
-          messages={messages}
-          setMessages={setMessages}
-          setTargets={setTargets}
-          session={session}
-          setSession={setSession}
-          setErrorProps={setErrorProps}
-          handleErrorOpen={handleErrorOpen}
-          handleSessionDone={handleSessionDone}
-          sessionAlive={sessionAlive}
-          setSessionAlive={setSessionAlive}
-          onSummaryOpenRequested={onSummaryOpenRequested}
-        />
-        <SummaryPopup
-          open={sessionSummary.showSummary}
-          onCloseRequested={onSummaryCloseRequested}
-          message={sessionSummary.summaryMessage || ""}
-          buttonText={"Close"}
-          targets={targets}
-        />
-        <ErrorPopup
-          open={errorOpen}
-          setOpen={setErrorOpen}
-          errorProps={errorProps}
-        />
-        {sessionAlive ? (
-          <Button data-cy="view-summary-btn" onClick={onSummaryOpenRequested}>
-            Preview Summary
-          </Button>
-        ) : (
-          <></>
-        )}
+    <>
+      <div className={styles.foreground}>
+        {noheader ? undefined : <HeaderBar />}
+        <div
+          className={clsx({
+            [styles.appRoot]: true,
+            [styles.appRootDefault]: !noheader,
+            [styles.appRootNoHeader]: noheader,
+          })}
+        >
+          <LessonMedia
+            surveySays={lessonFormat === LessonFormat.SURVEY_SAYS}
+            targets={targets}
+          />
+          {lessonFormat === LessonFormat.SURVEY_SAYS ? (
+            <></>
+          ) : (
+            <>
+              <TargetIndicator
+                targets={targets}
+                showSummary={onSummaryOpenRequested}
+              />
+            </>
+          )}
+          <ChatThread
+            messages={messages}
+            hasMedia={hasMedia}
+            lessonFormat={lessonFormat}
+          />
+          <ChatForm
+            lesson={lesson}
+            username={username}
+            messages={messages}
+            setMessages={setMessages}
+            setTargets={setTargets}
+            session={session}
+            setSession={setSession}
+            setErrorProps={setErrorProps}
+            handleErrorOpen={handleErrorOpen}
+            handleSessionDone={handleSessionDone}
+            sessionAlive={sessionAlive}
+            setSessionAlive={setSessionAlive}
+            onSummaryOpenRequested={onSummaryOpenRequested}
+          />
+        </div>
       </div>
-      <Typography className={styles.buildInfo}>
-        OpenTutor {process.env.OPENTUTOR_CLIENT_VERSION}
-      </Typography>
-    </div>
+      <SummaryPopup
+        open={sessionSummary.showSummary}
+        onCloseRequested={onSummaryCloseRequested}
+        message={sessionSummary.summaryMessage || ""}
+        buttonText={"Close"}
+        targets={targets}
+      />
+      <ErrorPopup
+        open={errorOpen}
+        setOpen={setErrorOpen}
+        errorProps={errorProps}
+      />
+    </>
   );
 }
 

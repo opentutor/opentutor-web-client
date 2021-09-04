@@ -153,6 +153,7 @@ const LessonMedia = (props: {
   const videoPlayer: any = useRef(null);
 
   if (media && media.type === MediaType.IMAGE) {
+    console.log("Is Image");
     return (
       <>
         <div style={{ height: "35%" }}>

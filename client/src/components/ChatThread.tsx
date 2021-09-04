@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
   },
   body: {
-    marginTop: 5,
+    paddingTop: 5,
     width: "90%",
     maxWidth: 400,
-    height: "calc(100% - 295px)",
+    height: "calc(65% - 60px - 123px)",
     marginLeft: "50%",
-    marginBottom: 25,
+    paddingBottom: 10,
     transform: "translateX(-50%)",
+    boxSizing: "border-box",
   },
   avatar: {
     color: "#fff",
@@ -62,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
+  hasMedia: boolean;
+  lessonFormat: string;
 }): JSX.Element {
   const styles = useStyles();
 
