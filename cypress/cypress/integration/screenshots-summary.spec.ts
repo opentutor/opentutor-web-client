@@ -33,8 +33,7 @@ describe("screenshots - summary popup", () => {
       cy.wait("@start");
       cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("[data-cy=view-summary-btn]").should("be.visible");
-      cy.get("[data-cy=view-summary-btn]").click();
+      cy.get("[data-cy=target-0-0]").click();
       cy.get("[data-cy=summary-popup-trans-done]");
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-open-summary-${i}`)
@@ -68,8 +67,7 @@ describe("screenshots - summary popup", () => {
       cy.wait("@response");
       cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("[data-cy=view-summary-btn]").should("be.visible");
-      cy.get("[data-cy=view-summary-btn]").click();
+      cy.get("[data-cy=target-0-0]").click();
       cy.get("[data-cy=summary-popup-trans-done]");
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-summary-feedback-${i}`)

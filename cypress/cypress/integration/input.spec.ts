@@ -23,7 +23,6 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=submit-button]").should("not.exist");
-    cy.get("[data-cy=view-summary-btn]").should("not.exist");
     cy.get("[data-cy=continue-button]").should("be.visible");
     cy.get("[data-cy=continue-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").within(($el) => {
