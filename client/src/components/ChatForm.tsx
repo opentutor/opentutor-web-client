@@ -150,7 +150,7 @@ const ChatForm = (props: {
       data-cy="chat-form"
       noValidate
       autoComplete="off"
-      style={{ height: 123 }}
+      style={{ height: 85 }}
     >
       <div className={styles.chatboxRoot}>
         <TextField
@@ -161,7 +161,7 @@ const ChatForm = (props: {
               : "Thanks for chatting with OpenTutor!"
           }
           multiline
-          rows={4}
+          rows={2}
           variant="outlined"
           style={{ width: "100%", marginTop: 10 }}
           value={chat}

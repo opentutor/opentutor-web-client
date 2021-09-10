@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
     color: "white",
     padding: 10,
-    height: 10,
-    width: "calc(100% - 20px)",
+    height: 30,
     position: "relative",
-    // borderColor: "orange",
-    // borderWidth: 2,
+    boxSizing: "border-box",
+    // borderColor: "lightblue",
+    // borderWidth: 1,
     // borderStyle: "solid",
-    boxShadow: "0 6px 6px -3px lightblue",
+    boxShadow: "1px 6px 6px -3px lightblue",
   },
   survey: {
     padding: theme.spacing(2),
@@ -44,16 +44,18 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    padding: 10,
+    boxSizing: "border-box",
   },
   bodyNoMedia: {
-    height: "60%",
+    // height: "60%",
   },
   bodyMedia: {
-    height: "40%",
+    // height: "40%",
   },
   surveyInnerBoard: {
-    width: "calc(100% - 20px)",
-    height: "calc(100% - 20px)",
+    width: "100%",
+    // height: "calc(100% - 20px)",
     backgroundColor: "#212629",
     boxSizing: "border-box",
     border: "5px solid lightblue",
@@ -82,7 +84,7 @@ const SurveySays = (props: {
       >
         <div className={styles.surveyInnerBoard}>
           <div className={styles.survey}>
-            <Grid container spacing={2}>
+            <Grid container>
               <Grid item xs={12}>
                 <Typography
                   className={styles.surveyQuestion}
@@ -94,19 +96,19 @@ const SurveySays = (props: {
               </Grid>
               {props.targets.map((target, idx) => {
                 return (
-                  <Grid container item spacing={2} key={idx}>
-                    <Grid item xs={12}>
-                      <div className={styles.censored}>
-                        <Typography
-                          className={styles.centerLock}
-                          variant={!target.achieved ? "h6" : "caption"}
-                          style={{ width: "100%" }}
-                        >
-                          {target.achieved ? target.text : idx + 1}
-                        </Typography>
-                      </div>
-                    </Grid>
+                  // <Grid container item spacing={2} key={idx}>
+                  <Grid item xs={12} key={idx} style={{ margin: 8 }}>
+                    <div className={styles.censored}>
+                      <Typography
+                        className={styles.centerLock}
+                        variant={!target.achieved ? "h6" : "caption"}
+                        style={{ width: "100%" }}
+                      >
+                        {target.achieved ? target.text : idx + 1}
+                      </Typography>
+                    </div>
                   </Grid>
+                  // </Grid>
                 );
               })}
             </Grid>

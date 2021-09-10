@@ -34,10 +34,11 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     minWidth: 400,
   },
-  zoom: {
-    position: "sticky",
-    right: 0,
+  innerZoomOverlay: {
+    position: "absolute",
+    zIndex: 1,
     bottom: 0,
+    right: 0,
     height: 50,
     width: 50,
     color: "white",
@@ -107,31 +108,38 @@ const LessonMedia = (props: {
   }
 
   const getImage = (): JSX.Element => {
-    return isImgExpanded ? (
-      <img
-        src={media ? media.url : ""}
-        className={styles.image}
-        style={{
-          width: imgDims.height > imgDims.width ? 400 : "",
-        }}
-      ></img>
-    ) : (
-      <img
-        src={media ? media.url : ""}
-        style={{
-          objectFit: "contain",
-          height: "100%",
-          width: "100%",
-        }}
-      ></img>
-    );
-  };
-
-  const getZoom = (): JSX.Element => {
-    return isImgExpanded ? (
-      <ZoomOutIcon className={styles.zoom} />
-    ) : (
-      <ZoomInIcon className={styles.zoom} />
+    return (
+      <>
+        <div style={{ backgroundColor: "red", height: "100%", width: "100%" }}>
+          {isImgExpanded ? (
+            <img
+              src={media ? media.url : ""}
+              // className={styles.image}
+              // style={{
+              //   width: imgDims.height > imgDims.width ? 400 : "",
+              // }}
+              style={{
+                // objectFit: "cover",
+                // height: "100%",
+                // width: "100%",
+                // aspectRatio: "1/1"
+                maxWidth: "100%",
+                width: "auto",
+                height: "auto",
+              }}
+            ></img>
+          ) : (
+            <img
+              src={media ? media.url : ""}
+              style={{
+                objectFit: "contain",
+                height: "100%",
+                width: "100%",
+              }}
+            ></img>
+          )}
+        </div>
+      </>
     );
   };
 
@@ -179,7 +187,11 @@ const LessonMedia = (props: {
             onClick={handleImageExpand}
           >
             {getImage()}
-            {getZoom()}
+            {isImgExpanded ? (
+              <ZoomOutIcon className={styles.innerZoomOverlay} />
+            ) : (
+              <ZoomInIcon className={styles.innerZoomOverlay} />
+            )}
           </div>
         </div>
       </>
@@ -206,12 +218,13 @@ const LessonMedia = (props: {
             height: videoHeight,
           }}
         >
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
             <ReactPlayer
               ref={videoPlayer}
               playing={!isVideoOver}
               data-cy="video"
               height="100%"
+              width="100%"
               url={media.url || "https://www.youtube.com/watch?v=KcMlPl9jArM"}
               config={{
                 playerVars: {

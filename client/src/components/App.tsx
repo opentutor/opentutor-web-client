@@ -211,6 +211,7 @@ function App(props: {
           return;
         }
         if (lesson) {
+          document.title = lesson.name;
           if (lesson.learningFormat === "surveySays") {
             setLessonFormat(LessonFormat.SURVEY_SAYS);
           }
@@ -273,6 +274,7 @@ function App(props: {
             messages={messages}
             hasMedia={hasMedia}
             lessonFormat={lessonFormat}
+            expectationCount={targets.length}
           />
           <ChatForm
             lesson={lesson}
