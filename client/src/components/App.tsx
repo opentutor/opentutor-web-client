@@ -13,6 +13,7 @@ import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
+import SurveySays from "components/SurveySays";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
@@ -255,12 +256,11 @@ function App(props: {
             [styles.appRootNoHeader]: noheader,
           })}
         >
-          <LessonMedia
-            surveySays={lessonFormat === LessonFormat.SURVEY_SAYS}
-            targets={targets}
-          />
+          <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
-            <></>
+            <>
+              <SurveySays hasMedia={hasMedia} targets={targets} />
+            </>
           ) : (
             <>
               <TargetIndicator

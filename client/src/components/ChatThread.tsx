@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
   },
   bodyRoot: {
-    paddingTop: 5,
+    paddingTop: 15,
     width: "90%",
     maxWidth: 400,
     marginLeft: "50%",
@@ -45,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
   bodyDefaultMedia: {
     height: "calc(65% - 60px - 123px)",
+  },
+  bodySurveySaysNoMedia: {
+    height: "calc(40% - 123px)",
+  },
+  bodySurveySaysMedia: {
+    height: "calc(30% - 123px)",
   },
   avatar: {
     color: "#fff",
@@ -140,6 +146,12 @@ export default function ChatThread(props: {
         [styles.bodyDefaultMedia]:
           (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.DEFAULT && props.hasMedia,
+        [styles.bodySurveySaysNoMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && !props.hasMedia,
+        [styles.bodySurveySaysMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && props.hasMedia,
       })}
     >
       <List data-cy="thread" id="thread" disablePadding={true}>

@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
     height: 10,
     width: "calc(100% - 20px)",
     position: "relative",
-    borderColor: "orange",
-    borderWidth: 2,
-    borderStyle: "solid",
+    // borderColor: "orange",
+    // borderWidth: 2,
+    // borderStyle: "solid",
+    boxShadow: "0 6px 6px -3px lightblue",
   },
   survey: {
     padding: theme.spacing(2),
@@ -37,12 +38,29 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
-  bodyRoot: {},
+  bodyRoot: {
+    width: "100%",
+    backgroundColor: "#212629",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   bodyNoMedia: {
-    height: "calc(30% - 113px)"
+    height: "60%",
   },
   bodyMedia: {
-    height: "calc(60% - 113px)"
+    height: "40%",
+  },
+  surveyInnerBoard: {
+    width: "calc(100% - 20px)",
+    height: "calc(100% - 20px)",
+    backgroundColor: "#212629",
+    boxSizing: "border-box",
+    border: "5px solid lightblue",
+    borderRadius: 30,
+  },
+  surveyQuestion: {
+    color: "white",
   },
 }));
 
@@ -55,31 +73,44 @@ const SurveySays = (props: {
 
   return (
     <>
-      <div className={clsx({
-            [styles.bodyRoot]: true,
-            [styles.bodyNoMedia]: !props.hasMedia,
-            [styles.bodyMedia]: props.hasMedia,
-          })}>
-        <div className={styles.survey}>
-          <Grid container spacing={2}>
-            {props.targets.map((target, idx) => {
-              return (
-                <Grid container item spacing={2} key={idx}>
-                  <Grid item xs={12}>
-                    <div className={styles.censored}>
-                      <Typography
-                        className={styles.centerLock}
-                        variant={!target.achieved ? "h6" : "caption"}
-                        style={{ width: "100%" }}
-                      >
-                        {target.achieved ? target.text : idx + 1}
-                      </Typography>
-                    </div>
+      <div
+        className={clsx({
+          [styles.bodyRoot]: true,
+          [styles.bodyNoMedia]: !props.hasMedia,
+          [styles.bodyMedia]: props.hasMedia,
+        })}
+      >
+        <div className={styles.surveyInnerBoard}>
+          <div className={styles.survey}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography
+                  className={styles.surveyQuestion}
+                  variant="h6"
+                  style={{ width: "100%" }}
+                >
+                  Question for Some Expectation?
+                </Typography>
+              </Grid>
+              {props.targets.map((target, idx) => {
+                return (
+                  <Grid container item spacing={2} key={idx}>
+                    <Grid item xs={12}>
+                      <div className={styles.censored}>
+                        <Typography
+                          className={styles.centerLock}
+                          variant={!target.achieved ? "h6" : "caption"}
+                          style={{ width: "100%" }}
+                        >
+                          {target.achieved ? target.text : idx + 1}
+                        </Typography>
+                      </div>
+                    </Grid>
                   </Grid>
-                </Grid>
-              );
-            })}
-          </Grid>
+                );
+              })}
+            </Grid>
+          </div>
         </div>
       </div>
     </>

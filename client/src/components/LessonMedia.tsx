@@ -6,14 +6,15 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
+import clsx from "clsx";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
-import { Lesson, Media, MediaType, Target } from "types";
+import { Lesson, LessonFormat, Media, MediaType } from "types";
 import withLocation from "wrap-with-location";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,16 +73,21 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  mediaRoot: {},
+  mediaDefault: {
+    height: "35%",
+  },
+  mediaSurveySays: {
+    height: "30%",
+  },
 }));
 
 const LessonMedia = (props: {
   search: { lesson: string };
-  surveySays: boolean;
-  targets: Target[];
+  lessonFormat: string;
 }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
-  const { surveySays, targets } = props;
   const [media, setMedia] = React.useState<Media | undefined>(undefined);
   const [imgDims, setImgDims] = React.useState({ width: 0, height: 0 });
   const [isImgExpanded, setImgExpanded] = React.useState(false);
@@ -156,48 +162,42 @@ const LessonMedia = (props: {
     console.log("Is Image");
     return (
       <>
-        <div style={{ height: "35%" }}>
+        <div
+          className={clsx({
+            [styles.mediaRoot]: true,
+            [styles.mediaDefault]:
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.DEFAULT,
+            [styles.mediaSurveySays]:
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.SURVEY_SAYS,
+          })}
+        >
           <div
             data-cy="image"
             className={styles.scroll}
-            style={surveySays ? { height: "50%" } : {}}
             onClick={handleImageExpand}
           >
             {getImage()}
             {getZoom()}
           </div>
-          {surveySays ? (
-            <div className={styles.survey}>
-              <Grid container spacing={2}>
-                {targets.map((target, idx) => {
-                  return (
-                    <Grid container item spacing={2} key={idx}>
-                      <Grid item xs={12}>
-                        <div className={styles.censored}>
-                          <Typography
-                            className={styles.centerLock}
-                            variant={!target.achieved ? "h6" : "caption"}
-                            style={{ width: "100%" }}
-                          >
-                            {target.achieved ? target.text : idx + 1}
-                          </Typography>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </div>
-          ) : (
-            <></>
-          )}
         </div>
       </>
     );
   } else if (media && media.type === MediaType.VIDEO) {
-    const videoHeight = surveySays ? "50%" : "100%";
+    const videoHeight = "100%";
     return (
-      <div style={{ height: "35%" }}>
+      <div
+        className={clsx({
+          [styles.mediaRoot]: true,
+          [styles.mediaDefault]:
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT,
+          [styles.mediaSurveySays]:
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS,
+        })}
+      >
         <div
           style={{
             display: "flex",
@@ -280,65 +280,10 @@ const LessonMedia = (props: {
             )}
           </div>
         </div>
-        {surveySays ? (
-          <div className={styles.survey}>
-            <Grid container spacing={2}>
-              {targets.map((target, idx) => {
-                return (
-                  <Grid container item spacing={2} key={idx}>
-                    <Grid item xs={12}>
-                      <div className={styles.censored}>
-                        <Typography
-                          className={styles.centerLock}
-                          variant={!target.achieved ? "h6" : "caption"}
-                          style={{ width: "100%" }}
-                        >
-                          {target.achieved ? target.text : idx + 1}
-                        </Typography>
-                      </div>
-                    </Grid>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     );
   } else {
-    return (
-      <>
-        {surveySays ? (
-          <div style={{ height: "35%" }}>
-            <div className={styles.survey}>
-              <Grid container spacing={2}>
-                {targets.map((target, idx) => {
-                  return (
-                    <Grid container item spacing={2} key={idx}>
-                      <Grid item xs={12}>
-                        <div className={styles.censored}>
-                          <Typography
-                            className={styles.centerLock}
-                            variant={!target.achieved ? "h6" : "caption"}
-                            style={{ width: "100%" }}
-                          >
-                            {target.achieved ? target.text : idx + 1}
-                          </Typography>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
-      </>
-    );
+    return <></>;
   }
 };
 
