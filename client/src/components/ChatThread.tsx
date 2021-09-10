@@ -7,6 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import "styles/chat.css";
 import React, { useEffect } from "react";
 import { animateScroll } from "react-scroll";
+import clsx from "clsx";
 import {
   Avatar,
   List,
@@ -21,7 +22,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import { ChatMsg, ChatMsgType } from "types";
+import { ChatMsg, ChatMsgType, LessonFormat } from "types";
 import { isTesting } from "utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,15 +31,20 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0,
   },
-  body: {
+  bodyRoot: {
     paddingTop: 5,
     width: "90%",
     maxWidth: 400,
-    height: "calc(65% - 60px - 123px)",
     marginLeft: "50%",
     paddingBottom: 10,
     transform: "translateX(-50%)",
     boxSizing: "border-box",
+  },
+  bodyDefaultNoMedia: {
+    height: "calc(100% - 60px - 123px)",
+  },
+  bodyDefaultMedia: {
+    height: "calc(65% - 60px - 123px)",
   },
   avatar: {
     color: "#fff",
@@ -124,7 +130,18 @@ export default function ChatThread(props: {
   });
 
   return (
-    <div data-cy="chat-thread" className={styles.body}>
+    <div
+      data-cy="chat-thread"
+      className={clsx({
+        [styles.bodyRoot]: true,
+        [styles.bodyDefaultNoMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT && !props.hasMedia,
+        [styles.bodyDefaultMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT && props.hasMedia,
+      })}
+    >
       <List data-cy="thread" id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (

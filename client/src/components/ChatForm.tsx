@@ -20,9 +20,8 @@ import {
   SessionData,
   Target,
 } from "types";
-import { Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   chatboxRoot: {
     width: "90%",
     maxWidth: 400,

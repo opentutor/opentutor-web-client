@@ -51,6 +51,7 @@ export enum MediaType {
 
 export enum LessonFormat {
   SURVEY_SAYS = "surveySays",
+  DEFAULT = "default",
 }
 
 export interface Media {
