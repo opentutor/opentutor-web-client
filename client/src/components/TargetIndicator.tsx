@@ -82,7 +82,7 @@ export function TargetIndicator(props: {
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
   const styles = useStyles();
   return (
-    <Grid container className={styles.targetGrid}>
+    <Grid container className={styles.targetGrid} data-cy="summary-targets">
       {props.targets.map((target, index) => {
         return (
           <Grid item key={`summary-target-${index}`} xs={12}>
@@ -94,6 +94,9 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
                   showSummary={(): void => {
                     /* Empty Function as we don't want to pop another summary from the summary page */
                   }}
+                  data-cy={`summary-target-${index}-${Number(
+                    target.score
+                  ).toFixed()}`}
                 />
               </div>
               {target.text ? (

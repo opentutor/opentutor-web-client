@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
@@ -32,6 +32,7 @@ import withLocation from "wrap-with-location";
 import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
+import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -47,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appRootDefault: {
     height: "calc(100% - 64px)",
+  },
+  appRootSuperDenseHeader: {
+    height: "calc(100% - 30px)",
   },
   appRootNoHeader: {
     height: "calc(100% - 0px)",
@@ -94,6 +98,9 @@ function App(props: {
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [hasMedia, setHasMedia] = React.useState(false);
   const [lessonFormat, setLessonFormat] = React.useState("");
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -247,12 +254,17 @@ function App(props: {
   return (
     <>
       <div className={styles.foreground}>
-        {noheader ? <div id="invisible-header"></div> : <HeaderBar />}
+        {noheader ? (
+          <div id="invisible-header"></div>
+        ) : (
+          <HeaderBar superDense={isMobile} />
+        )}
         <div
           id="app-content"
           className={clsx({
             [styles.appRoot]: true,
-            [styles.appRootDefault]: showHeader,
+            [styles.appRootDefault]: showHeader && !isMobile,
+            [styles.appRootSuperDenseHeader]: showHeader && isMobile,
             [styles.appRootNoHeader]: !showHeader,
           })}
         >

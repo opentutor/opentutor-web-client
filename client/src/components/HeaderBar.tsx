@@ -15,10 +15,23 @@ import { Lesson } from "types";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
+  superDenseAppBar: {
+    display: "flex",
+    alignItems: "center",
+    height: 30,
+    width: "100%",
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    boxShadow:
+      "0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%)",
+    boxSizing: "border-box",
+    zIndex: 1100,
+  },
 }));
 
 const HeaderBar = (props: {
   search: { admin: string; lesson: string };
+  superDense: boolean;
 }): JSX.Element => {
   const styles = useStyles();
   const [lessonName, setLessonName] = React.useState("");
@@ -36,6 +49,16 @@ const HeaderBar = (props: {
       })
       .catch((err: string) => console.error(err));
   }, []);
+
+  if (props.superDense) {
+    return (
+      <div className={styles.superDenseAppBar}>
+        <Typography variant="body1" style={{ paddingLeft: 10 }}>
+          {lessonName}
+        </Typography>
+      </div>
+    );
+  }
 
   if (!props.search.admin) {
     return (
