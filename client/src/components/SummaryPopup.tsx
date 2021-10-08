@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import {
   createStyles,
   Theme,
+  useTheme,
   withStyles,
   WithStyles,
 } from "@material-ui/core/styles";
@@ -21,6 +22,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { SummaryIndicator } from "components/TargetIndicator";
 import { Target } from "types";
+import { useMediaQuery } from "@material-ui/core";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
@@ -28,12 +30,6 @@ const styles = (theme: Theme) =>
     root: {
       margin: 0,
       padding: theme.spacing(2),
-    },
-    closeButton: {
-      position: "absolute",
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
     },
   });
 
@@ -51,7 +47,12 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
       {onClose ? (
         <IconButton
           aria-label="close"
-          className={classes.closeButton}
+          style={{
+            position: "absolute",
+            right: 20,
+            top: 20,
+            color: "gray",
+          }}
           onClick={onClose}
         >
           <CloseIcon />
@@ -83,6 +84,9 @@ export default function SummaryPopup(props: {
 }): JSX.Element {
   const { open, onCloseRequested, message, buttonText, targets } = props;
   const [tranState, setTranState] = useState("summary-popup-trans-none");
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+
   return (
     <Dialog
       data-cy="summary-popup"
@@ -90,6 +94,7 @@ export default function SummaryPopup(props: {
       onEntered={() => setTranState("summary-popup-trans-done")}
       aria-labelledby="customized-dialog-title"
       open={open}
+      fullScreen={fullScreen}
     >
       <div data-cy={tranState} />
       <DialogTitle
@@ -99,12 +104,12 @@ export default function SummaryPopup(props: {
       >
         Lesson Summary
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent dividers style={{minHeight: 30, maxHeight: 30}}>
         <Typography gutterBottom>{message}</Typography>
       </DialogContent>
       <SummaryIndicator targets={targets} />
       <DialogActions>
-        <Button onClick={onCloseRequested} color="primary" variant="contained">
+        <Button onClick={onCloseRequested} color="primary" variant="contained" style={{marginRight: 30, marginBottom: 10}}>
           {buttonText}
         </Button>
       </DialogActions>

@@ -9,6 +9,7 @@ import React from "react";
 import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
 import GpsFixedIcon from "@material-ui/icons/GpsFixed";
 import Button from "@material-ui/core/Button";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
@@ -35,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
-  inProgress: {
+  default: {
     color: theme.palette.primary.main,
   },
-  complete: {
+  completeSatisfied: {
     color: "#3CB371",
+  },
+  completeUnsatisfied: {
+    color: "grey",
   },
   pulse: {},
 }));
@@ -56,12 +60,15 @@ export default function TargetIcon(props: {
       data-cy={`target-${props.index}-${Number(props.target.score).toFixed()}`}
       position="relative"
       display="inline-flex"
+      style={{transform: "rotate(-90deg)"}}
     >
       <CircularProgress
-        className={[
-          styles.circleProgress,
-          props.target.score === 1 ? styles.complete : styles.inProgress,
-        ].join(" ")}
+        className={clsx({
+          [styles.circleProgress]: true,
+          [styles.completeSatisfied]: props.target.status === "complete" && props.target.score === 1,
+          [styles.completeUnsatisfied]: props.target.status === "complete" && props.target.score !== 1,
+          [styles.default]: props.target.status !== "complete"
+        })}
         variant="determinate"
         value={props.target.score * 100}
       />
@@ -84,17 +91,19 @@ export default function TargetIcon(props: {
         >
           {props.target.status !== "active" ? (
             <GpsNotFixedIcon
-              className={[
-                props.target.score === 1 ? styles.complete : styles.inProgress,
-                styles.centerIcon,
-              ].join(" ")}
+              className={clsx({
+                [styles.circleProgress]: true,
+                [styles.completeSatisfied]: props.target.status === "complete" && props.target.score === 1,
+                [styles.completeUnsatisfied]: props.target.status === "complete" && props.target.score !== 1,
+                [styles.default]: props.target.status !== "complete"
+              })}
             />
           ) : (
             <GpsFixedIcon
-              className={[
-                props.target.score === 1 ? styles.complete : styles.inProgress,
-                styles.centerIcon,
-              ].join(" ")}
+              className={clsx({
+                [styles.circleProgress]: true,
+                [styles.default]: true
+              })}
             />
           )}
         </Button>

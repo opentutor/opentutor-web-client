@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     height: "calc(100% - 64px)",
   },
   appRootNoHeader: {
-    height: "calc(100%)",
+    height: "calc(100% - 0px)",
   },
   // chatWindow: {
   //   flex: 1,
@@ -246,16 +246,27 @@ function App(props: {
     };
   }, [sessionSummary]);
 
+  console.log(noheader)
+  let showHeader = true;
+  if(noheader !== undefined) {
+    showHeader = false;
+  }
+  console.log(showHeader)
   return (
     <>
       <div className={styles.foreground}>
-        {noheader ? undefined : <HeaderBar />}
+        {noheader ? <div id="invisible-header"></div> : <HeaderBar />}
         <div
+          id="app-content"
           className={clsx({
             [styles.appRoot]: true,
-            [styles.appRootDefault]: !noheader,
-            [styles.appRootNoHeader]: noheader,
+            [styles.appRootDefault]: showHeader,
+            [styles.appRootNoHeader]: !showHeader,
           })}
+          // className={[
+          //   styles.appRoot,
+          //   showHeader ? styles.appRootDefault : styles.appRootNoHeader,
+          // ].join(" ")}
         >
           <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (

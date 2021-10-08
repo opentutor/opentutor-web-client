@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     left: "calc(50% + 0px)",
     transform: "translate(-50%, -50%)",
   },
-  censored: {
+  fixedSurveyCard: {
     borderRadius: 10,
     background: theme.palette.primary.main,
     color: "white",
@@ -27,10 +27,26 @@ const useStyles = makeStyles((theme) => ({
     height: 30,
     position: "relative",
     boxSizing: "border-box",
-    // borderColor: "lightblue",
-    // borderWidth: 1,
-    // borderStyle: "solid",
+    transition: "box-shadow 0.5s ease-in",
+  },
+  expandableSurveyCard: {
+    borderRadius: 10,
+    background: theme.palette.primary.main,
+    color: "white",
+    padding: 10,
+    minHeight: 30,
+    position: "relative",
+    boxSizing: "border-box",
+    transition: "box-shadow 0.5s ease-in",
+  },
+  default: {
     boxShadow: "1px 6px 6px -3px lightblue",
+  },
+  completeSatisfied: {
+    boxShadow: "1px 6px 6px -3px lightgreen",
+  },
+  completeUnsatisfied: {
+    boxShadow: "1px 6px 6px -3px darkgrey",
   },
   survey: {
     padding: theme.spacing(2),
@@ -72,6 +88,7 @@ const SurveySays = (props: {
   targets: Target[];
 }): JSX.Element => {
   const styles = useStyles();
+  const [expandedCard, setExpandedCard] = useState(-1);
 
   return (
     <>
@@ -98,15 +115,58 @@ const SurveySays = (props: {
                 return (
                   // <Grid container item spacing={2} key={idx}>
                   <Grid item xs={12} key={idx} style={{ margin: 8 }}>
-                    <div className={styles.censored}>
+                    <div
+                      id={`card-${idx}`}
+                      className={clsx({
+                        [styles.fixedSurveyCard]: idx !== expandedCard,
+                        [styles.expandableSurveyCard]: idx === expandedCard,
+                        [styles.completeSatisfied]:
+                          target.status === "complete" && target.score === 1,
+                        [styles.completeUnsatisfied]:
+                          target.status === "complete" && target.score !== 1,
+                        [styles.default]: target.status !== "complete",
+                      })}
+                      onClick={() => {
+                        console.log("Clicked")
+                        if(idx === expandedCard) {
+                          console.log("Setting to: -1")
+                          setExpandedCard(-1)
+                        } else {
+                          setExpandedCard(idx)
+                          console.log("Setting to: " + idx)
+                        }
+                      }}
+                    >
                       <Typography
                         className={styles.centerLock}
-                        variant={!target.achieved ? "h6" : "caption"}
-                        style={{ width: "100%" }}
+                        variant={
+                          target.status !== "complete" ? "h6" : "caption"
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          width: "100%",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          boxSizing: "border-box",
+                        }}
                       >
-                        {target.achieved ? target.text : idx + 1}
+                        {target.status === "complete" ? target.text : idx + 1}
                       </Typography>
                     </div>
+                    {/* <div
+                      className={clsx({
+                        [styles.censoredLarge]: true,
+                        [styles.completeSatisfied]:
+                          target.status === "complete" && target.score === 1,
+                        [styles.completeUnsatisfied]:
+                          target.status === "complete" && target.score !== 1,
+                        [styles.default]: target.status !== "complete",
+                      })}
+                    >
+                      Some super super super super super super super super super super super super long text that really need a massive overflow to show these really cool expectaions that you somehow got!
+                    </div> */}
                   </Grid>
                   // </Grid>
                 );

@@ -110,7 +110,8 @@ const LessonMedia = (props: {
   const getImage = (): JSX.Element => {
     return (
       <>
-        <div style={{ backgroundColor: "red", height: "100%", width: "100%" }}>
+      {/* backgroundColor: "red", */}
+        <div style={{  height: "100%", width: "100%" }}>
           {isImgExpanded ? (
             <img
               src={media ? media.url : ""}
@@ -167,7 +168,6 @@ const LessonMedia = (props: {
   const videoPlayer: any = useRef(null);
 
   if (media && media.type === MediaType.IMAGE) {
-    console.log("Is Image");
     return (
       <>
         <div
