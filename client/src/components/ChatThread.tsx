@@ -52,18 +52,18 @@ export default function ChatThread(props: {
       boxSizing: "border-box",
     },
     bodyDefaultNoMedia: {
-      height: "calc(100% - 60px - 85px)",
+      height: "calc(100% - 60px - 95px)",
     },
     bodyDefaultMedia: {
-      height: "calc(65% - 60px - 85px)",
+      height: "calc(65% - 60px - 95px)",
     },
     bodySurveySaysNoMedia: {
-      height: `calc(100% - 85px - ${calcBoardHeight(
+      height: `calc(100% - 95px - ${calcBoardHeight(
         props.expectationCount
       )}px)`,
     },
     bodySurveySaysMedia: {
-      height: `calc(70% - 85px - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
     },
     avatar: {
       color: "#fff",

@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   appRoot: {
     width: "100%",
-    paddingBottom: 10,
     boxSizing: "border-box",
   },
   appRootDefault: {
@@ -52,11 +51,6 @@ const useStyles = makeStyles((theme) => ({
   appRootNoHeader: {
     height: "calc(100% - 0px)",
   },
-  // chatWindow: {
-  //   flex: 1,
-  //   backgroundColor: theme.palette.background.default,
-  //   width: "100%",
-  // },
   buildInfo: {
     padding: 5,
     color: "white",
@@ -246,12 +240,12 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  console.log(noheader)
+  console.log(noheader);
   let showHeader = true;
-  if(noheader !== undefined) {
+  if (noheader !== undefined) {
     showHeader = false;
   }
-  console.log(showHeader)
+  console.log(showHeader);
   return (
     <>
       <div className={styles.foreground}>

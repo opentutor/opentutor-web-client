@@ -110,8 +110,8 @@ const LessonMedia = (props: {
   const getImage = (): JSX.Element => {
     return (
       <>
-      {/* backgroundColor: "red", */}
-        <div style={{  height: "100%", width: "100%" }}>
+        {/* backgroundColor: "red", */}
+        <div style={{ height: "100%", width: "100%" }}>
           {isImgExpanded ? (
             <img
               src={media ? media.url : ""}

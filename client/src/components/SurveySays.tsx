@@ -33,11 +33,22 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     background: theme.palette.primary.main,
     color: "white",
-    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
     minHeight: 30,
     position: "relative",
     boxSizing: "border-box",
     transition: "box-shadow 0.5s ease-in",
+  },
+  fixedSurveyCardText: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  expandableSurveyCardText: {
+    minHeight: 20,
   },
   default: {
     boxShadow: "1px 6px 6px -3px lightblue",
@@ -113,7 +124,6 @@ const SurveySays = (props: {
               </Grid>
               {props.targets.map((target, idx) => {
                 return (
-                  // <Grid container item spacing={2} key={idx}>
                   <Grid item xs={12} key={idx} style={{ margin: 8 }}>
                     <div
                       id={`card-${idx}`}
@@ -127,37 +137,47 @@ const SurveySays = (props: {
                         [styles.default]: target.status !== "complete",
                       })}
                       onClick={() => {
-                        console.log("Clicked")
-                        if(idx === expandedCard) {
-                          console.log("Setting to: -1")
-                          setExpandedCard(-1)
+                        console.log("Clicked");
+                        if (idx === expandedCard) {
+                          console.log("Setting to: -1");
+                          setExpandedCard(-1);
                         } else {
-                          setExpandedCard(idx)
-                          console.log("Setting to: " + idx)
+                          console.log("Setting to: " + idx);
+                          setExpandedCard(idx);
                         }
                       }}
                     >
-                      <Typography
-                        className={styles.centerLock}
-                        variant={
-                          target.status !== "complete" ? "h6" : "caption"
-                        }
-                        style={{
-                          paddingLeft: 10,
-                          paddingRight: 10,
-                          width: "100%",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {target.status === "complete" ? target.text : idx + 1}
-                      </Typography>
+                      {idx === expandedCard && target.status === "complete" ? (
+                        <Typography
+                          variant={
+                            target.status !== "complete" ? "h6" : "caption"
+                          }
+                        >
+                          {target.status === "complete" ? target.text : idx + 1}
+                        </Typography>
+                      ) : (
+                        <Typography
+                          className={clsx({
+                            [styles.fixedSurveyCardText]: true,
+                            [styles.centerLock]: true,
+                          })}
+                          variant={
+                            target.status !== "complete" ? "h6" : "caption"
+                          }
+                          style={{
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            width: "100%",
+                            boxSizing: "border-box",
+                          }}
+                        >
+                          {target.status === "complete" ? target.text : idx + 1}
+                        </Typography>
+                      )}
                     </div>
                     {/* <div
                       className={clsx({
-                        [styles.censoredLarge]: true,
+                        [styles.expandableSurveyCard]: true,
                         [styles.completeSatisfied]:
                           target.status === "complete" && target.score === 1,
                         [styles.completeUnsatisfied]:
@@ -165,10 +185,13 @@ const SurveySays = (props: {
                         [styles.default]: target.status !== "complete",
                       })}
                     >
+                      <Typography variant={
+                          target.status !== "complete" ? "h6" : "caption"
+                        }>
                       Some super super super super super super super super super super super super long text that really need a massive overflow to show these really cool expectaions that you somehow got!
+                      </Typography>
                     </div> */}
                   </Grid>
-                  // </Grid>
                 );
               })}
             </Grid>

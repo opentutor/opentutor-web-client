@@ -60,14 +60,16 @@ export default function TargetIcon(props: {
       data-cy={`target-${props.index}-${Number(props.target.score).toFixed()}`}
       position="relative"
       display="inline-flex"
-      style={{transform: "rotate(-90deg)"}}
+      style={{ transform: "rotate(-90deg)" }}
     >
       <CircularProgress
         className={clsx({
           [styles.circleProgress]: true,
-          [styles.completeSatisfied]: props.target.status === "complete" && props.target.score === 1,
-          [styles.completeUnsatisfied]: props.target.status === "complete" && props.target.score !== 1,
-          [styles.default]: props.target.status !== "complete"
+          [styles.completeSatisfied]:
+            props.target.status === "complete" && props.target.score === 1,
+          [styles.completeUnsatisfied]:
+            props.target.status === "complete" && props.target.score !== 1,
+          [styles.default]: props.target.status !== "complete",
         })}
         variant="determinate"
         value={props.target.score * 100}
@@ -93,16 +95,20 @@ export default function TargetIcon(props: {
             <GpsNotFixedIcon
               className={clsx({
                 [styles.circleProgress]: true,
-                [styles.completeSatisfied]: props.target.status === "complete" && props.target.score === 1,
-                [styles.completeUnsatisfied]: props.target.status === "complete" && props.target.score !== 1,
-                [styles.default]: props.target.status !== "complete"
+                [styles.completeSatisfied]:
+                  props.target.status === "complete" &&
+                  props.target.score === 1,
+                [styles.completeUnsatisfied]:
+                  props.target.status === "complete" &&
+                  props.target.score !== 1,
+                [styles.default]: props.target.status !== "complete",
               })}
             />
           ) : (
             <GpsFixedIcon
               className={clsx({
                 [styles.circleProgress]: true,
-                [styles.default]: true
+                [styles.default]: true,
               })}
             />
           )}

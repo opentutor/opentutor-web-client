@@ -150,7 +150,7 @@ const ChatForm = (props: {
       data-cy="chat-form"
       noValidate
       autoComplete="off"
-      style={{ height: 85 }}
+      style={{ height: 95 }}
     >
       <div className={styles.chatboxRoot}>
         <TextField
