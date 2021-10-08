@@ -82,7 +82,7 @@ export default function SummaryPopup(props: {
   buttonText: string;
   targets: Target[];
 }): JSX.Element {
-  const { open, onCloseRequested, message, buttonText, targets } = props;
+  const { open, onCloseRequested, buttonText, targets } = props;
   const [tranState, setTranState] = useState("summary-popup-trans-none");
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
@@ -104,16 +104,15 @@ export default function SummaryPopup(props: {
       >
         Lesson Summary
       </DialogTitle>
-      <DialogContent dividers style={{ minHeight: 30, maxHeight: 30 }}>
-        <Typography gutterBottom>{message}</Typography>
+      <DialogContent dividers>
+        <SummaryIndicator targets={targets} />
       </DialogContent>
-      <SummaryIndicator targets={targets} />
       <DialogActions>
         <Button
           onClick={onCloseRequested}
           color="primary"
           variant="contained"
-          style={{ marginRight: 30, marginBottom: 10 }}
+          // style={{ marginRight: 10, marginBottom: 5, marginTop: 5 }}
         >
           {buttonText}
         </Button>

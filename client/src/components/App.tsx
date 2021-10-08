@@ -240,12 +240,10 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  console.log(noheader);
   let showHeader = true;
   if (noheader !== undefined) {
     showHeader = false;
   }
-  console.log(showHeader);
   return (
     <>
       <div className={styles.foreground}>
@@ -257,10 +255,6 @@ function App(props: {
             [styles.appRootDefault]: showHeader,
             [styles.appRootNoHeader]: !showHeader,
           })}
-          // className={[
-          //   styles.appRoot,
-          //   showHeader ? styles.appRootDefault : styles.appRootNoHeader,
-          // ].join(" ")}
         >
           <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (

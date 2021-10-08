@@ -137,12 +137,9 @@ const SurveySays = (props: {
                         [styles.default]: target.status !== "complete",
                       })}
                       onClick={() => {
-                        console.log("Clicked");
                         if (idx === expandedCard) {
-                          console.log("Setting to: -1");
                           setExpandedCard(-1);
                         } else {
-                          console.log("Setting to: " + idx);
                           setExpandedCard(idx);
                         }
                       }}

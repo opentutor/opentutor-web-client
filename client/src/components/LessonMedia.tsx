@@ -8,7 +8,6 @@ import React, { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import clsx from "clsx";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
-import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
@@ -16,6 +15,7 @@ import { Typography } from "@material-ui/core";
 import { fetchLesson } from "api";
 import { Lesson, LessonFormat, Media, MediaType } from "types";
 import withLocation from "wrap-with-location";
+import ImageDialog from "./ImageDialog";
 
 const useStyles = makeStyles((theme) => ({
   scroll: {
@@ -90,12 +90,11 @@ const LessonMedia = (props: {
   const styles = useStyles();
   const { lesson } = props.search;
   const [media, setMedia] = React.useState<Media | undefined>(undefined);
-  const [imgDims, setImgDims] = React.useState({ width: 0, height: 0 });
-  const [isImgExpanded, setImgExpanded] = React.useState(false);
   const [isVideoOver, setIsVideoOver] = React.useState(false);
+  const [fullscreenImage, setFullscreenImage] = React.useState(false);
 
   const handleImageExpand = (): void => {
-    setImgExpanded(!isImgExpanded);
+    setFullscreenImage(true);
   };
 
   interface Prop {
@@ -107,43 +106,6 @@ const LessonMedia = (props: {
     return props.find((p) => p.name === key)?.value || "";
   }
 
-  const getImage = (): JSX.Element => {
-    return (
-      <>
-        {/* backgroundColor: "red", */}
-        <div style={{ height: "100%", width: "100%" }}>
-          {isImgExpanded ? (
-            <img
-              src={media ? media.url : ""}
-              // className={styles.image}
-              // style={{
-              //   width: imgDims.height > imgDims.width ? 400 : "",
-              // }}
-              style={{
-                // objectFit: "cover",
-                // height: "100%",
-                // width: "100%",
-                // aspectRatio: "1/1"
-                maxWidth: "100%",
-                width: "auto",
-                height: "auto",
-              }}
-            ></img>
-          ) : (
-            <img
-              src={media ? media.url : ""}
-              style={{
-                objectFit: "contain",
-                height: "100%",
-                width: "100%",
-              }}
-            ></img>
-          )}
-        </div>
-      </>
-    );
-  };
-
   React.useEffect(() => {
     fetchLesson(lesson)
       .then((lesson: Lesson) => {
@@ -151,12 +113,6 @@ const LessonMedia = (props: {
           setMedia(lesson.media);
           if (lesson.media && lesson.media.type === MediaType.IMAGE) {
             const img = new Image();
-            img.addEventListener("load", function () {
-              setImgDims({
-                width: this.naturalWidth,
-                height: this.naturalHeight,
-              });
-            });
             img.src = lesson.media.url;
           }
         }
@@ -186,14 +142,24 @@ const LessonMedia = (props: {
             className={styles.scroll}
             onClick={handleImageExpand}
           >
-            {getImage()}
-            {isImgExpanded ? (
-              <ZoomOutIcon className={styles.innerZoomOverlay} />
-            ) : (
-              <ZoomInIcon className={styles.innerZoomOverlay} />
-            )}
+            <div style={{ height: "100%", width: "100%" }}>
+              <img
+                src={media ? media.url : ""}
+                style={{
+                  objectFit: "contain",
+                  height: "100%",
+                  width: "100%",
+                }}
+              />
+            </div>
+            <ZoomInIcon className={styles.innerZoomOverlay} />
           </div>
         </div>
+        <ImageDialog
+          imageLink={media.url}
+          open={fullscreenImage}
+          setOpen={setFullscreenImage}
+        />
       </>
     );
   } else if (media && media.type === MediaType.VIDEO) {

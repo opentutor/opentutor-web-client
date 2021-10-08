@@ -99,7 +99,13 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
               {target.text ? (
                 <Typography
                   data-cy={`exp-${index}`}
-                  style={{ textAlign: "left", marginRight: 20 }}
+                  style={{
+                    textAlign: "left",
+                    marginRight: 20,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                  }}
+                  variant="body1"
                 >
                   {target.text}
                 </Typography>
