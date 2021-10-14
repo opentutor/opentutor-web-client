@@ -53,7 +53,7 @@ const HeaderBar = (props: {
   if (props.superDense) {
     return (
       <div className={styles.superDenseAppBar}>
-        <Typography variant="body1" style={{ paddingLeft: 10 }}>
+        <Typography data-cy="title" variant="body1" style={{ paddingLeft: 10 }}>
           {lessonName}
         </Typography>
       </div>

@@ -87,16 +87,17 @@ export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
         return (
           <Grid item key={`summary-target-${index}`} xs={12}>
             <div className={styles.targetItem}>
-              <div>
+              <div
+                data-cy={`summary-target-${index}-${Number(
+                  target.score
+                ).toFixed()}`}
+              >
                 <TargetIcon
                   target={target}
                   index={index}
                   showSummary={(): void => {
                     /* Empty Function as we don't want to pop another summary from the summary page */
                   }}
-                  data-cy={`summary-target-${index}-${Number(
-                    target.score
-                  ).toFixed()}`}
                 />
               </div>
               {target.text ? (
