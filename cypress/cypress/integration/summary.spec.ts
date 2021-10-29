@@ -101,7 +101,7 @@ describe("Expectation summary pop-up", () => {
     cy.get("[data-cy=submit-button]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
-    cy.get("[data-cy=exp-0]").contains(
+    cy.get("[data-cy=exp-0]").should("contain", 
       "Current flows in the same direction as the arrow."
     );
   });

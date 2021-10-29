@@ -23,7 +23,7 @@ describe("Lesson query parameter", () => {
         cyMockDialog(cy, x.lesson, x.fixture);
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         expectedServerResponse.response.forEach((r, i) => {
-          cy.get(`[data-cy=chat-msg-${i}]`).contains(r.data.text);
+          cy.get(`[data-cy=chat-msg-${i}]`).should("contain", r.data.text);
         });
       });
     });
@@ -51,9 +51,9 @@ describe("Lesson query parameter", () => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
         cy.get("[data-cy=submit-button]").click();
-        cy.get("[data-cy=chat-msg-2]").contains(x.userInput);
+        cy.get("[data-cy=chat-msg-2]").should("contain", x.userInput);
         expectedServerResponse.response.forEach((r, i) => {
-          cy.get(`[data-cy=chat-msg-${i + 3}]`).contains(r.data.text);
+          cy.get(`[data-cy=chat-msg-${i + 3}]`).should("contain", r.data.text);
         });
       });
     });

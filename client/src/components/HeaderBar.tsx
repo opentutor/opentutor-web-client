@@ -53,19 +53,17 @@ const HeaderBar = (props: {
   if (props.superDense) {
     return (
       <div className={styles.superDenseAppBar}>
-        <Typography data-cy="title" variant="body1" style={{ paddingLeft: 10 }}>
+        <Typography data-cy="lesson-name" id="lesson-name-header" variant="body1" style={{ paddingLeft: 10 }}>
           {lessonName}
         </Typography>
       </div>
     );
-  }
-
-  if (!props.search.admin) {
+  } else if (!props.search.admin) {
     return (
       <div>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography data-cy="title" variant="h6">
+            <Typography data-cy="lesson-name" variant="h6">
               {lessonName}
             </Typography>
           </Toolbar>
@@ -73,29 +71,29 @@ const HeaderBar = (props: {
         <div className={styles.toolbar} /> {/* create space below app bar */}
       </div>
     );
+  } else {
+    return (
+      <div>
+        <AppBar position="fixed">
+          <Toolbar>
+            <IconButton
+              data-cy="back-button"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography data-cy="lesson-name" variant="h6">
+              Preview {lessonName}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <div className={styles.toolbar} /> {/* create space below app bar */}
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <AppBar position="fixed">
-        <Toolbar>
-          <IconButton
-            data-cy="back-button"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography data-cy="title" variant="h6">
-            Preview {lessonName}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <div className={styles.toolbar} /> {/* create space below app bar */}
-    </div>
-  );
 };
 
 export default withLocation(HeaderBar);

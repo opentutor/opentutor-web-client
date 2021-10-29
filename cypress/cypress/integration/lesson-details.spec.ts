@@ -22,7 +22,7 @@ describe("lesson details", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
 
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("[data-cy=title]").contains("lesson 1");
+    cy.get("[data-cy=lesson-name]").should("contain", "lesson 1");
   });
 
   it(`displays image for a lesson`, () => {
