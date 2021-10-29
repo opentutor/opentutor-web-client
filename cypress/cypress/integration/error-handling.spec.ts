@@ -55,7 +55,10 @@ describe("Error popup", () => {
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
-    cy.get("[data-cy=error-popup]").should("contain", "Could not continue lesson");
+    cy.get("[data-cy=error-popup]").should(
+      "contain",
+      "Could not continue lesson"
+    );
   });
 
   it("prompts 'already ended' on 410 response", () => {

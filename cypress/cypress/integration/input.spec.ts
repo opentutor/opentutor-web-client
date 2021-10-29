@@ -51,7 +51,8 @@ describe("Input field", () => {
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-3]").should("contain", 
+    cy.get("[data-cy=chat-msg-3]").should(
+      "contain",
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
@@ -67,7 +68,8 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-3]").should("contain", 
+    cy.get("[data-cy=chat-msg-3]").should(
+      "contain",
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
