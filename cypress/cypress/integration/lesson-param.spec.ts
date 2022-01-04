@@ -16,7 +16,7 @@ describe("Lesson query parameter", () => {
       lesson: "q2",
       fixture: "q2-1-p1.json",
     },
-  ].forEach((x) => {
+  ].forEach((x, num) => {
     it(`displays intro messages on start for lesson ${x.lesson}`, () => {
       cySetup(cy);
       cy.fixture(x.fixture).then((expectedServerResponse) => {
@@ -24,7 +24,6 @@ describe("Lesson query parameter", () => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         expectedServerResponse.response.forEach((r, i) => {
           cy.get(`[data-cy=chat-msg-${i}]`).should("contain", r.data.text);
-          cy.wait(2000);
         });
       });
     });
@@ -53,6 +52,8 @@ describe("Lesson query parameter", () => {
         cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
         cy.get("[data-cy=submit-button]").click();
         cy.get("[data-cy=chat-msg-2]").should("contain", x.userInput);
+        /** Hacky solution to wait for all timed messages to appear **/
+        cy.wait(15000);
         expectedServerResponse.response.forEach((r, i) => {
           cy.get(`[data-cy=chat-msg-${i + 3}]`).should("contain", r.data.text);
         });
