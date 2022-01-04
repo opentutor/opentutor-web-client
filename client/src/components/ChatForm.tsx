@@ -96,26 +96,21 @@ const ChatForm = (props: {
               text: msg.data.text,
             };
           });
-          console.log(messageBatch);
-          setAllMessages([...props.messages, ...messageBatch])
+          setAllMessages([...props.messages, ...messageBatch]);
           let delayCount = 0;
-          let tempQueue:NodeJS.Timeout[] = [];
+          let tempQueue: NodeJS.Timeout[] = [];
           dialogData.response.forEach((msg, i) => {
-            const timeout = setTimeout(function(){
-              console.log(msg.data.text);
+            const timeout = setTimeout(function () {
               props.setMessages([
                 ...props.messages,
-                ...messageBatch.slice(0,i+1)
+                ...messageBatch.slice(0, i + 1),
               ]);
-              console.log("Clear: " + timeout)
-              clearTimeout(timeout)
+              clearTimeout(timeout);
             }, delayCount);
-            delayCount += (3500 + 60 * msg.data.text.length) * .75;
-            // console.log("Scheduled: " + timeout)
+            delayCount += (3500 + 60 * msg.data.text.length) * 0.75;
             tempQueue = [...tempQueue, timeout];
           }),
-          console.log(tempQueue);
-          setMessageQueue(tempQueue);
+            setMessageQueue(tempQueue);
           props.setTargets(
             dialogData.sessionInfo.dialogState.expectationData.map((exp) => {
               return {
@@ -143,11 +138,9 @@ const ChatForm = (props: {
     e.preventDefault();
     if (chat.length > 0) {
       //Clear message queue
-      console.log("All To Clear: " + messageQueue.length)
       messageQueue.forEach((timer) => {
-        console.log("Clear: " + timer)
-        clearTimeout(timer)
-      })
+        clearTimeout(timer);
+      });
       setMessageQueue([]);
       props.setMessages([
         ...allMessages,
