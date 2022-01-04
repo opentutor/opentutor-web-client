@@ -62,17 +62,20 @@ const ChatForm = (props: {
 }): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
+  const [allMessages, setAllMessages] = useState<ChatMsg[]>(props.messages);
   const [outboundChat, setOutboundChat] = useState<OutboundChat>({
     text: "",
     seq: 0,
   });
+
+  const [messageQueue, setMessageQueue] = React.useState<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
     if (!props.sessionAlive) {
       return;
     }
     async function fetchData(): Promise<void> {
-      if (props.session.sessionHistory !== "") {
+      if (props.session.sessionHistory !== "" && outboundChat.text !== "") {
         const response = await continueSession({
           lesson: props.lesson,
           username: props.username,
@@ -86,16 +89,33 @@ const ChatForm = (props: {
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
-          props.setMessages([
-            ...props.messages,
-            ...dialogData.response.map((msg) => {
-              return {
-                senderId: "system",
-                type: msg.type,
-                text: msg.data.text,
-              };
-            }),
-          ]);
+          const messageBatch = dialogData.response.map((msg) => {
+            return {
+              senderId: "system",
+              type: msg.type,
+              text: msg.data.text,
+            };
+          });
+          console.log(messageBatch);
+          setAllMessages([...props.messages, ...messageBatch])
+          let delayCount = 0;
+          let tempQueue:NodeJS.Timeout[] = [];
+          dialogData.response.forEach((msg, i) => {
+            const timeout = setTimeout(function(){
+              console.log(msg.data.text);
+              props.setMessages([
+                ...props.messages,
+                ...messageBatch.slice(0,i+1)
+              ]);
+              console.log("Clear: " + timeout)
+              clearTimeout(timeout)
+            }, delayCount);
+            delayCount += (3500 + 60 * msg.data.text.length) * .75;
+            // console.log("Scheduled: " + timeout)
+            tempQueue = [...tempQueue, timeout];
+          }),
+          console.log(tempQueue);
+          setMessageQueue(tempQueue);
           props.setTargets(
             dialogData.sessionInfo.dialogState.expectationData.map((exp) => {
               return {
@@ -122,8 +142,15 @@ const ChatForm = (props: {
   function handleClick(e: React.SyntheticEvent<Element>): void {
     e.preventDefault();
     if (chat.length > 0) {
+      //Clear message queue
+      console.log("All To Clear: " + messageQueue.length)
+      messageQueue.forEach((timer) => {
+        console.log("Clear: " + timer)
+        clearTimeout(timer)
+      })
+      setMessageQueue([]);
       props.setMessages([
-        ...props.messages,
+        ...allMessages,
         { senderId: "user", type: "", text: chat },
       ]);
       setOutboundChat({

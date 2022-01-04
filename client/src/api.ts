@@ -63,6 +63,7 @@ export async function continueSession(props: {
   session: SessionData;
   outboundChat: string;
 }): Promise<AxiosResponse<DialogResponse>> {
+  console.log("Dispatching Stuff!");
   try {
     return await axios.post<DialogResponse>(
       `${DIALOG_ENDPOINT}${props.lesson}/session`,
