@@ -24,6 +24,7 @@ describe("Lesson query parameter", () => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         expectedServerResponse.response.forEach((r, i) => {
           cy.get(`[data-cy=chat-msg-${i}]`).should("contain", r.data.text);
+          cy.wait(2000);
         });
       });
     });
