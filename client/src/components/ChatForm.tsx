@@ -62,7 +62,7 @@ const ChatForm = (props: {
 }): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
-  const [allMessages, setAllMessages] = useState<ChatMsg[]>(props.messages);
+  const [allMessages, setAllMessages] = useState<ChatMsg[]>([]);
   const [outboundChat, setOutboundChat] = useState<OutboundChat>({
     text: "",
     seq: 0,
@@ -142,10 +142,17 @@ const ChatForm = (props: {
         clearTimeout(timer);
       });
       setMessageQueue([]);
-      props.setMessages([
-        ...allMessages,
-        { senderId: "user", type: "", text: chat },
-      ]);
+      if (allMessages.length === 0) {
+        props.setMessages([
+          ...props.messages,
+          { senderId: "user", type: "", text: chat },
+        ]);
+      } else {
+        props.setMessages([
+          ...allMessages,
+          { senderId: "user", type: "", text: chat },
+        ]);
+      }
       setOutboundChat({
         text: chat,
         seq: outboundChat.seq + 1,
