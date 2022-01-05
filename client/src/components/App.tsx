@@ -33,6 +33,7 @@ import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
+import TriggerDialog from "./TriggerDialog";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -66,10 +67,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App(props: {
-  search: { lesson: string; guest: string; actor: string; noheader: string };
+  search: {
+    lesson: string;
+    guest: string;
+    actor: string;
+    noheader: string;
+    triggerWarning: string;
+    triggerRedirect: string;
+  };
 }): JSX.Element {
   const styles = useStyles();
-  const { lesson, guest, actor, noheader } = props.search;
+  const { lesson, guest, actor, noheader, triggerWarning, triggerRedirect } =
+    props.search;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
     showSummary: false,
@@ -101,6 +110,8 @@ function App(props: {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const [showTriggerWarning, setShowTriggerWarning] = React.useState(false);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -162,6 +173,15 @@ function App(props: {
   const handleErrorOpen = (): void => {
     setErrorOpen(true);
   };
+
+  React.useEffect(() => {
+    console.log("Redirect Info:");
+    console.log(triggerWarning);
+    console.log(triggerRedirect);
+    if (triggerWarning) {
+      setShowTriggerWarning(true);
+    }
+  }, []);
 
   React.useEffect(() => {
     let mounted = true;
@@ -253,6 +273,11 @@ function App(props: {
   }
   return (
     <>
+      <TriggerDialog
+        showTriggerWarning={showTriggerWarning}
+        setShowTriggerWarning={setShowTriggerWarning}
+        triggerRedirect={triggerRedirect}
+      />
       <div className={styles.foreground}>
         {noheader ? (
           <div id="invisible-header"></div>

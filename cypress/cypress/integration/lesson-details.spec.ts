@@ -62,4 +62,37 @@ describe("lesson details", () => {
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=video]");
   });
+
+  it(`shows a trigger dialog than can be dismissed to show lesson on continue button click`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    const redirectUrl = "https://www.apple.com";
+    cy.visit(
+      `/?lesson=q1&guest=guest&triggerWarning=yes&triggerRedirect=${redirectUrl}`
+    ); // change URL to match your dev URLs
+    cy.get("[data-cy=trigger-dialog]").should("be.visible");
+    cy.get("[data-cy=trigger-dismiss-button").click();
+    cy.get("[data-cy=chat-thread]").should("be.visible");
+  });
+
+  it(`shows a trigger dialog than redirects on exit button click`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    const redirectUrl = "https://www.apple.com";
+    cy.visit(
+      `/?lesson=q1&guest=guest&triggerWarning=yes&triggerRedirect=${redirectUrl}`
+    ); // change URL to match your dev URLs
+    cy.get("[data-cy=trigger-dialog]").should("be.visible");
+    cy.get("[data-cy=trigger-exit-button]").should(
+      "have.attr",
+      "href",
+      redirectUrl
+    );
+  });
 });
