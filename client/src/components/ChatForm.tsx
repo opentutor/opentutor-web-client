@@ -6,8 +6,7 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { continueSession } from "api";

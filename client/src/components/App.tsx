@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -71,22 +71,22 @@ function App(props: {
     lesson: string;
     guest: string;
     actor: string;
-    noheader: string;
+    noHeader: string;
     triggerWarning: string;
     triggerRedirect: string;
   };
 }): JSX.Element {
   const styles = useStyles();
-  const { lesson, guest, actor, noheader, triggerWarning, triggerRedirect } =
+  const { lesson, guest, actor, noHeader, triggerWarning, triggerRedirect } =
     props.search;
   const username = actor ? JSON.parse(actor).name : guest;
-  const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
+  const [sessionSummary, setSessionSummary] = useState<SessionSummary>({
     showSummary: false,
     summaryMessage: "Let's see how you're doing so far!",
   });
-  const [sessionAlive, setSessionAlive] = React.useState(true);
-  const [targets, setTargets] = React.useState<Target[]>([]);
-  const [session, setSession] = React.useState<SessionData>({
+  const [sessionAlive, setSessionAlive] = useState(true);
+  const [targets, setTargets] = useState<Target[]>([]);
+  const [session, setSession] = useState<SessionData>({
     sessionId: "",
     sessionHistory: "",
     previousUserResponse: "",
@@ -98,20 +98,26 @@ function App(props: {
     },
     hash: "",
   });
-  const [messages, setMessages] = React.useState<ChatMsg[]>([]);
-  const [errorProps, setErrorProps] = React.useState<ErrorData>({
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [errorProps, setErrorProps] = useState<ErrorData>({
     title: "",
     message: "",
     buttonText: "",
   });
-  const [errorOpen, setErrorOpen] = React.useState(false);
-  const [hasMedia, setHasMedia] = React.useState(false);
-  const [lessonFormat, setLessonFormat] = React.useState("");
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [hasMedia, setHasMedia] = useState(false);
+  const [lessonFormat, setLessonFormat] = useState("");
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const [showTriggerWarning, setShowTriggerWarning] = React.useState(false);
+  const [showTriggerWarning, setShowTriggerWarning] = useState(false);
+
+  const [showHeader, setShowHeader] = useState(true);
+
+  useEffect(() => {
+    setShowHeader(!noHeader || noHeader != "true");
+  }, [props.search]);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -174,7 +180,7 @@ function App(props: {
     setErrorOpen(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Redirect Info:");
     console.log(triggerWarning);
     console.log(triggerRedirect);
@@ -183,7 +189,7 @@ function App(props: {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
     const fetchData = async (): Promise<void> => {
       const response = await createSession(lesson || "");
@@ -224,7 +230,7 @@ function App(props: {
     };
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
 
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
     fetchLesson(lesson)
       .then((lesson: Lesson) => {
@@ -245,7 +251,7 @@ function App(props: {
     };
   }, [lesson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
     if (
       sessionSummary.showSummaryTimer &&
@@ -267,10 +273,6 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  let showHeader = true;
-  if (noheader !== undefined) {
-    showHeader = false;
-  }
   return (
     <>
       <TriggerDialog
@@ -279,10 +281,10 @@ function App(props: {
         triggerRedirect={triggerRedirect}
       />
       <div className={styles.foreground}>
-        {noheader ? (
-          <div id="invisible-header"></div>
-        ) : (
+        {showHeader ? (
           <HeaderBar superDense={isMobile} />
+        ) : (
+          <div id="invisible-header"></div>
         )}
         <div
           id="app-content"
