@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    overflow: "auto",
+    overflow: "hidden",
     whiteSpace: "nowrap",
   },
   image: {
