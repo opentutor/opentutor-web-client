@@ -64,7 +64,9 @@ export default function ChatThread(props: {
       )}px - 1px)`,
     },
     bodySurveySaysMedia: {
-      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px - 1px)`,
+      height: `calc(70% - 95px - ${calcBoardHeight(
+        props.expectationCount
+      )}px - 1px)`,
     },
     avatar: {
       color: "#fff",
