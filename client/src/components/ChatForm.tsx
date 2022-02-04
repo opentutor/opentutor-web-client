@@ -106,7 +106,7 @@ const ChatForm = (props: {
               ]);
               clearTimeout(timeout);
             }, delayCount);
-            delayCount += (3500 + 60 * msg.data.text.length) * 0.75;
+            delayCount += (3500 + 60 * msg.data.text.length) * 0.6;
             tempQueue = [...tempQueue, timeout];
           }),
             setMessageQueue(tempQueue);

@@ -35,7 +35,7 @@ export default function TriggerDialog(props: {
       <DialogTitle id="alert-dialog-title">{"Trigger Warning"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {`The following lesson contains material which may considered disturbing...`}
+          {`The following lesson contains material which may be considered disturbing...`}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

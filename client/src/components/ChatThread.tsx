@@ -32,8 +32,8 @@ export default function ChatThread(props: {
   expectationCount: number;
 }): JSX.Element {
   function calcBoardHeight(expectationCount: number) {
-    // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
-    return expectationCount * 46 + 31 + 32 + 10 + 20;
+    // 46px per target, 16*2px padding, 5*2 border, 10*2px padding
+    return expectationCount * 46 + 32 + 10 + 20;
   }
 
   const useStyles = makeStyles((theme) => ({
