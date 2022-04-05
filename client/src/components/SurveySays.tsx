@@ -119,7 +119,7 @@ const SurveySays = (props: {
                   variant="h6"
                   style={{ width: "100%" }}
                 >
-                  Question for Some Expectation?
+                  Key Takeaways
                 </Typography>
               </Grid>
               {props.targets.map((target, idx) => {
