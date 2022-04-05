@@ -23,7 +23,6 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=submit-button]").should("not.exist");
-    cy.get("[data-cy=view-summary-btn]").should("not.exist");
     cy.get("[data-cy=continue-button]").should("be.visible");
     cy.get("[data-cy=continue-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").within(($el) => {
@@ -50,9 +49,10 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]").click();
-    cy.get("[data-cy=chat-msg-2]").contains(userInput);
+    cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-3]").contains(
+    cy.get("[data-cy=chat-msg-3]").should(
+      "contain",
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
@@ -66,9 +66,10 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
-    cy.get("[data-cy=chat-msg-2]").contains(userInput);
+    cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-3]").contains(
+    cy.get("[data-cy=chat-msg-3]").should(
+      "contain",
       "Summing up, this diode is forward biased. Positive current flows in the same direction of the arrow, from anode to cathode."
     );
   });
@@ -82,13 +83,13 @@ describe("Input field", () => {
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
-    cy.get("[data-cy=chat-msg-2]").contains(userInput);
+    cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-3]").contains("some server response.");
+    cy.get("[data-cy=chat-msg-3]").should("contain", "some server response.");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
-    cy.get("[data-cy=chat-msg-4]").contains(userInput);
+    cy.get("[data-cy=chat-msg-4]").should("contain", userInput);
     cy.wait("@session");
-    cy.get("[data-cy=chat-msg-5]").contains("some server response.");
+    cy.get("[data-cy=chat-msg-5]").should("contain", "some server response.");
   });
 });

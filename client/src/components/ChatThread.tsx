@@ -7,6 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import "styles/chat.css";
 import React, { useEffect } from "react";
 import { animateScroll } from "react-scroll";
+import clsx from "clsx";
 import {
   Avatar,
   List,
@@ -21,48 +22,70 @@ import HelpIcon from "@material-ui/icons/Help";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import { ChatMsg, ChatMsgType } from "types";
+import { ChatMsg, ChatMsgType, LessonFormat } from "types";
 import { isTesting } from "utils";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "auto",
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  body: {
-    marginTop: 5,
-    width: "90%",
-    maxWidth: 400,
-    height: "calc(100% - 295px)",
-    marginLeft: "50%",
-    marginBottom: 25,
-    transform: "translateX(-50%)",
-  },
-  avatar: {
-    color: "#fff",
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-  },
-  icon: {
-    position: "absolute",
-    right: -40,
-  },
-  gray: {},
-  red: {
-    background: "#DC143C",
-  },
-  green: {
-    background: "#3CB371",
-  },
-  yellow: {
-    background: "yellow",
-  },
-}));
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
+  hasMedia: boolean;
+  lessonFormat: string;
+  expectationCount: number;
 }): JSX.Element {
+  function calcBoardHeight(expectationCount: number) {
+    // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
+    return expectationCount * 46 + 31 + 32 + 10 + 20;
+  }
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      width: "auto",
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+    bodyRoot: {
+      paddingTop: 10,
+      width: "90%",
+      maxWidth: 400,
+      marginLeft: "50%",
+      paddingBottom: 10,
+      transform: "translateX(-50%)",
+      boxSizing: "border-box",
+    },
+    bodyDefaultNoMedia: {
+      height: "calc(100% - 60px - 95px)",
+    },
+    bodyDefaultMedia: {
+      height: "calc(65% - 60px - 95px)",
+    },
+    bodySurveySaysNoMedia: {
+      height: `calc(100% - 95px - ${calcBoardHeight(
+        props.expectationCount
+      )}px)`,
+    },
+    bodySurveySaysMedia: {
+      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
+    },
+    avatar: {
+      color: "#fff",
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+    },
+    icon: {
+      position: "absolute",
+      right: -40,
+    },
+    gray: {},
+    red: {
+      background: "#DC143C",
+    },
+    green: {
+      background: "#3CB371",
+    },
+    yellow: {
+      background: "yellow",
+    },
+  }));
+
   const styles = useStyles();
 
   const chatIcon = (type: string): JSX.Element | undefined => {
@@ -100,10 +123,6 @@ export default function ChatThread(props: {
     );
   };
   useEffect(() => {
-    if (props.messages.length === 0) return;
-    document.title = `New Msg: ${
-      props.messages[props.messages.length - 1].text
-    }`;
     if (
       /**
        * HACK: cypress image-snapshot tests fail
@@ -121,7 +140,24 @@ export default function ChatThread(props: {
   });
 
   return (
-    <div data-cy="chat-thread" className={styles.body}>
+    <div
+      data-cy="chat-thread"
+      className={clsx({
+        [styles.bodyRoot]: true,
+        [styles.bodyDefaultNoMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT && !props.hasMedia,
+        [styles.bodyDefaultMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT && props.hasMedia,
+        [styles.bodySurveySaysNoMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && !props.hasMedia,
+        [styles.bodySurveySaysMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && props.hasMedia,
+      })}
+    >
       <List data-cy="thread" id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (

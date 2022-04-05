@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import React from "react";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import TargetIcon from "components/TargetIcon";
 import LockIcon from "@material-ui/icons/Lock";
 import { Target } from "types";
@@ -19,12 +19,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 10,
     paddingTop: 22,
     color: theme.palette.background.default,
-  },
-  centerLock: {
-    position: "absolute",
-    top: "50%",
-    left: "calc(65% + 38px)",
-    transform: "translate(-50%, -50%)",
   },
   released: {
     marginTop: "-30",
@@ -39,6 +33,17 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     height: 10,
     width: "150%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  targetGrid: { width: "100%", padding: 10, boxSizing: "border-box" },
+  targetItem: {
+    width: "100%",
+    display: "flex",
+    padding: 5,
+    boxSizing: "border-box",
+    alignItems: "center",
   },
   inProgress: {
     color: "#DC143C",
@@ -77,41 +82,47 @@ export function TargetIndicator(props: {
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
   const styles = useStyles();
   return (
-    <List data-cy="summary-targets">
+    <Grid container className={styles.targetGrid} data-cy="summary-targets">
       {props.targets.map((target, index) => {
         return (
-          <ListItem key={`summary-target-${index}`}>
-            <ListItemIcon
-              data-cy={`summary-target-${index}-${Number(
-                target.score
-              ).toFixed()}`}
-            >
-              <TargetIcon
-                target={target}
-                index={index}
-                showSummary={(): void => {
-                  /* Empty Function as we don't want to pop another summary from the summary page */
-                }}
-              />
-            </ListItemIcon>
-            {target.text ? (
-              <ListItemText data-cy={`exp-${index}`}>
-                {target.text}
-              </ListItemText>
-            ) : (
-              <ListItemText>
-                <div className={styles.censored}>
-                  <LockIcon
-                    className={styles.centerLock}
-                    data-cy={`exp-locked-${index}`}
-                  />
+          <Grid item key={`summary-target-${index}`} xs={12}>
+            <div className={styles.targetItem}>
+              <div
+                data-cy={`summary-target-${index}-${Number(
+                  target.score
+                ).toFixed()}`}
+              >
+                <TargetIcon
+                  target={target}
+                  index={index}
+                  showSummary={(): void => {
+                    /* Empty Function as we don't want to pop another summary from the summary page */
+                  }}
+                />
+              </div>
+              {target.text ? (
+                <Typography
+                  data-cy={`exp-${index}`}
+                  style={{
+                    textAlign: "left",
+                    marginRight: 20,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                  }}
+                  variant="body1"
+                >
+                  {target.text}
+                </Typography>
+              ) : (
+                <div className={styles.censored} style={{ marginRight: 20 }}>
+                  <LockIcon data-cy={`exp-locked-${index}`} />
                 </div>
-              </ListItemText>
-            )}
-          </ListItem>
+              )}
+            </div>
+          </Grid>
         );
       })}
-    </List>
+    </Grid>
   );
 }
 

@@ -4,11 +4,10 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useState } from "react";
+import React from "react";
 import {
   createStyles,
   Theme,
-  useTheme,
   withStyles,
   WithStyles,
 } from "@material-ui/core/styles";
@@ -20,11 +19,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { SummaryIndicator } from "components/TargetIndicator";
-import { Target } from "types";
-import { useMediaQuery } from "@material-ui/core";
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -75,46 +70,45 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function SummaryPopup(props: {
+export default function ImageDialog(props: {
+  imageLink: string;
   open: boolean;
-  onCloseRequested: () => void;
-  message: string;
-  buttonText: string;
-  targets: Target[];
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element {
-  const { open, onCloseRequested, buttonText, targets } = props;
-  const [tranState, setTranState] = useState("summary-popup-trans-none");
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const handleClose = () => {
+    props.setOpen(false);
+  };
 
   return (
     <Dialog
-      data-cy="summary-popup"
-      onClose={onCloseRequested}
-      onEntered={() => setTranState("summary-popup-trans-done")}
+      onClose={handleClose}
       aria-labelledby="customized-dialog-title"
-      open={open}
-      fullScreen={fullScreen}
+      open={props.open}
+      fullScreen={true}
     >
-      <div data-cy={tranState} />
-      <DialogTitle
-        id="customized-dialog-title"
-        data-cy="customized-dialog-title"
-        onClose={onCloseRequested}
-      >
-        Lesson Summary
+      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        View Media
       </DialogTitle>
       <DialogContent dividers>
-        <SummaryIndicator targets={targets} />
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <img
+            src={props.imageLink}
+            style={{
+              objectFit: "contain",
+              height: "100%",
+              width: "100%",
+            }}
+          />
+        </div>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={onCloseRequested}
-          color="primary"
-          variant="contained"
-          // style={{ marginRight: 10, marginBottom: 5, marginTop: 5 }}
-        >
-          {buttonText}
+        <Button onClick={handleClose} color="primary" variant="contained">
+          Close
         </Button>
       </DialogActions>
     </Dialog>

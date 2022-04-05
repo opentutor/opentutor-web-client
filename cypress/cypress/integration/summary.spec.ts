@@ -16,7 +16,7 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("[data-cy=view-summary-btn]").trigger("mouseover").click();
+    cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
   });
 
@@ -36,7 +36,7 @@ describe("Expectation summary pop-up", () => {
       cySetup(cy);
       cyMockDialog(cy, x.lesson, x.fixture);
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
-      cy.get("[data-cy=view-summary-btn]").trigger("mouseover").click();
+      cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
       cy.get("[data-cy=summary-popup]");
       cy.get("[data-cy=summary-targets]")
         .children()
@@ -75,7 +75,7 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("[data-cy=view-summary-btn]").trigger("mouseover").click();
+    cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
     cy.get("[data-cy=exp-locked-0]");
@@ -85,7 +85,7 @@ describe("Expectation summary pop-up", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
-    cy.get("[data-cy=view-summary-btn]").trigger("mouseover").click();
+    cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
     cy.get("[data-cy=summary-target-0-0]");
@@ -101,7 +101,8 @@ describe("Expectation summary pop-up", () => {
     cy.get("[data-cy=submit-button]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
-    cy.get("[data-cy=exp-0]").contains(
+    cy.get("[data-cy=exp-0]").should(
+      "contain",
       "Current flows in the same direction as the arrow."
     );
   });
