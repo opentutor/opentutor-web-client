@@ -113,7 +113,7 @@ function App(props: {
 
   const [showTriggerWarning, setShowTriggerWarning] = useState(false);
 
-  const [showHeader, setShowHeader] = useState(true);
+  let [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
     setShowHeader(!noHeader || noHeader != "true");
@@ -273,8 +273,8 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  let showHeader = true;
-  if (noheader !== undefined) {
+  showHeader = true;
+  if (noHeader !== undefined) {
     showHeader = false;
   }
   return (
