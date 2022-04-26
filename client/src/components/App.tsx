@@ -273,6 +273,10 @@ function App(props: {
     };
   }, [sessionSummary]);
 
+  let showHeader = true;
+  if (noheader !== undefined) {
+    showHeader = false;
+  }
   return (
     <>
       <TriggerDialog
