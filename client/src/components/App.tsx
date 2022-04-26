@@ -113,7 +113,7 @@ function App(props: {
 
   const [showTriggerWarning, setShowTriggerWarning] = useState(false);
 
-  let [showHeader, setShowHeader] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
     setShowHeader(!noHeader || noHeader != "true");
@@ -273,10 +273,6 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  showHeader = true;
-  if (noHeader !== undefined) {
-    showHeader = false;
-  }
   return (
     <>
       <TriggerDialog
