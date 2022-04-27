@@ -11,5 +11,5 @@ export const lessonInfo = {
     type: "image",
     props: null,
   },
-  learningFormat: null,
+  learningFormat: "",
 };
