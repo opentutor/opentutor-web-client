@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bodyRoot: {
     width: "100%",
-    backgroundColor: "#212629",
+    backgroundColor: "#fff",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SurveySays = (props: {
+const SurveySaysResponsive = (props: {
   search: { lesson: string };
   hasMedia: boolean;
   targets: Target[];
@@ -109,6 +109,7 @@ const SurveySays = (props: {
           [styles.bodyNoMedia]: !props.hasMedia,
           [styles.bodyMedia]: props.hasMedia,
         })}
+        data-cy="surveySays-container"
       >
         <div className={styles.surveyInnerBoard}>
           <div className={styles.survey}>
@@ -199,4 +200,4 @@ const SurveySays = (props: {
   );
 };
 
-export default withLocation(SurveySays);
+export default withLocation(SurveySaysResponsive);

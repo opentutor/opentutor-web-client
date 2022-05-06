@@ -13,7 +13,7 @@ import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
-import SurveySays from "components/SurveySays";
+import SurveySays from "components/views/SurveySays";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
@@ -34,6 +34,7 @@ import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
 import TriggerDialog from "./TriggerDialog";
+import SurveySaysResponsive from "./views/SurveySays-responsive";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -273,6 +274,15 @@ function App(props: {
     };
   }, [sessionSummary]);
 
+  const [saveSpace, setSaveSpace] = useState<boolean>(false);
+
+  useEffect(() => {
+    const saveSpace = new URL(location.href).searchParams.get("saveSpace");
+    if (saveSpace) {
+      setSaveSpace(true);
+    }
+  }, []);
+
   return (
     <>
       <TriggerDialog
@@ -280,9 +290,11 @@ function App(props: {
         setShowTriggerWarning={setShowTriggerWarning}
         triggerRedirect={triggerRedirect}
       />
-      <div className={styles.foreground}>
+      <div className={styles.foreground} data-cy="header-foreground-container">
         {showHeader ? (
-          <HeaderBar superDense={isMobile} />
+          isMobile ? null : (
+            <HeaderBar superDense={isMobile} />
+          )
         ) : (
           <div id="invisible-header"></div>
         )}
@@ -298,7 +310,11 @@ function App(props: {
           <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
-              <SurveySays hasMedia={hasMedia} targets={targets} />
+              {saveSpace ? (
+                <SurveySaysResponsive hasMedia={hasMedia} targets={targets} />
+              ) : (
+                <SurveySays hasMedia={hasMedia} targets={targets} />
+              )}
             </>
           ) : (
             <>

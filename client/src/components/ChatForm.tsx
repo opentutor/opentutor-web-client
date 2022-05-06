@@ -37,6 +37,13 @@ const useStyles = makeStyles(() => ({
     bottom: 7,
     right: 7,
   },
+  input: {
+    width: "100%",
+    height: 50,
+    "& input + fieldset": {
+      borderColor: "hotpink",
+    },
+  },
 }));
 
 interface OutboundChat {
@@ -176,7 +183,7 @@ const ChatForm = (props: {
       data-cy="chat-form"
       noValidate
       autoComplete="off"
-      style={{ height: 95 }}
+      style={{ position: "absolute", bottom: 10, width: "100%" }}
     >
       <div className={styles.chatboxRoot}>
         <TextField
@@ -189,13 +196,17 @@ const ChatForm = (props: {
           multiline
           rows={2}
           variant="outlined"
-          style={{ width: "100%", marginTop: 10 }}
+          style={{ width: "100%", marginTop: 30 }}
           value={chat}
           disabled={!props.sessionAlive}
           onChange={(e): void => {
             setChat(e.target.value);
           }}
           onKeyPress={onKeyPress}
+          id="chat-input"
+          InputProps={{
+            className: styles.input,
+          }}
         />
         <div className={styles.innerOverlayBottomRight}>
           {props.sessionAlive ? (
