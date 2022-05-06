@@ -54,6 +54,12 @@ describe("screenshots - chat responses", () => {
       cy.wait("@response");
       cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
+      /** Hacky solution to wait for all timed messages to appear **/
+      if (i === 1 || i == 3) {
+        cy.wait(15000);
+      } else {
+        cy.wait(1000);
+      }
       (cy as any).matchImageSnapshot(
         snapname(`lesson-${x.lesson}-response-${i}`)
       );

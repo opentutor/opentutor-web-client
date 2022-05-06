@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -13,7 +13,7 @@ import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
-import SurveySays from "components/SurveySays";
+import SurveySays from "components/views/SurveySays";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
@@ -33,6 +33,8 @@ import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
+import TriggerDialog from "./TriggerDialog";
+import SurveySaysResponsive from "./views/SurveySays-responsive";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -66,18 +68,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App(props: {
-  search: { lesson: string; guest: string; actor: string; noheader: string };
+  search: {
+    lesson: string;
+    guest: string;
+    actor: string;
+    noHeader: string;
+    triggerWarning: string;
+    triggerRedirect: string;
+  };
 }): JSX.Element {
   const styles = useStyles();
-  const { lesson, guest, actor, noheader } = props.search;
+  const { lesson, guest, actor, noHeader, triggerWarning, triggerRedirect } =
+    props.search;
   const username = actor ? JSON.parse(actor).name : guest;
-  const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
+  const [sessionSummary, setSessionSummary] = useState<SessionSummary>({
     showSummary: false,
     summaryMessage: "Let's see how you're doing so far!",
   });
-  const [sessionAlive, setSessionAlive] = React.useState(true);
-  const [targets, setTargets] = React.useState<Target[]>([]);
-  const [session, setSession] = React.useState<SessionData>({
+  const [sessionAlive, setSessionAlive] = useState(true);
+  const [targets, setTargets] = useState<Target[]>([]);
+  const [session, setSession] = useState<SessionData>({
     sessionId: "",
     sessionHistory: "",
     previousUserResponse: "",
@@ -89,18 +99,26 @@ function App(props: {
     },
     hash: "",
   });
-  const [messages, setMessages] = React.useState<ChatMsg[]>([]);
-  const [errorProps, setErrorProps] = React.useState<ErrorData>({
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
+  const [errorProps, setErrorProps] = useState<ErrorData>({
     title: "",
     message: "",
     buttonText: "",
   });
-  const [errorOpen, setErrorOpen] = React.useState(false);
-  const [hasMedia, setHasMedia] = React.useState(false);
-  const [lessonFormat, setLessonFormat] = React.useState("");
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [hasMedia, setHasMedia] = useState(false);
+  const [lessonFormat, setLessonFormat] = useState("");
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const [showTriggerWarning, setShowTriggerWarning] = useState(false);
+
+  const [showHeader, setShowHeader] = useState(true);
+
+  useEffect(() => {
+    setShowHeader(!noHeader || noHeader != "true");
+  }, [props.search]);
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -163,7 +181,16 @@ function App(props: {
     setErrorOpen(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log("Redirect Info:");
+    console.log(triggerWarning);
+    console.log(triggerRedirect);
+    if (triggerWarning) {
+      setShowTriggerWarning(true);
+    }
+  }, []);
+
+  useEffect(() => {
     let mounted = true;
     const fetchData = async (): Promise<void> => {
       const response = await createSession(lesson || "");
@@ -204,7 +231,7 @@ function App(props: {
     };
   }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
 
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
     fetchLesson(lesson)
       .then((lesson: Lesson) => {
@@ -225,7 +252,7 @@ function App(props: {
     };
   }, [lesson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
     if (
       sessionSummary.showSummaryTimer &&
@@ -247,17 +274,29 @@ function App(props: {
     };
   }, [sessionSummary]);
 
-  let showHeader = true;
-  if (noheader !== undefined) {
-    showHeader = false;
-  }
+  const [saveSpace, setSaveSpace] = useState<boolean>(false);
+
+  useEffect(() => {
+    const saveSpace = new URL(location.href).searchParams.get("saveSpace");
+    if (saveSpace) {
+      setSaveSpace(true);
+    }
+  }, []);
+
   return (
     <>
-      <div className={styles.foreground}>
-        {noheader ? (
-          <div id="invisible-header"></div>
+      <TriggerDialog
+        showTriggerWarning={showTriggerWarning}
+        setShowTriggerWarning={setShowTriggerWarning}
+        triggerRedirect={triggerRedirect}
+      />
+      <div className={styles.foreground} data-cy="header-foreground-container">
+        {showHeader ? (
+          isMobile ? null : (
+            <HeaderBar superDense={isMobile} />
+          )
         ) : (
-          <HeaderBar superDense={isMobile} />
+          <div id="invisible-header"></div>
         )}
         <div
           id="app-content"
@@ -271,7 +310,11 @@ function App(props: {
           <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
-              <SurveySays hasMedia={hasMedia} targets={targets} />
+              {saveSpace ? (
+                <SurveySaysResponsive hasMedia={hasMedia} targets={targets} />
+              ) : (
+                <SurveySays hasMedia={hasMedia} targets={targets} />
+              )}
             </>
           ) : (
             <>

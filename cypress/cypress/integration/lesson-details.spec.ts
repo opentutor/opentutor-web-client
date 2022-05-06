@@ -62,4 +62,74 @@ describe("lesson details", () => {
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=video]");
   });
+
+  it(`shows a trigger dialog than can be dismissed to show lesson on continue button click`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    const redirectUrl = "https://www.apple.com";
+    cy.visit(
+      `/?lesson=q1&guest=guest&triggerWarning=yes&triggerRedirect=${redirectUrl}`
+    ); // change URL to match your dev URLs
+    cy.get("[data-cy=trigger-dialog]").should("be.visible");
+    cy.get("[data-cy=trigger-dismiss-button").click();
+    cy.get("[data-cy=chat-thread]").should("be.visible");
+  });
+
+  it(`shows a trigger dialog than redirects on exit button click`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    const redirectUrl = "https://www.apple.com";
+    cy.visit(
+      `/?lesson=q1&guest=guest&triggerWarning=yes&triggerRedirect=${redirectUrl}`
+    ); // change URL to match your dev URLs
+    cy.get("[data-cy=trigger-dialog]").should("be.visible");
+    cy.get("[data-cy=trigger-exit-button]").should(
+      "have.attr",
+      "href",
+      redirectUrl
+    );
+  });
+
+  it(`hides header if noHeader param is passed`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
+    });
+    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cy.visit(`/?lesson=q1&guest=guest&noHeader=true`);
+    cy.get("[data-cy=header-foreground-container]").within(() => {
+      cy.get("[data-cy=header-wrapper]").should("not.be.exist");
+    });
+  });
+
+  it.only(`change style if saveSpace param is passed`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [
+        mockGQL("FetchLessonInfo", {
+          lessonInfo: {
+            name: "lesson 1",
+            media: {
+              url: "https://www.youtube.com/watch?v=ErPNkvLCDSQ",
+              type: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
+            },
+            learningFormat: "surveySays",
+          },
+        }),
+      ],
+    });
+    cyMockDialog(cy, "q1", "q1-1-p1.json");
+
+    cy.visit(`/?lesson=q1&guest=guest&saveSpace=true`); // change URL to match your dev URLs
+    cy.get("[data-cy=video]");
+  });
 });

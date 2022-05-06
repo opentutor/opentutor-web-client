@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    overflow: "auto",
+    overflow: "hidden",
     whiteSpace: "nowrap",
   },
   image: {
@@ -206,7 +206,6 @@ const LessonMedia = (props: {
                 },
               }}
               onProgress={(player) => {
-                console.log(player);
                 if (
                   player.playedSeconds >
                   (media.props
@@ -240,7 +239,6 @@ const LessonMedia = (props: {
                     }}
                     onClick={() => {
                       setIsVideoOver(false);
-                      console.log(videoPlayer);
                       videoPlayer.current.seekTo(
                         media.props
                           ? parseFloat(getProp(media.props, "start")) || 0

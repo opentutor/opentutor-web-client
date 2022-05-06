@@ -6,8 +6,7 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { TextField, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { continueSession } from "api";
@@ -38,6 +37,13 @@ const useStyles = makeStyles(() => ({
     bottom: 7,
     right: 7,
   },
+  input: {
+    width: "100%",
+    height: 50,
+    "& input + fieldset": {
+      borderColor: "hotpink",
+    },
+  },
 }));
 
 interface OutboundChat {
@@ -62,17 +68,20 @@ const ChatForm = (props: {
 }): JSX.Element => {
   const styles = useStyles();
   const [chat, setChat] = useState("");
+  const [allMessages, setAllMessages] = useState<ChatMsg[]>([]);
   const [outboundChat, setOutboundChat] = useState<OutboundChat>({
     text: "",
     seq: 0,
   });
+
+  const [messageQueue, setMessageQueue] = React.useState<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
     if (!props.sessionAlive) {
       return;
     }
     async function fetchData(): Promise<void> {
-      if (props.session.sessionHistory !== "") {
+      if (props.session.sessionHistory !== "" && outboundChat.text !== "") {
         const response = await continueSession({
           lesson: props.lesson,
           username: props.username,
@@ -86,16 +95,28 @@ const ChatForm = (props: {
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
-          props.setMessages([
-            ...props.messages,
-            ...dialogData.response.map((msg) => {
-              return {
-                senderId: "system",
-                type: msg.type,
-                text: msg.data.text,
-              };
-            }),
-          ]);
+          const messageBatch = dialogData.response.map((msg) => {
+            return {
+              senderId: "system",
+              type: msg.type,
+              text: msg.data.text,
+            };
+          });
+          setAllMessages([...props.messages, ...messageBatch]);
+          let delayCount = 0;
+          let tempQueue: NodeJS.Timeout[] = [];
+          dialogData.response.forEach((msg, i) => {
+            const timeout = setTimeout(function () {
+              props.setMessages([
+                ...props.messages,
+                ...messageBatch.slice(0, i + 1),
+              ]);
+              clearTimeout(timeout);
+            }, delayCount);
+            delayCount += (3500 + 60 * msg.data.text.length) * 0.6;
+            tempQueue = [...tempQueue, timeout];
+          }),
+            setMessageQueue(tempQueue);
           props.setTargets(
             dialogData.sessionInfo.dialogState.expectationData.map((exp) => {
               return {
@@ -122,10 +143,22 @@ const ChatForm = (props: {
   function handleClick(e: React.SyntheticEvent<Element>): void {
     e.preventDefault();
     if (chat.length > 0) {
-      props.setMessages([
-        ...props.messages,
-        { senderId: "user", type: "", text: chat },
-      ]);
+      //Clear message queue
+      messageQueue.forEach((timer) => {
+        clearTimeout(timer);
+      });
+      setMessageQueue([]);
+      if (allMessages.length === 0) {
+        props.setMessages([
+          ...props.messages,
+          { senderId: "user", type: "", text: chat },
+        ]);
+      } else {
+        props.setMessages([
+          ...allMessages,
+          { senderId: "user", type: "", text: chat },
+        ]);
+      }
       setOutboundChat({
         text: chat,
         seq: outboundChat.seq + 1,
@@ -150,7 +183,7 @@ const ChatForm = (props: {
       data-cy="chat-form"
       noValidate
       autoComplete="off"
-      style={{ height: 95 }}
+      style={{ position: "absolute", bottom: 10, width: "100%" }}
     >
       <div className={styles.chatboxRoot}>
         <TextField
@@ -163,13 +196,17 @@ const ChatForm = (props: {
           multiline
           rows={2}
           variant="outlined"
-          style={{ width: "100%", marginTop: 10 }}
+          style={{ width: "100%", marginTop: 30 }}
           value={chat}
           disabled={!props.sessionAlive}
           onChange={(e): void => {
             setChat(e.target.value);
           }}
           onKeyPress={onKeyPress}
+          id="chat-input"
+          InputProps={{
+            className: styles.input,
+          }}
         />
         <div className={styles.innerOverlayBottomRight}>
           {props.sessionAlive ? (

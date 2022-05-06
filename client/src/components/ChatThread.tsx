@@ -32,8 +32,8 @@ export default function ChatThread(props: {
   expectationCount: number;
 }): JSX.Element {
   function calcBoardHeight(expectationCount: number) {
-    // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
-    return expectationCount * 46 + 31 + 32 + 10 + 20;
+    // 46px per target, 16*2px padding, 5*2 border, 10*2px padding
+    return expectationCount * 46 + 32 + 10 + 20;
   }
 
   const useStyles = makeStyles((theme) => ({
@@ -51,19 +51,22 @@ export default function ChatThread(props: {
       transform: "translateX(-50%)",
       boxSizing: "border-box",
     },
+    //Note: Deduct extra pixel for rounding (ensure no scrollbar)
     bodyDefaultNoMedia: {
-      height: "calc(100% - 60px - 95px)",
+      height: "calc(100% - 60px - 95px - 1px)",
     },
     bodyDefaultMedia: {
-      height: "calc(65% - 60px - 95px)",
+      height: "calc(65% - 60px - 95px - 1px)",
     },
     bodySurveySaysNoMedia: {
       height: `calc(100% - 95px - ${calcBoardHeight(
         props.expectationCount
-      )}px)`,
+      )}px - 1px)`,
     },
     bodySurveySaysMedia: {
-      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: `calc(70% - 95px - ${calcBoardHeight(
+        props.expectationCount
+      )}px - 1px)`,
     },
     avatar: {
       color: "#fff",

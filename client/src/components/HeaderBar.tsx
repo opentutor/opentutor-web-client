@@ -52,7 +52,7 @@ const HeaderBar = (props: {
 
   if (props.superDense) {
     return (
-      <div className={styles.superDenseAppBar}>
+      <div className={styles.superDenseAppBar} data-cy="header-wrapper">
         <Typography
           data-cy="lesson-name"
           id="lesson-name-header"
@@ -65,7 +65,7 @@ const HeaderBar = (props: {
     );
   } else if (!props.search.admin) {
     return (
-      <div>
+      <div data-cy="header-wrapper">
         <AppBar position="fixed">
           <Toolbar>
             <Typography data-cy="lesson-name" variant="h6">
@@ -78,7 +78,7 @@ const HeaderBar = (props: {
     );
   } else {
     return (
-      <div>
+      <div data-cy="header-wrapper">
         <AppBar position="fixed">
           <Toolbar>
             <IconButton
