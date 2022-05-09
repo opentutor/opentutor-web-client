@@ -77,7 +77,7 @@ describe("Mobile View", () => {
     cy.get("[data-cy=video]");
   });
 
-  it.only(`Optimize space if param is passed`, () => {
+  it(`Optimize space if param is passed`, () => {
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
@@ -96,9 +96,10 @@ describe("Mobile View", () => {
         }),
       ],
     });
-    cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cyMockDialog(cy, "q1", "views/q1-1-p1.json");
 
     cy.visit(`/?lesson=q1&guest=guest&noheader=true`); // change URL to match your dev URLs
+    // cy.viewport("macbook-11")
     cy.get("[data-cy=video]");
   });
 });
