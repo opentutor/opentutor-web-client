@@ -113,15 +113,6 @@ const SurveySays = (props: {
         <div className={styles.surveyInnerBoard}>
           <div className={styles.survey}>
             <Grid container>
-              <Grid item xs={12}>
-                <Typography
-                  className={styles.surveyQuestion}
-                  variant="h6"
-                  style={{ width: "100%" }}
-                >
-                  Key Takeaways
-                </Typography>
-              </Grid>
               {props.targets.map((target, idx) => {
                 return (
                   <Grid item xs={12} key={idx} style={{ margin: 8 }}>
