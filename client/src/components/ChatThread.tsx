@@ -43,10 +43,10 @@ export default function ChatThread(props: {
       paddingBottom: 0,
     },
     bodyRoot: {
-      paddingTop: 10,
-      width: "90%",
+      paddingTop: 20,
+      width: "97%",
       maxWidth: 400,
-      marginLeft: "50%",
+      marginLeft: "51%",
       paddingBottom: 10,
       transform: "translateX(-50%)",
       boxSizing: "border-box",
@@ -63,7 +63,7 @@ export default function ChatThread(props: {
       )}px)`,
     },
     bodySurveySaysMedia: {
-      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: `calc(90% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
     },
     avatar: {
       color: "#fff",

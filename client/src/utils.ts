@@ -10,3 +10,8 @@ export function isTesting(): boolean {
     Boolean(new URLSearchParams(window.location.search).get("testing"))
   );
 }
+
+export const shouldDisplayPortrait = (): boolean =>
+  typeof window !== "undefined" && window.matchMedia
+    ? window.matchMedia && window.matchMedia("(max-width: 400px)").matches
+    : false;

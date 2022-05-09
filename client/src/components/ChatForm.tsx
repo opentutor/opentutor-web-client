@@ -38,6 +38,14 @@ const useStyles = makeStyles(() => ({
     bottom: 7,
     right: 7,
   },
+  chatTextField: {
+    height: 70,
+  },
+  chatFormContainer: {
+    position: "absolute",
+    width: "100%",
+    bottom: 25,
+  },
 }));
 
 interface OutboundChat {
@@ -145,12 +153,43 @@ const ChatForm = (props: {
     handleClick(e);
   }
 
+  const sendIcon = props.sessionAlive ? (
+    <Button
+      data-cy="submit-button"
+      variant="contained"
+      color="primary"
+      size="small"
+      className={styles.button}
+      endIcon={<SendIcon />}
+      onClick={handleClick}
+      key={`${chat.trim().length === 0 || !props.sessionAlive}`}
+      disabled={chat.trim().length === 0 || !props.sessionAlive}
+    >
+      Send
+    </Button>
+  ) : (
+    <Button
+      data-cy="continue-button"
+      variant="contained"
+      color="primary"
+      size="small"
+      className={styles.button}
+      endIcon={<ArrowForwardIcon />}
+      onClick={props.onSummaryOpenRequested}
+      disabled={props.sessionAlive}
+      key={`${props.sessionAlive}`}
+    >
+      Continue
+    </Button>
+  );
+
   return (
     <form
       data-cy="chat-form"
       noValidate
       autoComplete="off"
-      style={{ height: 95 }}
+      style={{ height: 65 }}
+      className={styles.chatFormContainer}
     >
       <div className={styles.chatboxRoot}>
         <TextField
@@ -164,6 +203,10 @@ const ChatForm = (props: {
           rows={2}
           variant="outlined"
           style={{ width: "100%", marginTop: 10 }}
+          InputProps={{
+            className: styles.chatTextField,
+            endAdornment: sendIcon,
+          }}
           value={chat}
           disabled={!props.sessionAlive}
           onChange={(e): void => {
@@ -171,37 +214,6 @@ const ChatForm = (props: {
           }}
           onKeyPress={onKeyPress}
         />
-        <div className={styles.innerOverlayBottomRight}>
-          {props.sessionAlive ? (
-            <Button
-              data-cy="submit-button"
-              variant="contained"
-              color="primary"
-              size="small"
-              className={styles.button}
-              endIcon={<SendIcon />}
-              onClick={handleClick}
-              key={`${chat.trim().length === 0 || !props.sessionAlive}`}
-              disabled={chat.trim().length === 0 || !props.sessionAlive}
-            >
-              Send
-            </Button>
-          ) : (
-            <Button
-              data-cy="continue-button"
-              variant="contained"
-              color="primary"
-              size="small"
-              className={styles.button}
-              endIcon={<ArrowForwardIcon />}
-              onClick={props.onSummaryOpenRequested}
-              disabled={props.sessionAlive}
-              key={`${props.sessionAlive}`}
-            >
-              Continue
-            </Button>
-          )}
-        </div>
       </div>
     </form>
   );

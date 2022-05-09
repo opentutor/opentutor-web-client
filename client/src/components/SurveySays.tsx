@@ -60,8 +60,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "1px 6px 6px -3px darkgrey",
   },
   survey: {
-    padding: theme.spacing(2),
-    maxWidth: 500,
+    width: "100%",
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -71,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
+    padding: "8px 5px",
     boxSizing: "border-box",
   },
   bodyNoMedia: {
@@ -79,13 +78,13 @@ const useStyles = makeStyles((theme) => ({
   },
   bodyMedia: {
     // height: "40%",
+    borderRadius: "0px 0px 10px 10px",
   },
   surveyInnerBoard: {
     width: "100%",
     // height: "calc(100% - 20px)",
     backgroundColor: "#212629",
     boxSizing: "border-box",
-    border: "5px solid lightblue",
     borderRadius: 30,
   },
   surveyQuestion: {
@@ -110,60 +109,59 @@ const SurveySays = (props: {
           [styles.bodyMedia]: props.hasMedia,
         })}
       >
-        <div className={styles.surveyInnerBoard}>
-          <div className={styles.survey}>
-            <Grid container>
-              {props.targets.map((target, idx) => {
-                return (
-                  <Grid item xs={12} key={idx} style={{ margin: 8 }}>
-                    <div
-                      id={`card-${idx}`}
-                      className={clsx({
-                        [styles.fixedSurveyCard]: idx !== expandedCard,
-                        [styles.expandableSurveyCard]: idx === expandedCard,
-                        [styles.completeSatisfied]:
-                          target.status === "complete" && target.score === 1,
-                        [styles.completeUnsatisfied]:
-                          target.status === "complete" && target.score !== 1,
-                        [styles.default]: target.status !== "complete",
-                      })}
-                      onClick={() => {
-                        if (idx === expandedCard) {
-                          setExpandedCard(-1);
-                        } else {
-                          setExpandedCard(idx);
+        <div className={styles.survey}>
+          <Grid container>
+            {props.targets.map((target, idx) => {
+              return (
+                <Grid item xs={12} key={idx} style={{ margin: 8 }}>
+                  <div
+                    id={`card-${idx}`}
+                    className={clsx({
+                      [styles.fixedSurveyCard]: idx !== expandedCard,
+                      [styles.expandableSurveyCard]: idx === expandedCard,
+                      [styles.completeSatisfied]:
+                        target.status === "complete" && target.score === 1,
+                      [styles.completeUnsatisfied]:
+                        target.status === "complete" && target.score !== 1,
+                      [styles.default]: target.status !== "complete",
+                    })}
+                    onClick={() => {
+                      if (idx === expandedCard) {
+                        setExpandedCard(-1);
+                      } else {
+                        setExpandedCard(idx);
+                      }
+                    }}
+                  >
+                    {idx === expandedCard && target.status === "complete" ? (
+                      <Typography
+                        variant={
+                          target.status !== "complete" ? "h6" : "caption"
                         }
-                      }}
-                    >
-                      {idx === expandedCard && target.status === "complete" ? (
-                        <Typography
-                          variant={
-                            target.status !== "complete" ? "h6" : "caption"
-                          }
-                        >
-                          {target.status === "complete" ? target.text : idx + 1}
-                        </Typography>
-                      ) : (
-                        <Typography
-                          className={clsx({
-                            [styles.fixedSurveyCardText]: true,
-                            [styles.centerLock]: true,
-                          })}
-                          variant={
-                            target.status !== "complete" ? "h6" : "caption"
-                          }
-                          style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            width: "100%",
-                            boxSizing: "border-box",
-                          }}
-                        >
-                          {target.status === "complete" ? target.text : idx + 1}
-                        </Typography>
-                      )}
-                    </div>
-                    {/* <div
+                      >
+                        {target.status === "complete" ? target.text : idx + 1}
+                      </Typography>
+                    ) : (
+                      <Typography
+                        className={clsx({
+                          [styles.fixedSurveyCardText]: true,
+                          [styles.centerLock]: true,
+                        })}
+                        variant={
+                          target.status !== "complete" ? "h6" : "caption"
+                        }
+                        style={{
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          width: "100%",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        {target.status === "complete" ? target.text : idx + 1}
+                      </Typography>
+                    )}
+                  </div>
+                  {/* <div
                       className={clsx({
                         [styles.expandableSurveyCard]: true,
                         [styles.completeSatisfied]:
@@ -179,11 +177,10 @@ const SurveySays = (props: {
                       Some super super super super super super super super super super super super long text that really need a massive overflow to show these really cool expectaions that you somehow got!
                       </Typography>
                     </div> */}
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </div>
+                </Grid>
+              );
+            })}
+          </Grid>
         </div>
       </div>
     </>
