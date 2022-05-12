@@ -6,7 +6,6 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -20,11 +19,11 @@ import {
   SessionData,
   Target,
 } from "types";
+import "styles/layout.css";
+import { TextField } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   chatboxRoot: {
-    width: "90%",
-    maxWidth: 400,
     marginLeft: "auto",
     marginRight: "auto",
     position: "relative",
@@ -39,12 +38,12 @@ const useStyles = makeStyles(() => ({
     right: 7,
   },
   chatTextField: {
-    height: 70,
+    height: 100,
   },
   chatFormContainer: {
     position: "absolute",
     width: "100%",
-    bottom: 25,
+    bottom: 55,
   },
 }));
 
@@ -191,7 +190,7 @@ const ChatForm = (props: {
       style={{ height: 65 }}
       className={styles.chatFormContainer}
     >
-      <div className={styles.chatboxRoot}>
+      <div className={[styles.chatboxRoot, "chatInput"].join(" ")}>
         <TextField
           data-cy="outlined-multiline-static"
           label={
@@ -200,13 +199,14 @@ const ChatForm = (props: {
               : "Thanks for chatting with OpenTutor!"
           }
           multiline
-          rows={2}
+          rows={3}
           variant="outlined"
           style={{ width: "100%", marginTop: 10 }}
           InputProps={{
             className: styles.chatTextField,
             endAdornment: sendIcon,
           }}
+          maxRows={4}
           value={chat}
           disabled={!props.sessionAlive}
           onChange={(e): void => {

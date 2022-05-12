@@ -6,11 +6,12 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Target } from "types";
 import clsx from "clsx";
+import Grid from "@mui/material/Grid";
 import withLocation from "wrap-with-location";
+import { Paper, styled } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   centerLock: {
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "3px 5px",
+    padding: "8px 5px",
     boxSizing: "border-box",
   },
   bodyNoMedia: {
@@ -92,13 +93,75 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SurveySays = (props: {
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#1B6A9C !important",
+  ...theme.typography.body2,
+  textAlign: "center",
+  color: "#fff",
+  borderRadius: 10,
+}));
+
+const SurveySaysDesktop = (props: {
   search: { lesson: string };
   hasMedia: boolean;
   targets: Target[];
 }): JSX.Element => {
   const styles = useStyles();
   const [expandedCard, setExpandedCard] = useState(-1);
+
+  const surveySaysGrid = (
+    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      {props.targets.map((target, idx) => (
+        <Grid item xs={6} key={idx}>
+          <Item>
+            <div
+              id={`card-${idx}`}
+              className={clsx({
+                [styles.fixedSurveyCard]: idx !== expandedCard,
+                [styles.expandableSurveyCard]: idx === expandedCard,
+                [styles.completeSatisfied]:
+                  target.status === "complete" && target.score === 1,
+                [styles.completeUnsatisfied]:
+                  target.status === "complete" && target.score !== 1,
+                [styles.default]: target.status !== "complete",
+              })}
+              onClick={() => {
+                if (idx === expandedCard) {
+                  setExpandedCard(-1);
+                } else {
+                  setExpandedCard(idx);
+                }
+              }}
+            >
+              {idx === expandedCard && target.status === "complete" ? (
+                <Typography
+                  variant={target.status !== "complete" ? "h6" : "caption"}
+                >
+                  {target.status === "complete" ? target.text : idx + 1}
+                </Typography>
+              ) : (
+                <Typography
+                  className={clsx({
+                    [styles.fixedSurveyCardText]: true,
+                    [styles.centerLock]: true,
+                  })}
+                  variant={target.status !== "complete" ? "h6" : "caption"}
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    width: "100%",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  {target.status === "complete" ? target.text : idx + 1}
+                </Typography>
+              )}
+            </div>
+          </Item>
+        </Grid>
+      ))}
+    </Grid>
+  );
 
   return (
     <>
@@ -110,65 +173,11 @@ const SurveySays = (props: {
         })}
       >
         <div className={styles.survey}>
-          <Grid container>
-            {props.targets.map((target, idx) => {
-              return (
-                <Grid item xs={12} key={idx} style={{ margin: 8 }}>
-                  <div
-                    id={`card-${idx}`}
-                    className={clsx({
-                      [styles.fixedSurveyCard]: idx !== expandedCard,
-                      [styles.expandableSurveyCard]: idx === expandedCard,
-                      [styles.completeSatisfied]:
-                        target.status === "complete" && target.score === 1,
-                      [styles.completeUnsatisfied]:
-                        target.status === "complete" && target.score !== 1,
-                      [styles.default]: target.status !== "complete",
-                    })}
-                    onClick={() => {
-                      if (idx === expandedCard) {
-                        setExpandedCard(-1);
-                      } else {
-                        setExpandedCard(idx);
-                      }
-                    }}
-                  >
-                    {idx === expandedCard && target.status === "complete" ? (
-                      <Typography
-                        variant={
-                          target.status !== "complete" ? "h6" : "caption"
-                        }
-                      >
-                        {target.status === "complete" ? target.text : idx + 1}
-                      </Typography>
-                    ) : (
-                      <Typography
-                        className={clsx({
-                          [styles.fixedSurveyCardText]: true,
-                          [styles.centerLock]: true,
-                        })}
-                        variant={
-                          target.status !== "complete" ? "h6" : "caption"
-                        }
-                        style={{
-                          paddingLeft: 10,
-                          paddingRight: 10,
-                          width: "100%",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {target.status === "complete" ? target.text : idx + 1}
-                      </Typography>
-                    )}
-                  </div>
-                </Grid>
-              );
-            })}
-          </Grid>
+          <Grid container>{surveySaysGrid}</Grid>
         </div>
       </div>
     </>
   );
 };
 
-export default withLocation(SurveySays);
+export default withLocation(SurveySaysDesktop);

@@ -26,6 +26,22 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.chatInput {
+  width: 70%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .chatInput {
+    width: 98%;
+    margin: auto;
+  }
+
+  .chatInput > textarea{
+    height: 100%;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 15px;
   height: 10px;

@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import "styles/chat.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { animateScroll } from "react-scroll";
 import clsx from "clsx";
 import {
@@ -23,7 +23,7 @@ import ImportExportIcon from "@material-ui/icons/ImportExport";
 import BlockIcon from "@material-ui/icons/Block";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import { ChatMsg, ChatMsgType, LessonFormat } from "types";
-import { isTesting } from "utils";
+import { isTesting, shouldDisplayPortrait } from "utils";
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
@@ -43,19 +43,22 @@ export default function ChatThread(props: {
       paddingBottom: 0,
     },
     bodyRoot: {
-      paddingTop: 20,
-      width: "97%",
-      maxWidth: 400,
+      paddingTop: shouldDisplayPortrait() ? 10 : 20,
+      width: shouldDisplayPortrait() ? "98%" : "70%",
       marginLeft: "51%",
       paddingBottom: 10,
       transform: "translateX(-50%)",
       boxSizing: "border-box",
     },
     bodyDefaultNoMedia: {
-      height: "calc(100% - 60px - 95px)",
+      height: shouldDisplayPortrait()
+        ? "calc(100% - 60px - 95px)"
+        : "calc(90% - 40px - 316px)",
     },
     bodyDefaultMedia: {
-      height: "calc(65% - 60px - 95px)",
+      height: shouldDisplayPortrait()
+        ? "calc(65% - 60px - 95px)"
+        : "calc(65% - 10px - 95px)",
     },
     bodySurveySaysNoMedia: {
       height: `calc(100% - 95px - ${calcBoardHeight(
@@ -63,7 +66,14 @@ export default function ChatThread(props: {
       )}px)`,
     },
     bodySurveySaysMedia: {
-      height: `calc(90% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: shouldDisplayPortrait()
+        ? `calc(90% - 115px - ${calcBoardHeight(props.expectationCount)}px)`
+        : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
+    },
+    bodyHeaderSurveySaysMedia: {
+      height: shouldDisplayPortrait()
+        ? `calc(90% - 180px - ${calcBoardHeight(props.expectationCount)}px)`
+        : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
     },
     avatar: {
       color: "#fff",
@@ -138,6 +148,13 @@ export default function ChatThread(props: {
       });
     }
   });
+  const [isNoHeader, setNoHeader] = useState<boolean>(true);
+  useEffect(() => {
+    const noheader = new URL(location.href).searchParams.get("noheader");
+
+    // noheader = ture -> hide header
+    noheader === "true" ? setNoHeader(true) : setNoHeader(false);
+  }, []);
 
   return (
     <div
@@ -153,8 +170,15 @@ export default function ChatThread(props: {
         [styles.bodySurveySaysNoMedia]:
           (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.SURVEY_SAYS && !props.hasMedia,
+        // no header && shouldDisplayPortrait = all chat height
         [styles.bodySurveySaysMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
+          (props.lessonFormat ||
+            (LessonFormat.DEFAULT && isNoHeader && shouldDisplayPortrait())) ==
+            LessonFormat.SURVEY_SAYS && props.hasMedia,
+        // header && shouldDisplayPortrait = not all chat height
+        [styles.bodyHeaderSurveySaysMedia]:
+          (props.lessonFormat ||
+            (LessonFormat.DEFAULT && !isNoHeader && shouldDisplayPortrait())) ==
             LessonFormat.SURVEY_SAYS && props.hasMedia,
       })}
     >

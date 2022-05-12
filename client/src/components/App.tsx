@@ -31,8 +31,9 @@ import {
 import withLocation from "wrap-with-location";
 import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
-import { isTesting } from "utils";
+import { isTesting, shouldDisplayPortrait } from "utils";
 import { useMediaQuery } from "@material-ui/core";
+import SurveySaysDesktop from "./views/SurveySays-Desktop";
 
 const useStyles = makeStyles((theme) => ({
   foreground: {
@@ -271,7 +272,11 @@ function App(props: {
           <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
-              <SurveySays hasMedia={hasMedia} targets={targets} />
+              {shouldDisplayPortrait() ? (
+                <SurveySays hasMedia={hasMedia} targets={targets} />
+              ) : (
+                <SurveySaysDesktop hasMedia={hasMedia} targets={targets} />
+              )}
             </>
           ) : (
             <>
