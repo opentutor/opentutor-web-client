@@ -151,37 +151,36 @@ export default function ChatThread(props: {
   const [isNoHeader, setNoHeader] = useState<boolean>(true);
   useEffect(() => {
     const noheader = new URL(location.href).searchParams.get("noheader");
-
-    // noheader = ture -> hide header
-    noheader === "true" ? setNoHeader(true) : setNoHeader(false);
+    if (noheader) {
+      setNoHeader(true);
+    }
   }, []);
 
+  const stylesThread = clsx({
+    [styles.bodyRoot]: true,
+    [styles.bodyDefaultNoMedia]:
+      (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
+      !props.hasMedia,
+    [styles.bodyDefaultMedia]:
+      (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
+      props.hasMedia,
+    [styles.bodySurveySaysNoMedia]:
+      (props.lessonFormat || LessonFormat.DEFAULT) ==
+        LessonFormat.SURVEY_SAYS && !props.hasMedia,
+    // no header && shouldDisplayPortrait = all chat height
+    [styles.bodySurveySaysMedia]:
+      (props.lessonFormat ||
+        (LessonFormat.DEFAULT && isNoHeader && shouldDisplayPortrait())) ==
+        LessonFormat.SURVEY_SAYS && props.hasMedia,
+    // header && shouldDisplayPortrait = not all chat height
+    [styles.bodyHeaderSurveySaysMedia]:
+      (props.lessonFormat ||
+        (LessonFormat.DEFAULT && !isNoHeader && shouldDisplayPortrait())) ==
+        LessonFormat.SURVEY_SAYS && props.hasMedia,
+  });
+
   return (
-    <div
-      data-cy="chat-thread"
-      className={clsx({
-        [styles.bodyRoot]: true,
-        [styles.bodyDefaultNoMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT && !props.hasMedia,
-        [styles.bodyDefaultMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT && props.hasMedia,
-        [styles.bodySurveySaysNoMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.SURVEY_SAYS && !props.hasMedia,
-        // no header && shouldDisplayPortrait = all chat height
-        [styles.bodySurveySaysMedia]:
-          (props.lessonFormat ||
-            (LessonFormat.DEFAULT && isNoHeader && shouldDisplayPortrait())) ==
-            LessonFormat.SURVEY_SAYS && props.hasMedia,
-        // header && shouldDisplayPortrait = not all chat height
-        [styles.bodyHeaderSurveySaysMedia]:
-          (props.lessonFormat ||
-            (LessonFormat.DEFAULT && !isNoHeader && shouldDisplayPortrait())) ==
-            LessonFormat.SURVEY_SAYS && props.hasMedia,
-      })}
-    >
+    <div data-cy="chat-thread" className={stylesThread}>
       <List data-cy="thread" id="thread" disablePadding={true}>
         {props.messages.map((message, i) => {
           return (
