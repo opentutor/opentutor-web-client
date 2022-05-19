@@ -128,7 +128,7 @@ describe("Mobile View", () => {
     cy.get("[data-cy=video]");
   });
 
-  it(`Optimize space if param is passed with header (desktop)`, () => {
+  it.only(`Optimize space if param is passed with header (desktop)`, () => {
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
