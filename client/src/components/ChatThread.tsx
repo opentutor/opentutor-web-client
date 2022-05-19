@@ -30,6 +30,7 @@ export default function ChatThread(props: {
   hasMedia: boolean;
   lessonFormat: string;
   expectationCount: number;
+  isMobile: boolean;
 }): JSX.Element {
   function calcBoardHeight(expectationCount: number) {
     // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
@@ -71,9 +72,10 @@ export default function ChatThread(props: {
         : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
     },
     bodyHeaderSurveySaysMedia: {
-      height: shouldDisplayPortrait()
-        ? `calc(90% - 180px - ${calcBoardHeight(props.expectationCount)}px)`
+      height: !props.isMobile
+        ? `calc(100% - 75px)`
         : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
+      width: !props.isMobile ? "90%" : "90%",
     },
     avatar: {
       color: "#fff",

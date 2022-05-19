@@ -81,11 +81,15 @@ const useStyles = makeStyles((theme) => ({
   mediaSurveySays: {
     height: "30%",
   },
+  mediaSurveySaysDesktop: {
+    height: "100%",
+  },
 }));
 
 const LessonMedia = (props: {
   search: { lesson: string };
   lessonFormat: string;
+  isMobile: boolean;
 }): JSX.Element => {
   const styles = useStyles();
   const { lesson } = props.search;
@@ -133,7 +137,12 @@ const LessonMedia = (props: {
               (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.DEFAULT,
             [styles.mediaSurveySays]:
-              (props.lessonFormat || LessonFormat.DEFAULT) ==
+              (props.isMobile &&
+                (props.lessonFormat || LessonFormat.DEFAULT)) ==
+              LessonFormat.SURVEY_SAYS,
+            [styles.mediaSurveySaysDesktop]:
+              (!props.isMobile &&
+                (props.lessonFormat || LessonFormat.DEFAULT)) ==
               LessonFormat.SURVEY_SAYS,
           })}
         >
@@ -172,7 +181,10 @@ const LessonMedia = (props: {
             (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.DEFAULT,
           [styles.mediaSurveySays]:
-            (props.lessonFormat || LessonFormat.DEFAULT) ==
+            (props.isMobile && (props.lessonFormat || LessonFormat.DEFAULT)) ==
+            LessonFormat.SURVEY_SAYS,
+          [styles.mediaSurveySaysDesktop]:
+            (!props.isMobile && (props.lessonFormat || LessonFormat.DEFAULT)) ==
             LessonFormat.SURVEY_SAYS,
         })}
       >

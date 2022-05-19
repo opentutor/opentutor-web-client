@@ -64,6 +64,20 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     textAlign: "left",
   },
+
+  videoChatContainer: {
+    display: "flex",
+    width: "100%",
+    height: "calc(100% - 100px)",
+  },
+  videoContainer: {
+    width: "60%",
+    height: "100%",
+  },
+  chatContainer: {
+    width: "40%",
+    height: "100%",
+  },
 }));
 
 function Desktop(props: {
@@ -273,7 +287,7 @@ function Desktop(props: {
             [styles.appRootNoHeader]: !showHeader,
           })}
         >
-          <LessonMedia lessonFormat={lessonFormat} />
+          {/* SURVEY SAYS DIV */}
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
               {shouldDisplayPortrait() ? (
@@ -290,27 +304,37 @@ function Desktop(props: {
               />
             </>
           )}
-          <ChatThread
-            messages={messages}
-            hasMedia={hasMedia}
-            lessonFormat={lessonFormat}
-            expectationCount={targets.length}
-          />
-          <ChatForm
-            lesson={lesson}
-            username={username}
-            messages={messages}
-            setMessages={setMessages}
-            setTargets={setTargets}
-            session={session}
-            setSession={setSession}
-            setErrorProps={setErrorProps}
-            handleErrorOpen={handleErrorOpen}
-            handleSessionDone={handleSessionDone}
-            sessionAlive={sessionAlive}
-            setSessionAlive={setSessionAlive}
-            onSummaryOpenRequested={onSummaryOpenRequested}
-          />
+
+          <div className={styles.videoChatContainer}>
+            <div className={styles.videoContainer}>
+              <LessonMedia lessonFormat={lessonFormat} isMobile={isMobile} />
+            </div>
+            <div className={styles.chatContainer}>
+              <ChatThread
+                messages={messages}
+                hasMedia={hasMedia}
+                lessonFormat={lessonFormat}
+                expectationCount={targets.length}
+                isMobile={isMobile}
+              />
+              <ChatForm
+                isMobile={isMobile}
+                lesson={lesson}
+                username={username}
+                messages={messages}
+                setMessages={setMessages}
+                setTargets={setTargets}
+                session={session}
+                setSession={setSession}
+                setErrorProps={setErrorProps}
+                handleErrorOpen={handleErrorOpen}
+                handleSessionDone={handleSessionDone}
+                sessionAlive={sessionAlive}
+                setSessionAlive={setSessionAlive}
+                onSummaryOpenRequested={onSummaryOpenRequested}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <SummaryPopup

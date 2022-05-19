@@ -6,6 +6,7 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -45,6 +46,10 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     bottom: 55,
   },
+  chatFormContainerDesktop: {
+    position: "absolute",
+    bottom: `calc(0% + 60px)`,
+  },
 }));
 
 interface OutboundChat {
@@ -53,6 +58,7 @@ interface OutboundChat {
 }
 
 const ChatForm = (props: {
+  isMobile: boolean;
   lesson: string;
   username: string;
   messages: { senderId: string; type: string; text: string }[];
@@ -188,7 +194,10 @@ const ChatForm = (props: {
       noValidate
       autoComplete="off"
       style={{ height: 65 }}
-      className={styles.chatFormContainer}
+      className={clsx({
+        [styles.chatFormContainer]: props.isMobile,
+        [styles.chatFormContainerDesktop]: !props.isMobile,
+      })}
     >
       <div className={[styles.chatboxRoot, "chatInput"].join(" ")}>
         <TextField

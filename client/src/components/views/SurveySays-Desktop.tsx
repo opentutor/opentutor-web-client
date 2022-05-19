@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bodyMedia: {
     // height: "40%",
-    borderRadius: "0px 0px 10px 10px",
+    // borderRadius: "0px 0px 10px 10px",
   },
   surveyInnerBoard: {
     width: "100%",
