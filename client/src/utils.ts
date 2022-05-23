@@ -11,6 +11,12 @@ export function isTesting(): boolean {
   );
 }
 
+export function isNoHeader(): boolean {
+  return typeof window !== "undefined"
+    ? Boolean(new URL(location.href).searchParams.get("noheader"))
+    : false;
+}
+
 export const shouldDisplayPortrait = (): boolean =>
   typeof window !== "undefined" && window.matchMedia
     ? window.matchMedia && window.matchMedia("(max-width: 400px)").matches

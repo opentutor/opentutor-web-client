@@ -12,6 +12,7 @@ import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import withLocation from "wrap-with-location";
 import { Paper, styled } from "@mui/material";
+import { isNoHeader } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   centerLock: {
@@ -74,6 +75,16 @@ const useStyles = makeStyles((theme) => ({
     padding: "12px 8px",
     boxSizing: "border-box",
   },
+  bodyRootNoHeader: {
+    width: "100%",
+    backgroundColor: "#212629",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "12px 8px",
+    boxSizing: "border-box",
+    height: "15%",
+  },
   bodyNoMedia: {
     // height: "60%",
   },
@@ -105,6 +116,7 @@ const SurveySaysDesktop = (props: {
   search: { lesson: string };
   hasMedia: boolean;
   targets: Target[];
+  isMobile: boolean;
 }): JSX.Element => {
   const styles = useStyles();
   const [expandedCard, setExpandedCard] = useState(-1);
@@ -168,6 +180,7 @@ const SurveySaysDesktop = (props: {
       <div
         className={clsx({
           [styles.bodyRoot]: true,
+          [styles.bodyRootNoHeader]: isNoHeader(),
           [styles.bodyNoMedia]: !props.hasMedia,
           [styles.bodyMedia]: props.hasMedia,
         })}

@@ -29,7 +29,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import { isTesting, shouldDisplayPortrait } from "utils";
+import { isTesting, isNoHeader, shouldDisplayPortrait } from "utils";
 import { useMediaQuery } from "@material-ui/core";
 import HeaderBar from "components/HeaderBar";
 import LessonMedia from "components/LessonMedia";
@@ -69,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "calc(100% - 100px)",
+  },
+  videoChatContainerNoHeader: {
+    display: "flex",
+    width: "100%",
+    height: "calc(100% - 60px)",
   },
   videoContainer: {
     width: "60%",
@@ -274,6 +279,8 @@ function Desktop(props: {
   if (noheader !== undefined) {
     showHeader = false;
   }
+
+  console.log("noheader:", isNoHeader());
   return (
     <>
       <div className={styles.foreground}>
@@ -297,7 +304,11 @@ function Desktop(props: {
               {shouldDisplayPortrait() ? (
                 <SurveySays hasMedia={hasMedia} targets={targets} />
               ) : (
-                <SurveySaysDesktop hasMedia={hasMedia} targets={targets} />
+                <SurveySaysDesktop
+                  hasMedia={hasMedia}
+                  targets={targets}
+                  isMobile={isMobile}
+                />
               )}
             </>
           ) : (
@@ -309,7 +320,12 @@ function Desktop(props: {
             </>
           )}
 
-          <div className={styles.videoChatContainer}>
+          <div
+            className={clsx({
+              [styles.videoChatContainer]: !isNoHeader(),
+              [styles.videoChatContainerNoHeader]: isNoHeader(),
+            })}
+          >
             <div className={styles.videoContainer}>
               <LessonMedia lessonFormat={lessonFormat} isMobile={isMobile} />
             </div>
