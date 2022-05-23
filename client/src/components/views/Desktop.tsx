@@ -73,8 +73,12 @@ const useStyles = makeStyles((theme) => ({
   videoContainer: {
     width: "60%",
     height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   chatContainer: {
+    position: "relative",
     width: "40%",
     height: "100%",
   },

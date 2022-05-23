@@ -151,8 +151,8 @@ const SurveySays = (props: {
                           target.status !== "complete" ? "h6" : "caption"
                         }
                         style={{
-                          paddingLeft: 10,
-                          paddingRight: 10,
+                          paddingLeft: 30,
+                          paddingRight: 30,
                           width: "100%",
                           boxSizing: "border-box",
                         }}

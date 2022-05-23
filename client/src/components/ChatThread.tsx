@@ -73,7 +73,7 @@ export default function ChatThread(props: {
     },
     bodyHeaderSurveySaysMedia: {
       height: !props.isMobile
-        ? `calc(100% - 75px)`
+        ? `calc(100% - 125px)`
         : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
       width: !props.isMobile ? "90%" : "90%",
     },
@@ -194,7 +194,11 @@ export default function ChatThread(props: {
               classes={{
                 root: styles.root,
               }}
-              style={{ paddingRight: chatIcon(message.type) ? 24 : 16 }}
+              style={{
+                paddingRight: chatIcon(message.type) ? 24 : 16,
+                height: props.isMobile ? "100px" : "80px",
+                width: props.isMobile ? "90% !important" : "100% !important",
+              }}
             >
               <ListItemText primary={message.text} />
               {chatIcon(message.type)}

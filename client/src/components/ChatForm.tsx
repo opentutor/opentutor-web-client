@@ -49,6 +49,10 @@ const useStyles = makeStyles(() => ({
   chatFormContainerDesktop: {
     position: "absolute",
     bottom: `calc(0% + 60px)`,
+    left: 0,
+    right: 0,
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 }));
 

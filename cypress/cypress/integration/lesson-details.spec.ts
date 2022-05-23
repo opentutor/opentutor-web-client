@@ -20,6 +20,7 @@ describe("lesson details", () => {
     });
     cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
     cyMockDialog(cy, "q1", "q1-1-p1.json");
+    cy.viewport("macbook-11");
 
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
     cy.get("[data-cy=lesson-name]").should("contain", "lesson 1");

@@ -82,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
     height: "30%",
   },
   mediaSurveySaysDesktop: {
-    height: "100%",
+    height: "96%",
+    width: "96%",
   },
 }));
 

@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "8px 5px",
+    padding: "12px 8px",
     boxSizing: "border-box",
   },
   bodyNoMedia: {
