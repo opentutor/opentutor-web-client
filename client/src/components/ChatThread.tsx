@@ -45,7 +45,7 @@ export default function ChatThread(props: {
     },
     bodyRoot: {
       paddingTop: shouldDisplayPortrait() ? 10 : 20,
-      width: shouldDisplayPortrait() ? "98%" : "70%",
+      width: shouldDisplayPortrait() ? "98%" : "90%",
       marginLeft: "51%",
       paddingBottom: 10,
       transform: "translateX(-50%)",
@@ -61,6 +61,9 @@ export default function ChatThread(props: {
         ? "calc(65% - 60px - 95px)"
         : "calc(65% - 10px - 95px)",
     },
+    bodyDefaultMediaDesktop: {
+      height: "calc(100% - 125px)",
+    },
     bodySurveySaysNoMedia: {
       height: `calc(100% - 95px - ${calcBoardHeight(
         props.expectationCount
@@ -72,11 +75,26 @@ export default function ChatThread(props: {
         : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
     },
     bodyHeaderSurveySaysMedia: {
-      height: !props.isMobile
-        ? `calc(100% - 125px)`
-        : `calc(90% - 0px - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: !props.isMobile ? `calc(100% - 125px)` : `calc(90% - 65px )`,
       width: !props.isMobile ? "90%" : "90%",
     },
+    chatListMobile: {
+      listStyle: "none",
+      margin: 0,
+      padding: 0,
+      overflow: "hidden",
+      overflowY: "auto",
+      height: "38vh",
+    },
+    chatListMobileNoHeader: {
+      listStyle: "none",
+      margin: 0,
+      padding: 0,
+      overflow: "hidden",
+      overflowY: "auto",
+      height: "41vh",
+    },
+    chatListDesktop: {},
     avatar: {
       color: "#fff",
       width: theme.spacing(4),
@@ -163,7 +181,12 @@ export default function ChatThread(props: {
     [styles.bodyDefaultNoMedia]:
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       !props.hasMedia,
+    [styles.bodyDefaultMediaDesktop]:
+      !props.isMobile &&
+      (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
+      props.hasMedia,
     [styles.bodyDefaultMedia]:
+      props.isMobile &&
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       props.hasMedia,
     [styles.bodySurveySaysNoMedia]:
@@ -183,7 +206,17 @@ export default function ChatThread(props: {
 
   return (
     <div data-cy="chat-thread" className={stylesThread}>
-      <List data-cy="thread" id="thread" disablePadding={true}>
+      <List
+        data-cy="thread"
+        id="thread"
+        disablePadding={true}
+        className={clsx({
+          [styles.chatListMobile]: props.isMobile,
+          [styles.chatListMobileNoHeader]: props.isMobile && isNoHeader,
+          [styles.chatListDesktop]: !props.isMobile,
+          [styles.chatListDesktop]: !props.isMobile,
+        })}
+      >
         {props.messages.map((message, i) => {
           return (
             <ListItem

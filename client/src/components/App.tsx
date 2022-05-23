@@ -10,6 +10,8 @@ import withLocation from "wrap-with-location";
 import Desktop from "./views/Desktop";
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@mui/material";
+import DesktopMobile from "./views/Desktop-Mobile";
+import { shouldDisplayPortrait } from "utils";
 
 function App(props: {
   search: { lesson: string; guest: string; actor: string; noheader: string };
@@ -17,11 +19,19 @@ function App(props: {
   const { lesson, guest, actor, noheader } = props.search;
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile =
+    useMediaQuery(theme.breakpoints.down("xs")) || shouldDisplayPortrait();
 
   return (
     <>
-      {isMobile ? null : (
+      {isMobile ? (
+        <DesktopMobile
+          lesson={lesson}
+          guest={guest}
+          actor={actor}
+          noheader={noheader}
+        />
+      ) : (
         <Desktop
           lesson={lesson}
           guest={guest}

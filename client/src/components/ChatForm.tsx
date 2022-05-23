@@ -46,6 +46,10 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     bottom: 55,
   },
+  chatFormContainerMobile: {
+    width: "100%",
+    bottom: 55,
+  },
   chatFormContainerDesktop: {
     position: "absolute",
     bottom: `calc(0% + 60px)`,
@@ -199,7 +203,7 @@ const ChatForm = (props: {
       autoComplete="off"
       style={{ height: 65 }}
       className={clsx({
-        [styles.chatFormContainer]: props.isMobile,
+        [styles.chatFormContainerMobile]: props.isMobile,
         [styles.chatFormContainerDesktop]: !props.isMobile,
       })}
     >

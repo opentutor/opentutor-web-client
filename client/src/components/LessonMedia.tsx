@@ -75,8 +75,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
   },
   mediaRoot: {},
-  mediaDefault: {
-    height: "35%",
+  mediaDefaultDesktop: {
+    height: "100%",
+    width: "98%",
+  },
+  mediaDefaultMobile: {
+    height: "100%",
+    width: "100%",
   },
   mediaSurveySays: {
     height: "30%",
@@ -84,6 +89,10 @@ const useStyles = makeStyles((theme) => ({
   mediaSurveySaysDesktop: {
     height: "96%",
     width: "96%",
+  },
+  mediaSurveySaysMobile: {
+    height: "100%",
+    width: "100%",
   },
 }));
 
@@ -134,10 +143,15 @@ const LessonMedia = (props: {
         <div
           className={clsx({
             [styles.mediaRoot]: true,
-            [styles.mediaDefault]:
+            [styles.mediaDefaultDesktop]:
+              !props.isMobile &&
               (props.lessonFormat || LessonFormat.DEFAULT) ==
-              LessonFormat.DEFAULT,
-            [styles.mediaSurveySays]:
+                LessonFormat.DEFAULT,
+            [styles.mediaDefaultMobile]:
+              props.isMobile &&
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+                LessonFormat.DEFAULT,
+            [styles.mediaSurveySaysMobile]:
               (props.isMobile &&
                 (props.lessonFormat || LessonFormat.DEFAULT)) ==
               LessonFormat.SURVEY_SAYS,
@@ -178,10 +192,15 @@ const LessonMedia = (props: {
       <div
         className={clsx({
           [styles.mediaRoot]: true,
-          [styles.mediaDefault]:
+          [styles.mediaDefaultDesktop]:
+            !props.isMobile &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT,
-          [styles.mediaSurveySays]:
+              LessonFormat.DEFAULT,
+          [styles.mediaDefaultMobile]:
+            props.isMobile &&
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.DEFAULT,
+          [styles.mediaSurveySaysMobile]:
             (props.isMobile && (props.lessonFormat || LessonFormat.DEFAULT)) ==
             LessonFormat.SURVEY_SAYS,
           [styles.mediaSurveySaysDesktop]:

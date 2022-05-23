@@ -29,7 +29,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import { isTesting, isNoHeader, shouldDisplayPortrait } from "utils";
+import { isTesting, shouldDisplayPortrait } from "utils";
 import { useMediaQuery } from "@material-ui/core";
 import HeaderBar from "components/HeaderBar";
 import LessonMedia from "components/LessonMedia";
@@ -67,30 +67,38 @@ const useStyles = makeStyles((theme) => ({
 
   videoChatContainer: {
     display: "flex",
+    flexDirection: "column",
     width: "100%",
-    height: "calc(100% - 100px)",
+    height: "calc(100% - 230px)",
   },
 
   videoChatContainerNoHeader: {
     display: "flex",
     width: "100%",
-    height: "calc(100% - 60px)",
+    height: "calc(100% - 210px)",
   },
-  videoContainer: {
-    width: "60%",
-    height: "100%",
+  videoContainerMobile: {
+    width: "100%",
+    height: "23vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  videoContainerMobileNoHeader: {
+    width: "100%",
+    height: "30vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   chatContainer: {
     position: "relative",
-    width: "40%",
+    width: "98%",
     height: "100%",
   },
 }));
 
-function Desktop(props: {
+function DesktopMobile(props: {
   lesson: string;
   guest: string;
   actor: string;
@@ -299,36 +307,36 @@ function Desktop(props: {
           })}
         >
           {/* SURVEY SAYS DIV */}
-          {lessonFormat === LessonFormat.SURVEY_SAYS ? (
-            <>
-              {shouldDisplayPortrait() ? (
-                <SurveySays hasMedia={hasMedia} targets={targets} />
-              ) : (
-                <SurveySaysDesktop
-                  hasMedia={hasMedia}
-                  targets={targets}
-                  isMobile={isMobile}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <TargetIndicator
-                targets={targets}
-                showSummary={onSummaryOpenRequested}
-              />
-            </>
-          )}
 
-          <div
-            className={clsx({
-              [styles.videoChatContainer]: !isNoHeader(),
-              [styles.videoChatContainerNoHeader]: isNoHeader(),
-            })}
-          >
-            <div className={styles.videoContainer}>
+          <div>
+            <div
+              className={clsx({
+                [styles.videoContainerMobileNoHeader]: noheader,
+                [styles.videoContainerMobile]: !noheader,
+              })}
+            >
               <LessonMedia lessonFormat={lessonFormat} isMobile={isMobile} />
             </div>
+            {lessonFormat === LessonFormat.SURVEY_SAYS ? (
+              <>
+                {shouldDisplayPortrait() ? (
+                  <SurveySays hasMedia={hasMedia} targets={targets} />
+                ) : (
+                  <SurveySaysDesktop
+                    hasMedia={hasMedia}
+                    targets={targets}
+                    isMobile={isMobile}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                <TargetIndicator
+                  targets={targets}
+                  showSummary={onSummaryOpenRequested}
+                />
+              </>
+            )}
             <div className={styles.chatContainer}>
               <ChatThread
                 messages={messages}
@@ -373,4 +381,4 @@ function Desktop(props: {
   );
 }
 
-export default withLocation(Desktop);
+export default withLocation(DesktopMobile);

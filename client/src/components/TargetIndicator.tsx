@@ -11,6 +11,7 @@ import { Grid, Typography } from "@material-ui/core";
 import TargetIcon from "components/TargetIcon";
 import LockIcon from "@material-ui/icons/Lock";
 import { Target } from "types";
+import { isNoHeader } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   placeholder: {
@@ -64,7 +65,14 @@ export function TargetIndicator(props: {
     );
   }
   return (
-    <div data-cy="targets">
+    <div
+      data-cy="targets"
+      style={
+        isNoHeader()
+          ? { height: "10%", marginTop: "20px" }
+          : { margin: "10px 10px" }
+      }
+    >
       {props.targets.map((target, index) => {
         return (
           <TargetIcon
