@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const surveySaysHeader = makeStyles((theme) => ({
+export const surveySaysStyles = makeStyles((theme) => ({
   centerLock: {
     position: "absolute",
     top: "50%",
@@ -48,8 +48,8 @@ export const surveySaysHeader = makeStyles((theme) => ({
     boxShadow: "1px 6px 6px -3px darkgrey",
   },
   survey: {
-    padding: theme.spacing(2),
-    maxWidth: 500,
+    padding: theme.spacing(1),
+    width: "100%",
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -78,5 +78,15 @@ export const surveySaysHeader = makeStyles((theme) => ({
   },
   surveyQuestion: {
     color: "white",
+  },
+  bodyRootNoHeader: {
+    width: "100%",
+    backgroundColor: "#212629",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "12px 8px",
+    boxSizing: "border-box",
+    height: "15%",
   },
 }));
