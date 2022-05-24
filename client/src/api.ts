@@ -52,7 +52,6 @@ export async function createSession(
   try {
     return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
   } catch (error) {
-    console.log(error.response);
     return error.response;
   }
 }

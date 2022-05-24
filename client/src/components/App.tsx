@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
@@ -33,42 +33,12 @@ import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  foreground: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  appRoot: {
-    width: "100%",
-    boxSizing: "border-box",
-  },
-  appRootDefault: {
-    height: "calc(100% - 64px)",
-  },
-  appRootSuperDenseHeader: {
-    height: "calc(100% - 30px)",
-  },
-  appRootNoHeader: {
-    height: "calc(100% - 0px)",
-  },
-  buildInfo: {
-    padding: 5,
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "70%",
-    backgroundColor: theme.palette.primary.main,
-    textAlign: "left",
-  },
-}));
+import { appStyles } from "./styles/app";
 
 function App(props: {
   search: { lesson: string; guest: string; actor: string; noheader: string };
 }): JSX.Element {
-  const styles = useStyles();
+  const styles = appStyles();
   const { lesson, guest, actor, noheader } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
