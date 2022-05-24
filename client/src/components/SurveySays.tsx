@@ -34,7 +34,7 @@ const SurveySays = (props: {
   const surveySaysGrid = (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {props.targets.map((target, idx) => (
-        <Grid item xs={12} key={idx}>
+        <Grid item xs={12} lg={6} key={idx}>
           <Item>
             <div
               id={`card-${idx}`}

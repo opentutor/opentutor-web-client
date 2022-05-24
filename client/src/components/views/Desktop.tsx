@@ -31,7 +31,7 @@ import {
 import withLocation from "wrap-with-location";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
-import { appStyles } from "components/styles/app";
+import { appStylesDesktop } from "components/styles/app";
 import LessonMedia from "components/LessonMedia";
 import HeaderBar from "components/HeaderBar";
 
@@ -43,7 +43,7 @@ interface DesktopProps {
 }
 
 function Desktop(props: DesktopProps): JSX.Element {
-  const styles = appStyles();
+  const styles = appStylesDesktop();
   const { lesson, guest, actor, noheader } = props;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
@@ -243,7 +243,6 @@ function Desktop(props: DesktopProps): JSX.Element {
             [styles.appRootNoHeader]: !showHeader,
           })}
         >
-          <LessonMedia lessonFormat={lessonFormat} />
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
               <SurveySays hasMedia={hasMedia} targets={targets} />
@@ -256,27 +255,34 @@ function Desktop(props: DesktopProps): JSX.Element {
               />
             </>
           )}
-          <ChatThread
-            messages={messages}
-            hasMedia={hasMedia}
-            lessonFormat={lessonFormat}
-            expectationCount={targets.length}
-          />
-          <ChatForm
-            lesson={lesson}
-            username={username}
-            messages={messages}
-            setMessages={setMessages}
-            setTargets={setTargets}
-            session={session}
-            setSession={setSession}
-            setErrorProps={setErrorProps}
-            handleErrorOpen={handleErrorOpen}
-            handleSessionDone={handleSessionDone}
-            sessionAlive={sessionAlive}
-            setSessionAlive={setSessionAlive}
-            onSummaryOpenRequested={onSummaryOpenRequested}
-          />
+          <div className={styles.middleAppContent}>
+            <div className={styles.videoContainer}>
+              <LessonMedia lessonFormat={lessonFormat} />
+            </div>
+            <div className={styles.chatThreadInputFormContainer}>
+              <ChatThread
+                messages={messages}
+                hasMedia={hasMedia}
+                lessonFormat={lessonFormat}
+                expectationCount={targets.length}
+              />
+              <ChatForm
+                lesson={lesson}
+                username={username}
+                messages={messages}
+                setMessages={setMessages}
+                setTargets={setTargets}
+                session={session}
+                setSession={setSession}
+                setErrorProps={setErrorProps}
+                handleErrorOpen={handleErrorOpen}
+                handleSessionDone={handleSessionDone}
+                sessionAlive={sessionAlive}
+                setSessionAlive={setSessionAlive}
+                onSummaryOpenRequested={onSummaryOpenRequested}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <SummaryPopup

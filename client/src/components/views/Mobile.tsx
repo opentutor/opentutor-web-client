@@ -31,7 +31,7 @@ import {
 import withLocation from "wrap-with-location";
 import { isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
-import { appStyles } from "components/styles/app";
+import { appStylesMobile } from "components/styles/app";
 import LessonMedia from "components/LessonMedia";
 import HeaderBar from "components/HeaderBar";
 
@@ -43,7 +43,7 @@ interface DesktopProps {
 }
 
 function Mobile(props: DesktopProps): JSX.Element {
-  const styles = appStyles();
+  const styles = appStylesMobile();
   const { lesson, guest, actor, noheader } = props;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
