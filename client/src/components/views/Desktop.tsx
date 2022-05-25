@@ -29,7 +29,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import { isTesting } from "utils";
+import { isNoHeader, isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
 import { appStylesDesktop } from "components/styles/app";
 import LessonMedia from "components/LessonMedia";
@@ -226,6 +226,9 @@ function Desktop(props: DesktopProps): JSX.Element {
   if (noheader !== undefined) {
     showHeader = false;
   }
+
+  console.log("1:", !isNoHeader() && !isMobile);
+  console.log("2:", isNoHeader() && !isMobile);
   return (
     <>
       <div className={styles.foreground}>
@@ -255,7 +258,12 @@ function Desktop(props: DesktopProps): JSX.Element {
               />
             </>
           )}
-          <div className={styles.middleAppContent}>
+          <div
+            className={clsx({
+              [styles.middleAppContent]: !isNoHeader() && !isMobile,
+              [styles.noHeader_middleAppContent]: isNoHeader() && !isMobile,
+            })}
+          >
             <div className={styles.videoContainer}>
               <LessonMedia lessonFormat={lessonFormat} />
             </div>

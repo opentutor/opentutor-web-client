@@ -10,15 +10,75 @@ export interface ChatThreadStylesProps {
   expectationCount: number;
 }
 
-export const chatThreadStyles = makeStyles<Theme, ChatThreadStylesProps>(
+export const chatThreadStylesDesktop = makeStyles<Theme, ChatThreadStylesProps>(
   (theme) => ({
     bodySurveySaysNoMedia: (props) => ({
       height: `calc(100% - 95px - ${calcBoardHeight(
         props.expectationCount
       )}px)`,
     }),
-    bodySurveySaysMedia: (props) => ({
-      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
+    bodySurveySaysMedia: () => ({
+      height: `calc(100% - 120px)`,
+      width: "100%",
+    }),
+    root: {
+      width: "auto",
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+    bodyRoot: {
+      paddingTop: 10,
+      width: "90%",
+      maxWidth: "90%",
+      marginLeft: "50%",
+      paddingBottom: 10,
+      transform: "translateX(-50%)",
+      boxSizing: "border-box",
+    },
+    bodyDefaultNoMedia: {
+      height: "calc(100% - 60px - 95px)",
+    },
+    bodyDefaultMedia: {
+      height: "calc(65% - 60px - 95px)",
+    },
+    chatThreadList: {
+      width: "100%",
+    },
+
+    avatar: {
+      color: "#fff",
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+    },
+    icon: {
+      position: "absolute",
+      right: -20,
+    },
+    gray: {},
+    red: {
+      background: "#DC143C",
+    },
+    green: {
+      background: "#3CB371",
+    },
+    yellow: {
+      background: "yellow",
+    },
+  })
+);
+
+export const chatThreadStylesMobile = makeStyles<Theme, ChatThreadStylesProps>(
+  (theme) => ({
+    bodySurveySaysNoMedia: (props) => ({
+      height: `calc(100% - 95px - ${calcBoardHeight(
+        props.expectationCount
+      )}px)`,
+    }),
+    bodySurveySaysMediaMobile: (props) => ({
+      height: `calc(68%  - ${calcBoardHeight(props.expectationCount)}px)`,
+    }),
+    noHeader_BodySurveySaysMediaMobile: (props) => ({
+      height: `calc(76%  - ${calcBoardHeight(props.expectationCount)}px)`,
     }),
     root: {
       width: "auto",

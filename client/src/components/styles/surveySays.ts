@@ -87,6 +87,6 @@ export const surveySaysStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "12px 8px",
     boxSizing: "border-box",
-    height: "15%",
+    height: "18%",
   },
 }));

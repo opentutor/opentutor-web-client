@@ -32,7 +32,13 @@ export const appStylesDesktop = makeStyles((theme) => ({
   middleAppContent: {
     display: "flex",
     width: "100%",
-    height: "calc(100% - 100px)",
+    height: "calc(100% - 115px)",
+  },
+
+  noHeader_middleAppContent: {
+    display: "flex",
+    width: "100%",
+    height: "calc(100% - 70px)",
   },
   videoContainer: {
     width: "60%",

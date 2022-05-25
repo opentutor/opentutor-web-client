@@ -16,7 +16,7 @@ ul{
     border-radius: 30px;
     margin-bottom: 2px;
     font-family: Helvetica, Arial, sans-serif;
-    max-width: 70%;
+    /* max-width: 70%; */
     word-wrap: break-word;
     text-align: left;
   }
