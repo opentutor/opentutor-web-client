@@ -6,7 +6,6 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
-import clsx from "clsx";
 import { useTheme } from "@material-ui/core/styles";
 import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
@@ -31,9 +30,10 @@ import {
 import withLocation from "wrap-with-location";
 import { isNoHeader, isTesting } from "utils";
 import { useMediaQuery } from "@material-ui/core";
-import { appStylesDesktop } from "components/styles/app";
 import LessonMedia from "components/LessonMedia";
 import HeaderBar from "components/HeaderBar";
+
+import "styles/components/Desktop.css";
 
 interface DesktopProps {
   lesson: string;
@@ -43,7 +43,6 @@ interface DesktopProps {
 }
 
 function Desktop(props: DesktopProps): JSX.Element {
-  const styles = appStylesDesktop();
   const { lesson, guest, actor, noheader } = props;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
@@ -227,25 +226,26 @@ function Desktop(props: DesktopProps): JSX.Element {
     showHeader = false;
   }
 
-  console.log("1:", !isNoHeader() && !isMobile);
-  console.log("2:", isNoHeader() && !isMobile);
+  const classSwitch = (showHeader: boolean, isMobile: boolean) => {
+    switch (true) {
+      case showHeader && !isMobile:
+        return "appRootDefault";
+      case showHeader && isMobile:
+        return "appRootSuperDenseHeader";
+      case !showHeader:
+        return "appRootNoHeader";
+    }
+  };
+
   return (
     <>
-      <div className={styles.foreground}>
+      <div className="foreground">
         {noheader ? (
           <div id="invisible-header"></div>
         ) : (
           <HeaderBar superDense={isMobile} />
         )}
-        <div
-          id="app-content"
-          className={clsx({
-            [styles.appRoot]: true,
-            [styles.appRootDefault]: showHeader && !isMobile,
-            [styles.appRootSuperDenseHeader]: showHeader && isMobile,
-            [styles.appRootNoHeader]: !showHeader,
-          })}
-        >
+        <div id="app-content" className={classSwitch(showHeader, isMobile)}>
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
             <>
               <SurveySays hasMedia={hasMedia} targets={targets} />
@@ -259,15 +259,16 @@ function Desktop(props: DesktopProps): JSX.Element {
             </>
           )}
           <div
-            className={clsx({
-              [styles.middleAppContent]: !isNoHeader() && !isMobile,
-              [styles.noHeader_middleAppContent]: isNoHeader() && !isMobile,
-            })}
+            className={
+              !isNoHeader() && !isMobile
+                ? "middleAppContent"
+                : "noHeader_middleAppContent"
+            }
           >
-            <div className={styles.videoContainer}>
+            <div className="videoContainer">
               <LessonMedia lessonFormat={lessonFormat} />
             </div>
-            <div className={styles.chatThreadInputFormContainer}>
+            <div className="chatThreadInputFormContainer">
               <ChatThread
                 messages={messages}
                 hasMedia={hasMedia}

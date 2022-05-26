@@ -61,7 +61,7 @@ describe("Error popup", () => {
     );
   });
 
-  it("prompts 'already ended' on 410 response", () => {
+  it.only("prompts 'already ended' on 410 response", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.intercept(

@@ -1,5 +1,6 @@
 import React from "react";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+require("styles/components/Desktop.css");
 
 const theme = createMuiTheme({
   palette: {

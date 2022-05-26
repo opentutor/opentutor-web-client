@@ -11,8 +11,11 @@ import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import withLocation from "wrap-with-location";
 import { Paper, styled } from "@mui/material";
-import { isNoHeader } from "utils";
-import { surveySaysStyles } from "./styles/surveySays";
+import { isNoHeader, shouldDisplayPortrait } from "utils";
+import {
+  surveySaysStylesDesktop,
+  surveySaysStylesMobile,
+} from "./styles/surveySays";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#1B6A9C !important",
@@ -28,7 +31,8 @@ const SurveySays = (props: {
   targets: Target[];
   isMobile: boolean;
 }): JSX.Element => {
-  const styles = surveySaysStyles();
+  const stylesDesktop = surveySaysStylesDesktop();
+  const stylesMobile = surveySaysStylesMobile();
   const [expandedCard, setExpandedCard] = useState(-1);
 
   const surveySaysGrid = (
@@ -39,13 +43,15 @@ const SurveySays = (props: {
             <div
               id={`card-${idx}`}
               className={clsx({
-                [styles.fixedSurveyCard]: idx !== expandedCard,
-                [styles.expandableSurveyCard]: idx === expandedCard,
-                [styles.completeSatisfied]:
+                [stylesDesktop.fixedSurveyCard]: idx !== expandedCard,
+                [stylesMobile.fixedSurveyCardMobile]:
+                  shouldDisplayPortrait() && idx !== expandedCard,
+                [stylesDesktop.expandableSurveyCard]: idx === expandedCard,
+                [stylesDesktop.completeSatisfied]:
                   target.status === "complete" && target.score === 1,
-                [styles.completeUnsatisfied]:
+                [stylesDesktop.completeUnsatisfied]:
                   target.status === "complete" && target.score !== 1,
-                [styles.default]: target.status !== "complete",
+                [stylesDesktop.default]: target.status !== "complete",
               })}
               onClick={() => {
                 if (idx === expandedCard) {
@@ -64,8 +70,8 @@ const SurveySays = (props: {
               ) : (
                 <Typography
                   className={clsx({
-                    [styles.fixedSurveyCardText]: true,
-                    [styles.centerLock]: true,
+                    [stylesDesktop.fixedSurveyCardText]: true,
+                    [stylesDesktop.centerLock]: true,
                   })}
                   variant={target.status !== "complete" ? "h6" : "caption"}
                   style={{
@@ -89,13 +95,13 @@ const SurveySays = (props: {
     <>
       <div
         className={clsx({
-          [styles.bodyRoot]: true,
-          [styles.bodyRootNoHeader]: isNoHeader(),
-          [styles.bodyNoMedia]: !props.hasMedia,
-          [styles.bodyMedia]: props.hasMedia,
+          [stylesDesktop.bodyRoot]: true,
+          [stylesDesktop.bodyRootNoHeader]: isNoHeader(),
+          [stylesDesktop.bodyNoMedia]: !props.hasMedia,
+          [stylesDesktop.bodyMedia]: props.hasMedia,
         })}
       >
-        <div className={styles.survey}>
+        <div className={stylesDesktop.survey}>
           <Grid container>{surveySaysGrid}</Grid>
         </div>
       </div>

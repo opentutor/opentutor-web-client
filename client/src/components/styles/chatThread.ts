@@ -29,7 +29,7 @@ export const chatThreadStylesDesktop = makeStyles<Theme, ChatThreadStylesProps>(
     bodyRoot: {
       paddingTop: 10,
       width: "90%",
-      maxWidth: "90%",
+      maxWidth: "96%",
       marginLeft: "50%",
       paddingBottom: 10,
       transform: "translateX(-50%)",
@@ -78,7 +78,7 @@ export const chatThreadStylesMobile = makeStyles<Theme, ChatThreadStylesProps>(
       height: `calc(68%  - ${calcBoardHeight(props.expectationCount)}px)`,
     }),
     noHeader_BodySurveySaysMediaMobile: (props) => ({
-      height: `calc(76%  - ${calcBoardHeight(props.expectationCount)}px)`,
+      height: `calc(75%  - ${calcBoardHeight(props.expectationCount)}px)`,
     }),
     root: {
       width: "auto",

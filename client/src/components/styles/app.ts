@@ -15,6 +15,9 @@ export const appStylesDesktop = makeStyles((theme) => ({
   appRootDefault: {
     height: "calc(100% - 64px)",
   },
+  noHeader_appRootDefault: {
+    height: "calc(100% - 25px)",
+  },
   appRootSuperDenseHeader: {
     height: "calc(100% - 30px)",
   },
@@ -32,13 +35,13 @@ export const appStylesDesktop = makeStyles((theme) => ({
   middleAppContent: {
     display: "flex",
     width: "100%",
-    height: "calc(100% - 115px)",
+    height: "calc(100% - 150px)",
   },
 
   noHeader_middleAppContent: {
     display: "flex",
     width: "100%",
-    height: "calc(100% - 70px)",
+    height: "calc(100% - 150px)",
   },
   videoContainer: {
     width: "60%",

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const surveySaysStyles = makeStyles((theme) => ({
+export const surveySaysStylesDesktop = makeStyles((theme) => ({
   centerLock: {
     position: "absolute",
     top: "50%",
@@ -12,7 +12,7 @@ export const surveySaysStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
     color: "white",
     padding: 10,
-    height: 30,
+    height: 45,
     position: "relative",
     boxSizing: "border-box",
     transition: "box-shadow 0.5s ease-in",
@@ -88,5 +88,18 @@ export const surveySaysStyles = makeStyles((theme) => ({
     padding: "12px 8px",
     boxSizing: "border-box",
     height: "18%",
+  },
+}));
+
+export const surveySaysStylesMobile = makeStyles((theme) => ({
+  fixedSurveyCardMobile: {
+    borderRadius: 10,
+    background: theme.palette.primary.main,
+    color: "white",
+    padding: 10,
+    height: 30,
+    position: "relative",
+    boxSizing: "border-box",
+    transition: "box-shadow 0.5s ease-in",
   },
 }));

@@ -14,7 +14,7 @@ import {
 import { lessonInfo } from "../fixtures/lesson-graphql-default";
 
 describe("App view desktop", () => {
-  it(`Optimize space if param is passed with header`, () => {
+  it.only(`Optimize space if param is passed with header`, () => {
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
@@ -67,7 +67,7 @@ describe("App view desktop", () => {
 });
 
 describe("App view Mobile", () => {
-  it.only(`Optimize space if param is passed with header`, () => {
+  it(`Optimize space if param is passed with header`, () => {
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
