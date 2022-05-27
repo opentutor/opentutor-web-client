@@ -20,6 +20,7 @@ describe("Input field", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=submit-button]").should("not.exist");
@@ -34,6 +35,7 @@ describe("Input field", () => {
     cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("hi");
     cy.get("[data-cy=outlined-multiline-static]").should("not.be.disabled");
     cy.get("[data-cy=submit-button]").should("not.be.disabled");
@@ -46,6 +48,7 @@ describe("Input field", () => {
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "some fake answer";
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]").click();
@@ -64,6 +67,7 @@ describe("Input field", () => {
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "another fake answer";
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
@@ -81,6 +85,7 @@ describe("Input field", () => {
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "answer we will repeat";
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);

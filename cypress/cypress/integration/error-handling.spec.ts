@@ -53,6 +53,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=error-popup]").should(
@@ -61,7 +62,7 @@ describe("Error popup", () => {
     );
   });
 
-  it.only("prompts 'already ended' on 410 response", () => {
+  it("prompts 'already ended' on 410 response", () => {
     cySetup(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cy.intercept(
@@ -75,6 +76,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q2&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=error-popup]").should("contain", "Lesson session ended");

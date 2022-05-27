@@ -66,6 +66,7 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").trigger("mouseover").click();
     cy.get("[data-cy=summary-popup]");
@@ -96,6 +97,7 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]").trigger("mouseover").click();
@@ -112,6 +114,7 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(1000);
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]").trigger("mouseover").click();

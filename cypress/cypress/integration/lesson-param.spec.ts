@@ -49,6 +49,7 @@ describe("Lesson query parameter", () => {
       cyMockSession(cy, x.lesson, x.fixtureLessonContinue);
       cy.fixture(x.fixtureLessonContinue).then((expectedServerResponse) => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
+        cy.wait(1000);
         cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
         cy.get("[data-cy=submit-button]").click();
         cy.get("[data-cy=chat-msg-2]").should("contain", x.userInput);
