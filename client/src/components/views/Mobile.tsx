@@ -226,6 +226,7 @@ function Mobile(props: DesktopProps): JSX.Element {
   if (noheader !== undefined) {
     showHeader = false;
   }
+  console.log("mobile");
 
   return (
     <>

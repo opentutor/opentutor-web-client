@@ -23,21 +23,24 @@ function App(props: {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const mobile = (
-    <Mobile lesson={lesson} guest={guest} actor={actor} noheader={noheader} />
-  );
-
-  const desktop = (
-    <Desktop lesson={lesson} guest={guest} actor={actor} noheader={noheader} />
-  );
   return (
-    <div>
+    <>
       {shouldDisplayPortrait() || isMobile ? (
-        <div>{mobile}</div>
+        <Mobile
+          lesson={lesson}
+          guest={guest}
+          actor={actor}
+          noheader={noheader}
+        />
       ) : (
-        <div>{desktop}</div>
+        <Desktop
+          lesson={lesson}
+          guest={guest}
+          actor={actor}
+          noheader={noheader}
+        />
       )}
-    </div>
+    </>
   );
 }
 

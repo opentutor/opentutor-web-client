@@ -39,7 +39,7 @@ export const chatThreadStylesDesktop = makeStyles<Theme, ChatThreadStylesProps>(
       height: "calc(100% - 60px - 95px)",
     },
     bodyDefaultMedia: {
-      height: "calc(65% - 60px - 95px)",
+      height: "calc(100% - 95px)",
     },
     chatThreadList: {
       width: "100%",

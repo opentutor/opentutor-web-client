@@ -260,7 +260,7 @@ function Desktop(props: DesktopProps): JSX.Element {
           )}
           <div
             className={
-              !isNoHeader() && !isMobile
+              isNoHeader() && !isMobile
                 ? "middleAppContent"
                 : "noHeader_middleAppContent"
             }

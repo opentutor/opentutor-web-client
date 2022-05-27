@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "gatsby-cli": "^3.7.1",
+    "gatsby-cli": "^4.15.0",
     "gatsby-plugin-env-variables": "^2.1.0",
     "gatsby-plugin-eslint": "^3.0.0",
     "gatsby-plugin-material-ui": "^3.0.1",
