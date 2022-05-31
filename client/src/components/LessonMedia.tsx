@@ -68,9 +68,15 @@ const LessonMedia = (props: {
         <div
           className={clsx({
             [stylesDesktop.mediaRoot]: true,
-            [stylesDesktop.mediaDefault]:
+            [stylesMobile.mediaDefaultMobile]:
+              shouldDisplayPortrait() &&
               (props.lessonFormat || LessonFormat.DEFAULT) ==
-              LessonFormat.DEFAULT,
+                LessonFormat.DEFAULT,
+            [stylesDesktop.mediaDefault]:
+              !shouldDisplayPortrait() &&
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+                LessonFormat.DEFAULT,
+
             [stylesDesktop.mediaSurveySays]:
               (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.SURVEY_SAYS,
@@ -111,9 +117,14 @@ const LessonMedia = (props: {
       <div
         className={clsx({
           [stylesDesktop.mediaRoot]: true,
-          [stylesDesktop.mediaDefault]:
+          [stylesMobile.mediaDefaultMobile]:
+            shouldDisplayPortrait() &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT,
+              LessonFormat.DEFAULT,
+          [stylesDesktop.mediaDefault]:
+            !shouldDisplayPortrait() &&
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.DEFAULT,
           [stylesDesktop.mediaSurveySays]:
             (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.SURVEY_SAYS,

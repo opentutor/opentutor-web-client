@@ -59,3 +59,14 @@
     width: 40%;
     height: 100%
 }
+.hasNoMediaContainer {
+    height: 75%;
+    width: 80%;
+    margin: auto;
+}
+
+.hasNoMediaContainerMobile {
+    height: 75%;
+    width: 90%;
+    margin: auto;
+}

@@ -59,7 +59,8 @@ export const lessonMediaStylesDesktop = makeStyles((theme) => ({
   },
   mediaRoot: {},
   mediaDefault: {
-    height: "35%",
+    height: "98%",
+    width: "98%",
   },
   mediaSurveySays: {
     height: "98%",
@@ -125,7 +126,7 @@ export const lessonMediaStylesMobile = makeStyles((theme) => ({
     marginRight: "auto",
   },
   mediaRoot: {},
-  mediaDefault: {
+  mediaDefaultMobile: {
     height: "35%",
   },
   mediaSurveySaysMobile: {

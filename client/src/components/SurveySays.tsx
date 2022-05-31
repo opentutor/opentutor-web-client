@@ -36,9 +36,13 @@ const SurveySays = (props: {
   const [expandedCard, setExpandedCard] = useState(-1);
 
   const surveySaysGrid = (
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid
+      container
+      rowSpacing={shouldDisplayPortrait() ? 1 : 3}
+      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+    >
       {props.targets.map((target, idx) => (
-        <Grid item xs={12} lg={6} key={idx}>
+        <Grid item xs={12} lg={6} key={idx} columnSpacing={4} rowSpacing={3}>
           <Item>
             <div
               id={`card-${idx}`}

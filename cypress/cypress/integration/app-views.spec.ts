@@ -14,7 +14,7 @@ import {
 import { lessonInfo } from "../fixtures/lesson-graphql-default";
 
 describe("App view desktop", () => {
-  it.only(`Optimize space if param is passed with header`, () => {
+  it(`Optimize space if param is passed with header`, () => {
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
@@ -36,6 +36,7 @@ describe("App view desktop", () => {
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
     cy.viewport("macbook-13");
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+
     cy.get("[data-cy=video]");
   });
 
@@ -62,6 +63,34 @@ describe("App view desktop", () => {
 
     cy.visit(`/?lesson=q1&guest=guest&noheader=true`); // change URL to match your dev URLs
     cy.viewport("macbook-11");
+
+    cy.get("[data-cy=video]");
+  });
+
+  it(`Optimize space if param is passed with header & no media`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [
+        mockGQL("FetchLessonInfo", {
+          lessonInfo: {
+            name: "lesson 1",
+            media: {
+              url: "https://www.youtube.com/watch?v=g4mHPeMGTJM",
+              type: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
+            },
+            learningFormat: "",
+          },
+        }),
+      ],
+    });
+    cyMockDialog(cy, "q1", "views/surveySays-opts.json");
+    cy.viewport("macbook-13");
+
+    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+
     cy.get("[data-cy=video]");
   });
 });
@@ -87,8 +116,8 @@ describe("App view Mobile", () => {
       ],
     });
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
-
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+
     cy.get("[data-cy=video]");
   });
 
@@ -114,6 +143,31 @@ describe("App view Mobile", () => {
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
 
     cy.visit(`/?lesson=q1&guest=guest&noheader=true`); // change URL to match your dev URLs
+
+    cy.get("[data-cy=video]");
+  });
+  it(`Optimize space if param is passed & noheader=true & no media`, () => {
+    cyMockDefault(cy, {
+      gqlQueries: [
+        mockGQL("FetchLessonInfo", {
+          lessonInfo: {
+            name: "lesson 1",
+            media: {
+              url: "https://www.youtube.com/watch?v=g4mHPeMGTJM",
+              type: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
+            },
+            learningFormat: "",
+          },
+        }),
+      ],
+    });
+    cyMockDialog(cy, "q1", "views/surveySays-opts.json");
+    cy.visit(`/?lesson=q1&guest=guest&noheader=true`); // change URL to match your dev URLs
+
     cy.get("[data-cy=video]");
   });
 });

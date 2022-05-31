@@ -20,6 +20,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?guest=guest");
+
     cy.get("[data-cy=error-popup]").should("contain", "Lesson not provided");
   });
 
@@ -36,6 +37,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q12312&guest=guest");
+
     cy.get("[data-cy=error-popup]").should("contain", "Lesson not found");
   });
 
@@ -53,7 +55,8 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
-    cy.wait(1000);
+    cy.viewport("macbook-13");
+
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=error-popup]").should(

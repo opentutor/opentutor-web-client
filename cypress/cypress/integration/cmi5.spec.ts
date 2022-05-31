@@ -10,7 +10,15 @@ import {
   cyMockCmi5Initialize,
   LAUNCH_DATA_DEFAULT,
 } from "../support/cmi5";
-import { cyMockDialog, cySetup } from "../support/functions";
+import {
+  cyMockDefault,
+  cyMockDialog,
+  cySetup,
+  mockGQL,
+} from "../support/functions";
+Cypress.on("uncaught:exception", (err, runnable) => {
+  return false;
+});
 
 describe("Cmi5 integration", () => {
   it("does not show Guest Prompt when cmi5 launch params present", () => {
@@ -25,6 +33,24 @@ describe("Cmi5 integration", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockCmi5Initialize(cy);
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));
+    cyMockDefault(cy, {
+      gqlQueries: [
+        mockGQL("FetchLessonInfo", {
+          lessonInfo: {
+            name: "lesson 1",
+            media: {
+              url: "https://www.youtube.com/watch?v=g4mHPeMGTJM",
+              type: "video",
+              props: [
+                { name: "start", value: "71" },
+                { name: "end", value: "72.5" },
+              ],
+            },
+            learningFormat: "",
+          },
+        }),
+      ],
+    });
     cy.wait("@fetch")
       .its("response.body")
       .should("have.property", "auth-token", "fake-auth-token");

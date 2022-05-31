@@ -49,6 +49,7 @@ describe("screenshots - chat responses", () => {
       cyMockSession(cy, x.lesson, x.fixtureLessonContinue).as("response");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
+      cy.wait(1000);
       cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
       cy.get("[data-cy=submit-button]").click();
       cy.wait("@response");

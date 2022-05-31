@@ -100,7 +100,12 @@ export default function ChatThread(props: {
     [stylesDesktop.bodyDefaultNoMedia]:
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       !props.hasMedia,
+    [stylesMobile.bodyDefaultMediaMobile]:
+      shouldDisplayPortrait() &&
+      (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
+      props.hasMedia,
     [stylesDesktop.bodyDefaultMedia]:
+      !shouldDisplayPortrait() &&
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       props.hasMedia,
     [stylesDesktop.bodySurveySaysNoMedia]:

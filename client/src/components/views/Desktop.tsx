@@ -28,7 +28,7 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import { isNoHeader, isTesting } from "utils";
+import { isNoHeader, isTesting, shouldDisplayPortrait } from "utils";
 import { useMediaQuery } from "@material-ui/core";
 import LessonMedia from "components/LessonMedia";
 import HeaderBar from "components/HeaderBar";
@@ -237,6 +237,78 @@ function Desktop(props: DesktopProps): JSX.Element {
     }
   };
 
+  const hasMediaContent = (
+    <div
+      className={
+        !isNoHeader() && !shouldDisplayPortrait()
+          ? "middleAppContent"
+          : "noHeader_middleAppContent"
+      }
+    >
+      <div className="videoContainer">
+        <LessonMedia lessonFormat={lessonFormat} />
+      </div>
+      <div className="chatThreadInputFormContainer">
+        <ChatThread
+          messages={messages}
+          hasMedia={hasMedia}
+          lessonFormat={lessonFormat}
+          expectationCount={targets.length}
+        />
+        <ChatForm
+          lesson={lesson}
+          username={username}
+          messages={messages}
+          setMessages={setMessages}
+          setTargets={setTargets}
+          session={session}
+          setSession={setSession}
+          setErrorProps={setErrorProps}
+          handleErrorOpen={handleErrorOpen}
+          handleSessionDone={handleSessionDone}
+          sessionAlive={sessionAlive}
+          setSessionAlive={setSessionAlive}
+          onSummaryOpenRequested={onSummaryOpenRequested}
+        />
+      </div>
+    </div>
+  );
+
+  const hasNoMediaContentSwitch = () => {
+    switch (true) {
+      case shouldDisplayPortrait():
+        return "hasNoMediaContainerMobile";
+      case !shouldDisplayPortrait():
+        return "hasNoMediaContainer";
+    }
+  };
+
+  const hasNoMediaContent = (
+    <div className={hasNoMediaContentSwitch()}>
+      <ChatThread
+        messages={messages}
+        hasMedia={hasMedia}
+        lessonFormat={lessonFormat}
+        expectationCount={targets.length}
+      />
+      <ChatForm
+        lesson={lesson}
+        username={username}
+        messages={messages}
+        setMessages={setMessages}
+        setTargets={setTargets}
+        session={session}
+        setSession={setSession}
+        setErrorProps={setErrorProps}
+        handleErrorOpen={handleErrorOpen}
+        handleSessionDone={handleSessionDone}
+        sessionAlive={sessionAlive}
+        setSessionAlive={setSessionAlive}
+        onSummaryOpenRequested={onSummaryOpenRequested}
+      />
+    </div>
+  );
+
   return (
     <>
       <div className="foreground">
@@ -258,40 +330,7 @@ function Desktop(props: DesktopProps): JSX.Element {
               />
             </>
           )}
-          <div
-            className={
-              !isNoHeader() && !isMobile
-                ? "middleAppContent"
-                : "noHeader_middleAppContent"
-            }
-          >
-            <div className="videoContainer">
-              <LessonMedia lessonFormat={lessonFormat} />
-            </div>
-            <div className="chatThreadInputFormContainer">
-              <ChatThread
-                messages={messages}
-                hasMedia={hasMedia}
-                lessonFormat={lessonFormat}
-                expectationCount={targets.length}
-              />
-              <ChatForm
-                lesson={lesson}
-                username={username}
-                messages={messages}
-                setMessages={setMessages}
-                setTargets={setTargets}
-                session={session}
-                setSession={setSession}
-                setErrorProps={setErrorProps}
-                handleErrorOpen={handleErrorOpen}
-                handleSessionDone={handleSessionDone}
-                sessionAlive={sessionAlive}
-                setSessionAlive={setSessionAlive}
-                onSummaryOpenRequested={onSummaryOpenRequested}
-              />
-            </div>
-          </div>
+          {hasMedia ? hasMediaContent : hasNoMediaContent}
         </div>
       </div>
       <SummaryPopup
