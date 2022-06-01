@@ -158,7 +158,9 @@ export default function ChatThread(props: {
                   : "100% !important",
               }}
             >
-              <ListItemText primary={message.text} />
+              <div style={{ padding: "5px 20px 5px 10px" }}>
+                <ListItemText primary={message.text} />
+              </div>
               {chatIcon(message.type)}
             </ListItem>
           );

@@ -23,7 +23,14 @@ export function TargetIndicator(props: {
     );
   }
   return (
-    <div data-cy="targets">
+    <div
+      data-cy="targets"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {props.targets.map((target, index) => {
         return (
           <TargetIcon
