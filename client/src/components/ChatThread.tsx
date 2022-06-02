@@ -159,7 +159,7 @@ export default function ChatThread(props: {
                 marginRight: "20px",
               }}
             >
-              <div style={{ padding: "5px 20px 5px 10px" }}>
+              <div style={{ padding: "10px 20px 10px 10px" }}>
                 <ListItemText primary={message.text} />
               </div>
               {chatIcon(message.type)}
