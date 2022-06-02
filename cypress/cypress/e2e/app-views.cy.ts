@@ -36,7 +36,6 @@ describe("App view desktop", () => {
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
     cy.viewport("macbook-13");
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-
     cy.get("[data-cy=video]");
   });
 

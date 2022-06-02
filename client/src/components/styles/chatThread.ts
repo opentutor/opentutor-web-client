@@ -98,7 +98,7 @@ export const chatThreadStylesMobile = makeStyles<Theme, ChatThreadStylesProps>(
       height: "calc(100% - 60px - 95px)",
     },
     bodyDefaultMediaMobile: {
-      height: "calc(65% - 60px - 45px)",
+      height: "calc(65% - 60px - 115px)",
     },
 
     avatar: {
