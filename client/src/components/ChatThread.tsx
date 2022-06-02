@@ -149,13 +149,14 @@ export default function ChatThread(props: {
               }}
               style={{
                 paddingRight: chatIcon(message.type) ? 24 : 16,
-                height: shouldDisplayPortrait() ? "auto" : "90px",
+                height: shouldDisplayPortrait() ? "auto" : "auto",
                 width: shouldDisplayPortrait()
                   ? "90% !important"
                   : "100% !important",
                 maxWidth: shouldDisplayPortrait()
                   ? "90% !important"
                   : "100% !important",
+                marginRight: "20px",
               }}
             >
               <div style={{ padding: "5px 20px 5px 10px" }}>
