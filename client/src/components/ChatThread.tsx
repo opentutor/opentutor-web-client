@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  useMediaQuery,
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -38,6 +39,10 @@ export default function ChatThread(props: {
   const chatThreadStylesProps: ChatThreadStylesProps = {
     expectationCount: props.expectationCount,
   };
+
+  const matchesMobile = useMediaQuery("(max-width : 600px)", {
+    noSsr: true,
+  });
 
   const stylesDesktop = chatThreadStylesDesktop(chatThreadStylesProps);
   const stylesMobile = chatThreadStylesMobile(chatThreadStylesProps);
@@ -101,7 +106,7 @@ export default function ChatThread(props: {
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       !props.hasMedia,
     [stylesMobile.bodyDefaultMediaMobile]:
-      shouldDisplayPortrait() &&
+      (shouldDisplayPortrait() || matchesMobile) &&
       (props.lessonFormat || LessonFormat.DEFAULT) == LessonFormat.DEFAULT &&
       props.hasMedia,
     [stylesDesktop.bodyDefaultMedia]:
@@ -116,13 +121,13 @@ export default function ChatThread(props: {
         LessonFormat.SURVEY_SAYS && props.hasMedia,
 
     [stylesMobile.bodySurveySaysMediaMobile]:
-      shouldDisplayPortrait() &&
+      (shouldDisplayPortrait() || matchesMobile) &&
       (props.lessonFormat || LessonFormat.DEFAULT) ==
         LessonFormat.SURVEY_SAYS &&
       props.hasMedia,
 
     [stylesMobile.noHeader_BodySurveySaysMediaMobile]:
-      shouldDisplayPortrait() &&
+      (shouldDisplayPortrait() || matchesMobile) &&
       isNoHeader() &&
       (props.lessonFormat || LessonFormat.DEFAULT) ==
         LessonFormat.SURVEY_SAYS &&

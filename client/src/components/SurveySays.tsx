@@ -5,7 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState } from "react";
-import { Typography } from "@material-ui/core";
+import { Typography, useMediaQuery } from "@material-ui/core";
 import { Target } from "types";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
@@ -35,10 +35,14 @@ const SurveySays = (props: {
   const stylesMobile = surveySaysStylesMobile();
   const [expandedCard, setExpandedCard] = useState(-1);
 
+  const matchesMobile = useMediaQuery("(max-width : 600px)", {
+    noSsr: true,
+  });
+
   const surveySaysGrid = (
     <Grid
       container
-      rowSpacing={shouldDisplayPortrait() ? 1 : 3}
+      rowSpacing={shouldDisplayPortrait() || matchesMobile ? 1 : 3}
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
     >
       {props.targets.map((target, idx) => (
@@ -49,7 +53,8 @@ const SurveySays = (props: {
               className={clsx({
                 [stylesDesktop.fixedSurveyCard]: idx !== expandedCard,
                 [stylesMobile.fixedSurveyCardMobile]:
-                  shouldDisplayPortrait() && idx !== expandedCard,
+                  (shouldDisplayPortrait() || matchesMobile) &&
+                  idx !== expandedCard,
                 [stylesDesktop.expandableSurveyCard]: idx === expandedCard,
                 [stylesDesktop.completeSatisfied]:
                   target.status === "complete" && target.score === 1,

@@ -20,6 +20,7 @@ import {
   lessonMediaStylesMobile,
 } from "./styles/lessonMedia";
 import { shouldDisplayPortrait } from "utils";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const LessonMedia = (props: {
   search: { lesson: string };
@@ -31,6 +32,10 @@ const LessonMedia = (props: {
   const [media, setMedia] = React.useState<Media | undefined>(undefined);
   const [isVideoOver, setIsVideoOver] = React.useState(false);
   const [fullscreenImage, setFullscreenImage] = React.useState(false);
+
+  const matchesMobile = useMediaQuery("(max-width : 600px)", {
+    noSsr: true,
+  });
 
   const handleImageExpand = (): void => {
     setFullscreenImage(true);
@@ -69,7 +74,7 @@ const LessonMedia = (props: {
           className={clsx({
             [stylesDesktop.mediaRoot]: true,
             [stylesMobile.mediaDefaultMobile]:
-              shouldDisplayPortrait() &&
+              (shouldDisplayPortrait() || matchesMobile) &&
               (props.lessonFormat || LessonFormat.DEFAULT) ==
                 LessonFormat.DEFAULT,
             [stylesDesktop.mediaDefault]:
@@ -81,7 +86,7 @@ const LessonMedia = (props: {
               (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.SURVEY_SAYS,
             [stylesMobile.mediaSurveySaysMobile]:
-              shouldDisplayPortrait() &&
+              (shouldDisplayPortrait() || matchesMobile) &&
               (props.lessonFormat || LessonFormat.DEFAULT) ==
                 LessonFormat.SURVEY_SAYS,
           })}
@@ -118,18 +123,19 @@ const LessonMedia = (props: {
         className={clsx({
           [stylesDesktop.mediaRoot]: true,
           [stylesMobile.mediaDefaultMobile]:
-            shouldDisplayPortrait() &&
+            (shouldDisplayPortrait() || matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.DEFAULT,
           [stylesDesktop.mediaDefault]:
-            !shouldDisplayPortrait() &&
+            (!shouldDisplayPortrait() || !matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.DEFAULT,
           [stylesDesktop.mediaSurveySays]:
+            (!shouldDisplayPortrait() || !matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.SURVEY_SAYS,
+              LessonFormat.SURVEY_SAYS,
           [stylesMobile.mediaSurveySaysMobile]:
-            shouldDisplayPortrait() &&
+            (shouldDisplayPortrait() || matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.SURVEY_SAYS,
         })}

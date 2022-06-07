@@ -19,6 +19,9 @@ function App(props: {
   search: { lesson: string; guest: string; actor: string; noheader: string };
 }): JSX.Element {
   const { lesson, guest, actor, noheader } = props.search;
+  const matchesMobile = useMediaQuery("(max-width : 600px)", {
+    noSsr: true,
+  });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
@@ -32,7 +35,7 @@ function App(props: {
   );
   return (
     <div>
-      {shouldDisplayPortrait() || isMobile ? (
+      {shouldDisplayPortrait() || isMobile || matchesMobile ? (
         <div>{mobile}</div>
       ) : (
         <div>{desktop}</div>

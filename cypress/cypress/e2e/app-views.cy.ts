@@ -36,6 +36,7 @@ describe("App view desktop", () => {
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
     cy.viewport("macbook-13");
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+
     cy.get("[data-cy=video]");
   });
 
@@ -116,6 +117,7 @@ describe("App view Mobile", () => {
     });
     cyMockDialog(cy, "q1", "views/surveySays-opts.json");
     cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
+    cy.viewport(475, 788);
 
     cy.get("[data-cy=video]");
   });
