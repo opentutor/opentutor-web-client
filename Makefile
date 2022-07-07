@@ -4,6 +4,7 @@ TEST_E2E_DOCKER_COMPOSE=docker-compose
 TEST_E2E_IMAGE_SNAPSHOTS_PATH?=cypress/snapshots
 TEST_E2E_DOCKER_IMAGE_SNAPSHOTS_PATH?=/app/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
 TEST_E2E_HOST_IMAGE_SNAPSHOTS_PATH?=$(PWD)/cypress/$(TEST_E2E_IMAGE_SNAPSHOTS_PATH)
+LICENSE_CONFIG?="license-config.json"
 
 .PHONY: clean
 clean:
@@ -81,6 +82,10 @@ test-types:
 .PHONY: test-license
 test-license: LICENSE LICENSE_HEADER
 	npm run test:license
+	
+.PHONY: license-deploy
+license-deploy: node_modules/license-check-and-add LICENSE LICENSE_HEADER
+	LICENSE_CONFIG=${LICENSE_CONFIG} npm run license:deploy
 
 .PHONY: test-e2e
 test-e2e:
