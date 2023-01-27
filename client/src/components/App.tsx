@@ -90,6 +90,8 @@ function App(props: {
     hash: "",
   });
   const [messages, setMessages] = React.useState<ChatMsg[]>([]);
+  const [messageQueue, setMessageQueue] = React.useState<ChatMsg[]>([]);
+  const [messageQueueTimer, setMessageQueueTimer] = React.useState<number>();
   const [errorProps, setErrorProps] = React.useState<ErrorData>({
     title: "",
     message: "",
@@ -176,8 +178,8 @@ function App(props: {
       } else {
         const dialogData = response.data as DialogData;
         setSession(dialogData.sessionInfo);
-        setMessages([
-          ...messages,
+        setMessageQueue([
+          ...messageQueue,
           ...dialogData.response.map((msg) => {
             return {
               senderId: "system",
@@ -247,10 +249,39 @@ function App(props: {
     };
   }, [sessionSummary]);
 
+  React.useEffect(() => {
+    if (messageQueue.length === 0 || messageQueueTimer) {
+      return;
+    }
+    const message = messageQueue.shift();
+    if (!message) {
+      return;
+    }
+    setMessages([...messages, message]);
+    setMessageQueue(messageQueue);
+    if (messageQueue.length > 0) {
+      const timer = (1000 + 60 * message.text.length) * 0.65;
+      setMessageQueueTimer(timer);
+      queue(timer);
+    }
+  }, [messageQueue, messageQueueTimer]);
+
+  React.useEffect(() => {
+    if (!sessionAlive && messageQueue.length === 0 && !messageQueueTimer) {
+      handleSessionDone(session);
+    }
+  }, [sessionAlive, messageQueue, messageQueueTimer]);
+
+  async function queue(ms: number): Promise<void> {
+    await new Promise((res) => setTimeout(res, ms));
+    setMessageQueueTimer(0);
+  }
+
   let showHeader = true;
   if (noheader !== undefined) {
     showHeader = false;
   }
+
   return (
     <>
       <div className={styles.foreground}>
@@ -283,6 +314,7 @@ function App(props: {
           )}
           <ChatThread
             messages={messages}
+            messageQueue={messageQueue}
             hasMedia={hasMedia}
             lessonFormat={lessonFormat}
             expectationCount={targets.length}
@@ -291,7 +323,9 @@ function App(props: {
             lesson={lesson}
             username={username}
             messages={messages}
+            messageQueue={messageQueue}
             setMessages={setMessages}
+            setMessageQueue={setMessageQueue}
             setTargets={setTargets}
             session={session}
             setSession={setSession}

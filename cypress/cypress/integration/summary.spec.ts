@@ -67,8 +67,11 @@ describe("Expectation summary pop-up", () => {
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
-    cy.get("[data-cy=submit-button]").trigger("mouseover").click();
-    cy.get("[data-cy=summary-popup]");
+    cy.get("[data-cy=submit-button]", { timeout: 15000 })
+      .should("not.be.disabled")
+      .trigger("mouseover")
+      .click();
+    cy.get("[data-cy=summary-popup]", { timeout: 15000 });
   });
 
   it("hides text for expectations that have not been completed", () => {
@@ -98,8 +101,11 @@ describe("Expectation summary pop-up", () => {
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
-    cy.get("[data-cy=submit-button]").trigger("mouseover").click();
-    cy.get("[data-cy=summary-popup]");
+    cy.get("[data-cy=submit-button]", { timeout: 15000 })
+      .should("not.be.disabled")
+      .trigger("mouseover")
+      .click();
+    cy.get("[data-cy=summary-popup]", { timeout: 15000 });
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
     cy.get("[data-cy=exp-0]").should(
       "contain",
@@ -114,8 +120,11 @@ describe("Expectation summary pop-up", () => {
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
-    cy.get("[data-cy=submit-button]").trigger("mouseover").click();
-    cy.get("[data-cy=summary-popup]");
+    cy.get("[data-cy=submit-button]", { timeout: 15000 })
+      .should("not.be.disabled")
+      .trigger("mouseover")
+      .click();
+    cy.get("[data-cy=summary-popup]", { timeout: 15000 });
     cy.get("[data-cy=summary-targets]").children().should("have.length", 1);
     cy.get("[data-cy=summary-target-0-1]");
   });

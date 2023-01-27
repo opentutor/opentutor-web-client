@@ -58,27 +58,31 @@ describe("Expectation-progress Indicators", () => {
 
   it("shows full progress for three targets on perfect response", () => {
     cySetup(cy);
-
     cyMockDialog(cy, "q1", "q1-1-p2.json");
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-1-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
       cy.get("[data-cy=outlined-multiline-static]").type("short fake answer");
-      cy.get("[data-cy=submit-button]").click();
+      cy.get("[data-cy=submit-button]", { timeout: 15000 })
+        .should("not.be.disabled")
+        .click();
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}]`
+        ).toFixed()}]`,
+        { timeout: 15000 }
       );
       cy.get(
         `[data-cy=target-1-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[1].score
-        ).toFixed()}]`
+        ).toFixed()}]`,
+        { timeout: 15000 }
       );
       cy.get(
         `[data-cy=target-2-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[2].score
-        ).toFixed()}]`
+        ).toFixed()}]`,
+        { timeout: 15000 }
       );
     });
   });
@@ -103,11 +107,14 @@ describe("Expectation-progress Indicators", () => {
       cyMockSession(cy, "q2", "q2-2-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
       cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
-      cy.get("[data-cy=submit-button]").click();
+      cy.get("[data-cy=submit-button]", { timeout: 15000 })
+        .should("not.be.disabled")
+        .click();
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}]`
+        ).toFixed()}]`,
+        { timeout: 15000 }
       );
     });
   });
@@ -119,11 +126,14 @@ describe("Expectation-progress Indicators", () => {
       cyMockSession(cy, "q2", "q2-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
       cy.get("[data-cy=outlined-multiline-static]").type("very short answer");
-      cy.get("[data-cy=submit-button]").click();
+      cy.get("[data-cy=submit-button]", { timeout: 15000 })
+        .should("not.be.disabled")
+        .click();
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
-        ).toFixed()}]`
+        ).toFixed()}]`,
+        { timeout: 15000 }
       );
     });
   });

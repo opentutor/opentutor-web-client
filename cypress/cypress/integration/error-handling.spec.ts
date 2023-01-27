@@ -54,7 +54,9 @@ describe("Error popup", () => {
     );
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
-    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=submit-button]", { timeout: 15000 })
+      .should("not.be.disabled")
+      .click();
     cy.get("[data-cy=error-popup]").should(
       "contain",
       "Could not continue lesson"
@@ -76,7 +78,9 @@ describe("Error popup", () => {
     );
     cy.visit("/?lesson=q2&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
-    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=submit-button]", { timeout: 15000 })
+      .should("not.be.disabled")
+      .click();
     cy.get("[data-cy=error-popup]").should("contain", "Lesson session ended");
   });
 
