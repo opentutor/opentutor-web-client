@@ -63,8 +63,10 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-1-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
+      cy.wait(15000);
       cy.get("[data-cy=outlined-multiline-static]").type("short fake answer");
       cy.get("[data-cy=submit-button]").click();
+      cy.wait(15000);
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
@@ -102,8 +104,10 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-2-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-2-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
+      cy.wait(15000);
       cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
       cy.get("[data-cy=submit-button]").click();
+      cy.wait(15000);
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score
@@ -118,8 +122,10 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
+      cy.wait(15000);
       cy.get("[data-cy=outlined-multiline-static]").type("very short answer");
       cy.get("[data-cy=submit-button]").click();
+      cy.wait(15000);
       cy.get(
         `[data-cy=target-0-${Number(
           desiredServerResponse.sessionInfo.dialogState.expectationData[0].score

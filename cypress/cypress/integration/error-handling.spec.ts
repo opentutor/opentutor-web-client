@@ -53,6 +53,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(15000);
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=error-popup]").should(
@@ -75,6 +76,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q2&guest=guest");
+    cy.wait(15000);
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]").click();
     cy.get("[data-cy=error-popup]").should("contain", "Lesson session ended");

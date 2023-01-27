@@ -49,7 +49,9 @@ const ChatForm = (props: {
   lesson: string;
   username: string;
   messages: { senderId: string; type: string; text: string }[];
+  messageQueue: { senderId: string; type: string; text: string }[];
   setMessages: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
+  setMessageQueue: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
   session: SessionData;
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
@@ -86,8 +88,8 @@ const ChatForm = (props: {
           props.handleErrorOpen();
         } else {
           const dialogData = response.data as DialogData;
-          props.setMessages([
-            ...props.messages,
+          props.setMessageQueue([
+            ...props.messageQueue,
             ...dialogData.response.map((msg) => {
               return {
                 senderId: "system",
@@ -110,7 +112,6 @@ const ChatForm = (props: {
           // Show summary then send score on summary close
           if (dialogData.completed) {
             props.setSessionAlive(false);
-            props.handleSessionDone(dialogData.sessionInfo);
           }
           props.setSession(dialogData.sessionInfo);
         }
@@ -139,7 +140,11 @@ const ChatForm = (props: {
       return;
     }
     e.preventDefault();
-    if (chat.trim().length === 0 || !props.sessionAlive) {
+    if (
+      chat.trim().length === 0 ||
+      !props.sessionAlive ||
+      props.messageQueue.length > 0
+    ) {
       return;
     }
     handleClick(e);
@@ -182,7 +187,11 @@ const ChatForm = (props: {
               endIcon={<SendIcon />}
               onClick={handleClick}
               key={`${chat.trim().length === 0 || !props.sessionAlive}`}
-              disabled={chat.trim().length === 0 || !props.sessionAlive}
+              disabled={
+                chat.trim().length === 0 ||
+                !props.sessionAlive ||
+                props.messageQueue.length > 0
+              }
             >
               Send
             </Button>
