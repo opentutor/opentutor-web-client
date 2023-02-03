@@ -50,10 +50,15 @@ describe("Lesson query parameter", () => {
       cy.fixture(x.fixtureLessonContinue).then((expectedServerResponse) => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
         cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
-        cy.get("[data-cy=submit-button]").click();
+        cy.get("[data-cy=submit-button]", { timeout: 15000 })
+          .should("not.be.disabled")
+          .click();
         cy.get("[data-cy=chat-msg-2]").should("contain", x.userInput);
         expectedServerResponse.response.forEach((r, i) => {
-          cy.get(`[data-cy=chat-msg-${i + 3}]`).should("contain", r.data.text);
+          cy.get(`[data-cy=chat-msg-${i + 3}]`, { timeout: 15000 }).should(
+            "contain",
+            r.data.text
+          );
         });
       });
     });

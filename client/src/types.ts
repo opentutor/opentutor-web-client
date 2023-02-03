@@ -16,6 +16,7 @@ export enum ChatMsgType {
   FeedbackNeutral = "feedbackNeutral",
   Encouragement = "encouragement",
   Profanity = "profanity",
+  Queue = "queue",
 }
 
 export interface ChatMsg {

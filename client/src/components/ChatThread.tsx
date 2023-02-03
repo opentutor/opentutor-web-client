@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -27,6 +28,7 @@ import { isTesting } from "utils";
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
+  messageQueue: ChatMsg[];
   hasMedia: boolean;
   lessonFormat: string;
   expectationCount: number;
@@ -109,6 +111,8 @@ export default function ChatThread(props: {
     } else if (type === ChatMsgType.Profanity) {
       icon = <BlockIcon />;
       color = styles.red;
+    } else if (type === ChatMsgType.Queue) {
+      icon = <Typography>{props.messageQueue.length}</Typography>;
     }
 
     if (!icon) {
@@ -122,6 +126,7 @@ export default function ChatThread(props: {
       </div>
     );
   };
+
   useEffect(() => {
     if (
       /**
@@ -138,6 +143,18 @@ export default function ChatThread(props: {
       });
     }
   });
+
+  const msgs: ChatMsg[] =
+    props.messageQueue.length > 0
+      ? [
+          ...props.messages,
+          {
+            senderId: "system",
+            type: "queue",
+            text: "  . . .  ",
+          },
+        ]
+      : props.messages;
 
   return (
     <div
@@ -159,7 +176,7 @@ export default function ChatThread(props: {
       })}
     >
       <List data-cy="thread" id="thread" disablePadding={true}>
-        {props.messages.map((message, i) => {
+        {msgs.map((message, i) => {
           return (
             <ListItem
               data-cy={`chat-msg-${i}`}
