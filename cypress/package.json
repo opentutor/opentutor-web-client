@@ -21,6 +21,6 @@
     "cy:verify": "npx cypress verify"
   },
   "devDependencies": {
-    "npm-check-updates": "^11.6.0"
+    "npm-check-updates": "^16.7.4"
   }
 }
