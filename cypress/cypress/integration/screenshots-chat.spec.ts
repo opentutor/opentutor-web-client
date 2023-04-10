@@ -50,12 +50,15 @@ describe("screenshots - chat responses", () => {
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
       cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
-      cy.get("[data-cy=submit-button]").click();
+      cy.get("[data-cy=submit-button]", { timeout: 15000 })
+        .should("not.be.disabled")
+        .click();
       cy.wait("@response");
       cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
       (cy as any).matchImageSnapshot(
-        snapname(`lesson-${x.lesson}-response-${i}`)
+        snapname(`lesson-${x.lesson}-response-${i}`),
+        { timeout: 15000 }
       );
     });
   });
