@@ -51,7 +51,7 @@ export async function createSession(
 ): Promise<AxiosResponse<DialogResponse>> {
   try {
     return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
-  } catch (error) {
+  } catch (error:any) {
     console.log(error.response);
     return error.response;
   }
@@ -72,7 +72,7 @@ export async function continueSession(props: {
         username: props.username,
       }
     );
-  } catch (error) {
+  } catch (error:any) {
     return error.response;
   }
 }
