@@ -5,9 +5,9 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import {
+  cyMockDefault,
   cyMockDialog,
   cyMockSession,
-  cySetup,
   cyVisitWithTestingParam,
 } from "../support/functions";
 
@@ -27,7 +27,7 @@ describe("screenshots - summary popup", () => {
     },
   ].forEach((x, i) => {
     it(`opens and displays summary popup for lesson ${x.lesson}`, () => {
-      cySetup(cy);
+      cyMockDefault(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
@@ -56,7 +56,7 @@ describe("screenshots - summary popup", () => {
     },
   ].forEach((x, i) => {
     it(`sends message and displays summary popup for lesson ${x.lesson}`, () => {
-      cySetup(cy);
+      cyMockDefault(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
       cyMockSession(cy, x.lesson, x.fixtureLessonStart).as("response");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);

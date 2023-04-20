@@ -4,11 +4,16 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cyMockDialog, cyMockSession, cySetup } from "../support/functions";
+import {
+  cyMockDefault,
+  cyMockDialog,
+  cyMockSession,
+  cySetup,
+} from "../support/functions";
 
 describe("Input field", () => {
   it("disables send button when no input", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]", { timeout: 15000 }).should(
@@ -18,7 +23,7 @@ describe("Input field", () => {
   });
 
   it("hides send button, enables continue, and hides summary button when session finished", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
@@ -35,7 +40,7 @@ describe("Input field", () => {
   });
 
   it("enables send button when input and session not finished", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]").type("hi");
@@ -44,7 +49,7 @@ describe("Input field", () => {
   });
 
   it("can send input with button", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
@@ -64,7 +69,7 @@ describe("Input field", () => {
   });
 
   it("can send input with enter", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
@@ -84,7 +89,7 @@ describe("Input field", () => {
   });
 
   it("ensure can send same input twice in a row", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
     cy.visit("/?lesson=q2&guest=guest");
