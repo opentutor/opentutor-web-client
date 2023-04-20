@@ -91,7 +91,9 @@ export default function SummaryPopup(props: {
     <Dialog
       data-cy="summary-popup"
       onClose={onCloseRequested}
-      onEntered={() => setTranState("summary-popup-trans-done")}
+      TransitionProps={{
+        onEntered: () => setTranState("summary-popup-trans-done"),
+      }}
       aria-labelledby="customized-dialog-title"
       open={open}
       fullScreen={fullScreen}

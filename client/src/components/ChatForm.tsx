@@ -166,7 +166,7 @@ const ChatForm = (props: {
               : "Thanks for chatting with OpenTutor!"
           }
           multiline
-          rows={2}
+          minRows={2}
           variant="outlined"
           style={{ width: "100%", marginTop: 10 }}
           value={chat}
