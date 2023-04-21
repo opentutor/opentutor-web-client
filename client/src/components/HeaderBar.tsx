@@ -6,34 +6,18 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/layout.css";
 import React from "react";
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, IconButton, Theme, Toolbar, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { makeStyles } from "tss-react/mui";
 import withLocation from "wrap-with-location";
 import { fetchLesson } from "api";
 import { Lesson } from "types";
-
-const useStyles = makeStyles((theme) => ({
-  toolbar: theme.mixins.toolbar,
-  superDenseAppBar: {
-    display: "flex",
-    alignItems: "center",
-    height: 30,
-    width: "100%",
-    backgroundColor: theme.palette.primary.main,
-    color: "white",
-    boxShadow:
-      "0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%)",
-    boxSizing: "border-box",
-    zIndex: 1100,
-  },
-}));
 
 const HeaderBar = (props: {
   search: { admin: string; lesson: string };
   superDense: boolean;
 }): JSX.Element => {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   const [lessonName, setLessonName] = React.useState("");
 
   const onClose = (): void => {
@@ -73,7 +57,7 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className={styles.toolbar} /> {/* create space below app bar */}
+        <div style={{ height: "60px" }} /> {/* create space below app bar */}
       </div>
     );
   } else {
@@ -95,10 +79,25 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className={styles.toolbar} /> {/* create space below app bar */}
+        <div style={{ height: "60px" }} /> {/* create space below app bar */}
       </div>
     );
   }
 };
+
+const useStyles = makeStyles({ name: { HeaderBar } })((theme: Theme) => ({
+  superDenseAppBar: {
+    display: "flex",
+    alignItems: "center",
+    height: 30,
+    width: "100%",
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    boxShadow:
+      "0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%)",
+    boxSizing: "border-box",
+    zIndex: 1100,
+  },
+}));
 
 export default withLocation(HeaderBar);

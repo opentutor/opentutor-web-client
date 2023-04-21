@@ -5,100 +5,19 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
+import { makeStyles } from "tss-react/mui";
+import { Grid } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Target } from "types";
 import clsx from "clsx";
 import withLocation from "wrap-with-location";
-
-const useStyles = makeStyles((theme) => ({
-  centerLock: {
-    position: "absolute",
-    top: "50%",
-    left: "calc(50% + 0px)",
-    transform: "translate(-50%, -50%)",
-  },
-  fixedSurveyCard: {
-    borderRadius: 10,
-    background: theme.palette.primary.main,
-    color: "white",
-    padding: 10,
-    height: 30,
-    position: "relative",
-    boxSizing: "border-box",
-    transition: "box-shadow 0.5s ease-in",
-  },
-  expandableSurveyCard: {
-    borderRadius: 10,
-    background: theme.palette.primary.main,
-    color: "white",
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    minHeight: 30,
-    position: "relative",
-    boxSizing: "border-box",
-    transition: "box-shadow 0.5s ease-in",
-  },
-  fixedSurveyCardText: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  expandableSurveyCardText: {
-    minHeight: 20,
-  },
-  default: {
-    boxShadow: "1px 6px 6px -3px lightblue",
-  },
-  completeSatisfied: {
-    boxShadow: "1px 6px 6px -3px lightgreen",
-  },
-  completeUnsatisfied: {
-    boxShadow: "1px 6px 6px -3px darkgrey",
-  },
-  survey: {
-    padding: theme.spacing(2),
-    maxWidth: 500,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  bodyRoot: {
-    width: "100%",
-    backgroundColor: "#212629",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    boxSizing: "border-box",
-  },
-  bodyNoMedia: {
-    // height: "60%",
-  },
-  bodyMedia: {
-    // height: "40%",
-  },
-  surveyInnerBoard: {
-    width: "100%",
-    // height: "calc(100% - 20px)",
-    backgroundColor: "#212629",
-    boxSizing: "border-box",
-    border: "5px solid lightblue",
-    borderRadius: 30,
-  },
-  surveyQuestion: {
-    color: "white",
-  },
-}));
 
 const SurveySays = (props: {
   search: { lesson: string };
   hasMedia: boolean;
   targets: Target[];
 }): JSX.Element => {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   const [expandedCard, setExpandedCard] = useState(-1);
 
   return (
@@ -198,5 +117,85 @@ const SurveySays = (props: {
     </>
   );
 };
+
+const useStyles = makeStyles({ name: { SurveySays } })((theme) => ({
+  centerLock: {
+    position: "absolute",
+    top: "50%",
+    left: "calc(50% + 0px)",
+    transform: "translate(-50%, -50%)",
+  },
+  fixedSurveyCard: {
+    borderRadius: 10,
+    background: theme.palette.primary.main,
+    color: "white",
+    padding: 10,
+    height: 30,
+    position: "relative",
+    boxSizing: "border-box",
+    transition: "box-shadow 0.5s ease-in",
+  },
+  expandableSurveyCard: {
+    borderRadius: 10,
+    background: theme.palette.primary.main,
+    color: "white",
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    minHeight: 30,
+    position: "relative",
+    boxSizing: "border-box",
+    transition: "box-shadow 0.5s ease-in",
+  },
+  fixedSurveyCardText: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  expandableSurveyCardText: {
+    minHeight: 20,
+  },
+  default: {
+    boxShadow: "1px 6px 6px -3px lightblue",
+  },
+  completeSatisfied: {
+    boxShadow: "1px 6px 6px -3px lightgreen",
+  },
+  completeUnsatisfied: {
+    boxShadow: "1px 6px 6px -3px darkgrey",
+  },
+  survey: {
+    padding: theme.spacing(2),
+    maxWidth: 500,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  bodyRoot: {
+    width: "100%",
+    backgroundColor: "#212629",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    boxSizing: "border-box",
+  },
+  bodyNoMedia: {
+    // height: "60%",
+  },
+  bodyMedia: {
+    // height: "40%",
+  },
+  surveyInnerBoard: {
+    width: "100%",
+    backgroundColor: "#212629",
+    boxSizing: "border-box",
+    border: "5px solid lightblue",
+    borderRadius: 30,
+  },
+  surveyQuestion: {
+    color: "white",
+  },
+}));
 
 export default withLocation(SurveySays);
