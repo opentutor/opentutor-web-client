@@ -57,7 +57,7 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div /> {/* create space below app bar */}
+        <div style={{ height: "60px" }} /> {/* create space below app bar */}
       </div>
     );
   } else {
@@ -79,7 +79,7 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div /> {/* create space below app bar */}
+        <div style={{ height: "60px" }} /> {/* create space below app bar */}
       </div>
     );
   }
