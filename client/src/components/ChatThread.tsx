@@ -14,17 +14,65 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Theme,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CancelIcon from "@material-ui/icons/Cancel";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import HelpIcon from "@material-ui/icons/Help";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import BlockIcon from "@material-ui/icons/Block";
-import FlashOnIcon from "@material-ui/icons/FlashOn";
+} from "@mui/material";
+import { makeStyles } from "tss-react/mui";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import HelpIcon from "@mui/icons-material/Help";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
+import BlockIcon from "@mui/icons-material/Block";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { ChatMsg, ChatMsgType, LessonFormat } from "types";
 import { isTesting } from "utils";
+
+function calcBoardHeight(expectationCount: number) {
+  // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
+  return expectationCount * 46 + 31 + 32 + 10 + 20;
+}
+
+const useStyles = makeStyles({ name: { ChatThread } })((theme: Theme) => ({
+  root: {
+    width: "auto",
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  bodyRoot: {
+    paddingTop: 10,
+    width: "90%",
+    maxWidth: 400,
+    marginLeft: "50%",
+    paddingBottom: 10,
+    transform: "translateX(-50%)",
+    boxSizing: "border-box",
+  },
+  bodyDefaultNoMedia: {
+    height: "calc(100% - 60px - 95px)",
+  },
+  bodyDefaultMedia: {
+    height: "calc(65% - 60px - 95px)",
+  },
+  avatar: {
+    color: "#fff",
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
+  icon: {
+    position: "absolute",
+    right: -40,
+  },
+  gray: {},
+  red: {
+    background: "#DC143C",
+  },
+  green: {
+    background: "#3CB371",
+  },
+  yellow: {
+    background: "yellow",
+  },
+}));
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
@@ -33,62 +81,7 @@ export default function ChatThread(props: {
   lessonFormat: string;
   expectationCount: number;
 }): JSX.Element {
-  function calcBoardHeight(expectationCount: number) {
-    // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
-    return expectationCount * 46 + 31 + 32 + 10 + 20;
-  }
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "auto",
-      paddingTop: 0,
-      paddingBottom: 0,
-    },
-    bodyRoot: {
-      paddingTop: 10,
-      width: "90%",
-      maxWidth: 400,
-      marginLeft: "50%",
-      paddingBottom: 10,
-      transform: "translateX(-50%)",
-      boxSizing: "border-box",
-    },
-    bodyDefaultNoMedia: {
-      height: "calc(100% - 60px - 95px)",
-    },
-    bodyDefaultMedia: {
-      height: "calc(65% - 60px - 95px)",
-    },
-    bodySurveySaysNoMedia: {
-      height: `calc(100% - 95px - ${calcBoardHeight(
-        props.expectationCount
-      )}px)`,
-    },
-    bodySurveySaysMedia: {
-      height: `calc(70% - 95px - ${calcBoardHeight(props.expectationCount)}px)`,
-    },
-    avatar: {
-      color: "#fff",
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-    },
-    icon: {
-      position: "absolute",
-      right: -40,
-    },
-    gray: {},
-    red: {
-      background: "#DC143C",
-    },
-    green: {
-      background: "#3CB371",
-    },
-    yellow: {
-      background: "yellow",
-    },
-  }));
-
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
 
   const chatIcon = (type: string): JSX.Element | undefined => {
     let icon = undefined;
@@ -167,13 +160,24 @@ export default function ChatThread(props: {
         [styles.bodyDefaultMedia]:
           (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.DEFAULT && props.hasMedia,
-        [styles.bodySurveySaysNoMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.SURVEY_SAYS && !props.hasMedia,
-        [styles.bodySurveySaysMedia]:
-          (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.SURVEY_SAYS && props.hasMedia,
       })}
+      style={
+        (props.lessonFormat || LessonFormat.DEFAULT) ==
+          LessonFormat.SURVEY_SAYS && props.hasMedia
+          ? {
+              height: `calc(70% - 95px - ${calcBoardHeight(
+                props.expectationCount
+              )}px)`,
+            }
+          : (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.SURVEY_SAYS && !props.hasMedia
+          ? {
+              height: `calc(100% - 95px - ${calcBoardHeight(
+                props.expectationCount
+              )}px)`,
+            }
+          : {}
+      }
     >
       <List data-cy="thread" id="thread" disablePadding={true}>
         {msgs.map((message, i) => {

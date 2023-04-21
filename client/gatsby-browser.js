@@ -1,6 +1,9 @@
 import React from "react";
-import { createTheme, StylesProvider } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
@@ -12,7 +15,7 @@ const theme = createTheme({
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const wrapRootElement = ({ element }) => (
-  <StylesProvider injectFirst>
-    <MuiThemeProvider theme={theme}>{element}</MuiThemeProvider>
-  </StylesProvider>
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>{element}</ThemeProvider>
+  </StyledEngineProvider>
 );

@@ -5,11 +5,11 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import SendIcon from "@material-ui/icons/Send";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import { makeStyles } from "tss-react/mui";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import {
@@ -20,25 +20,6 @@ import {
   SessionData,
   Target,
 } from "types";
-
-const useStyles = makeStyles(() => ({
-  chatboxRoot: {
-    width: "90%",
-    maxWidth: 400,
-    marginLeft: "auto",
-    marginRight: "auto",
-    position: "relative",
-  },
-  button: {
-    // transition: 'color .01s',
-  },
-  innerOverlayBottomRight: {
-    position: "absolute",
-    zIndex: 1,
-    bottom: 7,
-    right: 7,
-  },
-}));
 
 interface OutboundChat {
   text: string;
@@ -62,7 +43,7 @@ const ChatForm = (props: {
   setSessionAlive: React.Dispatch<React.SetStateAction<boolean>>;
   onSummaryOpenRequested: () => void;
 }): JSX.Element => {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   const [chat, setChat] = useState("");
   const [outboundChat, setOutboundChat] = useState<OutboundChat>({
     text: "",
@@ -215,5 +196,24 @@ const ChatForm = (props: {
     </form>
   );
 };
+
+const useStyles = makeStyles({ name: { ChatForm } })(() => ({
+  chatboxRoot: {
+    width: "90%",
+    maxWidth: 400,
+    marginLeft: "auto",
+    marginRight: "auto",
+    position: "relative",
+  },
+  button: {
+    // transition: 'color .01s',
+  },
+  innerOverlayBottomRight: {
+    position: "absolute",
+    zIndex: 1,
+    bottom: 7,
+    right: 7,
+  },
+}));
 
 export default ChatForm;

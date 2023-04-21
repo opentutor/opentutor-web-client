@@ -6,10 +6,42 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/layout.css";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Button } from "@material-ui/core";
+import { makeStyles } from "tss-react/mui";
+import { Typography, Button } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const NotFoundPage: React.FC = () => {
+  const { classes: styles } = useStyles();
+  return (
+    <div>
+      <div className={styles.foreground}>
+        <img
+          src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"
+          className={styles.image}
+        ></img>
+        <br />
+        <div className={styles.mainWindow}>
+          <Typography className={styles.errorHeaderInfo}>404</Typography>
+          <Typography className={styles.errorSubtitleInfo}>
+            {"We couldn't find the page you were looking for."}
+          </Typography>
+          <Button
+            className={styles.backButton}
+            color="primary"
+            variant="contained"
+            // onClick={history.back/* Eventually navigate(-1)*/}
+          >
+            Go Back
+          </Button>
+        </div>
+        <Typography className={styles.buildInfo}>
+          OpenTutor {process.env.OPENTUTOR_CLIENT_VERSION}
+        </Typography>
+      </div>
+    </div>
+  );
+};
+
+const useStyles = makeStyles({ name: { NotFoundPage } })((theme) => ({
   logo: {
     width: 200,
     height: 75,
@@ -61,37 +93,5 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 25,
   },
 }));
-
-const NotFoundPage: React.FC = () => {
-  const styles = useStyles();
-  return (
-    <div>
-      <div className={styles.foreground}>
-        <img
-          src="https://images.theconversation.com/files/193721/original/file-20171108-6766-udash5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"
-          className={styles.image}
-        ></img>
-        <br />
-        <div className={styles.mainWindow}>
-          <Typography className={styles.errorHeaderInfo}>404</Typography>
-          <Typography className={styles.errorSubtitleInfo}>
-            {"We couldn't find the page you were looking for."}
-          </Typography>
-          <Button
-            className={styles.backButton}
-            color="primary"
-            variant="contained"
-            // onClick={history.back/* Eventually navigate(-1)*/}
-          >
-            Go Back
-          </Button>
-        </div>
-        <Typography className={styles.buildInfo}>
-          OpenTutor {process.env.OPENTUTOR_CLIENT_VERSION}
-        </Typography>
-      </div>
-    </div>
-  );
-};
 
 export default NotFoundPage;

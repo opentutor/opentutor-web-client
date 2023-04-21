@@ -6,16 +6,16 @@ The full terms of this copyright and license should always be found in the root 
 */
 import "styles/animations.css";
 import React from "react";
-import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
-import GpsFixedIcon from "@material-ui/icons/GpsFixed";
-import Button from "@material-ui/core/Button";
+import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import Button from "@mui/material/Button";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Box from "@material-ui/core/Box";
+import { makeStyles } from "tss-react/mui";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import { Target } from "types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({ name: { TargetIcon } })((theme) => ({
   button: {
     position: "relative",
     minWidth: 26,
@@ -53,7 +53,7 @@ export default function TargetIcon(props: {
   index: number;
   showSummary: () => void;
 }): JSX.Element {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
 
   return (
     <Box
