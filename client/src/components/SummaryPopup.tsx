@@ -41,7 +41,7 @@ export default function SummaryPopup(props: {
   const { open, onCloseRequested, buttonText, targets } = props;
   const [tranState, setTranState] = useState("summary-popup-trans-none");
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Dialog

@@ -57,7 +57,7 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div style={{ height: "60px" }} /> {/* create space below app bar */}
+        <div className={styles.toolbar} /> {/* create space below app bar */}
       </div>
     );
   } else {
@@ -79,13 +79,15 @@ const HeaderBar = (props: {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div style={{ height: "60px" }} /> {/* create space below app bar */}
+        <div className={styles.toolbar} /> {/* create space below app bar */}
       </div>
     );
   }
 };
 
 const useStyles = makeStyles({ name: { HeaderBar } })((theme: Theme) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  toolbar: theme.mixins.toolbar as any,
   superDenseAppBar: {
     display: "flex",
     alignItems: "center",

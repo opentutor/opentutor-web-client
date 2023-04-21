@@ -103,7 +103,7 @@ function App(props: {
   const [lessonFormat, setLessonFormat] = React.useState("");
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
