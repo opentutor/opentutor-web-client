@@ -7,7 +7,7 @@ The full terms of this copyright and license should always be found in the root 
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import readTime from "reading-time";
 import { createSession, fetchLesson } from "api";
 import ChatThread from "components/ChatThread";
@@ -17,6 +17,7 @@ import SurveySays from "components/SurveySays";
 import SummaryPopup from "components/SummaryPopup";
 import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
+import { makeStyles } from "tss-react/mui";
 import {
   ChatMsg,
   DialogData,
@@ -32,9 +33,9 @@ import withLocation from "wrap-with-location";
 import LessonMedia from "./LessonMedia";
 import HeaderBar from "./HeaderBar";
 import { isTesting } from "utils";
-import { useMediaQuery } from "@material-ui/core";
+import { Theme, useMediaQuery } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({ name: { App } })((theme: Theme) => ({
   foreground: {
     position: "absolute",
     width: "100%",
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 function App(props: {
   search: { lesson: string; guest: string; actor: string; noheader: string };
 }): JSX.Element {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   const { lesson, guest, actor, noheader } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({

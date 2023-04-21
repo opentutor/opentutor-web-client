@@ -27,10 +27,13 @@ describe("Input field", () => {
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "What are the challenges to demonstrating integrity in a group?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
-    cy.get("[data-cy=submit-button]", { timeout: 15000 })
-      .should("not.be.disabled")
-      .click();
+    cy.get("[data-cy=submit-button]").should("not.be.disabled").click();
     cy.get("[data-cy=submit-button]").should("not.exist");
     cy.get("[data-cy=continue-button]").should("be.visible");
     cy.get("[data-cy=continue-button]").should("not.be.disabled");
@@ -43,6 +46,7 @@ describe("Input field", () => {
     cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").type("hi");
     cy.get("[data-cy=outlined-multiline-static]").should("not.be.disabled");
     cy.get("[data-cy=submit-button]").should("not.be.disabled");
@@ -54,6 +58,7 @@ describe("Input field", () => {
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "some fake answer";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=submit-button]").should("be.visible");
@@ -74,11 +79,11 @@ describe("Input field", () => {
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "another fake answer";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
-    cy.get("[data-cy=submit-button]").should("not.be.disabled", {
-      timeout: 15000,
-    });
+    cy.wait(5000);
+    cy.get("[data-cy=submit-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
@@ -94,11 +99,10 @@ describe("Input field", () => {
     cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "answer we will repeat";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
-    cy.get("[data-cy=submit-button]").should("not.be.disabled", {
-      timeout: 15000,
-    });
+    cy.get("[data-cy=submit-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");

@@ -5,21 +5,26 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React from "react";
-import TrackChangesIcon from "@material-ui/icons/TrackChanges";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import { makeStyles } from "tss-react/mui";
+import { Grid, Typography } from "@mui/material";
 import TargetIcon from "components/TargetIcon";
-import LockIcon from "@material-ui/icons/Lock";
+import LockIcon from "@mui/icons-material/Lock";
 import { Target } from "types";
 
-const useStyles = makeStyles((theme) => ({
-  placeholder: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 10,
-    paddingTop: 22,
-    color: theme.palette.background.default,
-  },
+const usePlaceholderStyles = makeStyles({ name: { TargetIndicator } })(
+  (theme) => ({
+    placeholder: {
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 10,
+      paddingTop: 22,
+      color: theme.palette.background.default,
+    },
+  })
+);
+
+const useStyles = makeStyles({ name: { SummaryIndicator } })(() => ({
   released: {
     marginTop: "-30",
     transform: "translate(0%, -60%)",
@@ -57,7 +62,7 @@ export function TargetIndicator(props: {
   targets: Target[];
   showSummary: () => void;
 }): JSX.Element {
-  const styles = useStyles();
+  const { classes: styles } = usePlaceholderStyles();
   if (props.targets.length === 0) {
     return (
       <TrackChangesIcon id={`placeholder`} className={styles.placeholder} />
@@ -80,7 +85,7 @@ export function TargetIndicator(props: {
 }
 
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   return (
     <Grid container className={styles.targetGrid} data-cy="summary-targets">
       {props.targets.map((target, index) => {

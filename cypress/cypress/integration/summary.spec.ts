@@ -5,6 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import {
+  cyMockDefault,
   cyMockDialog,
   cyMockSession,
   cySetup,
@@ -13,7 +14,7 @@ import {
 
 describe("Expectation summary pop-up", () => {
   it("opens with View Summary button", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
@@ -33,7 +34,7 @@ describe("Expectation summary pop-up", () => {
     },
   ].forEach((x) => {
     it(`shows an icon for each expectation for lesson with ${x.expectedExpectations}`, () => {
-      cySetup(cy);
+      cyMockDefault(cy);
       cyMockDialog(cy, x.lesson, x.fixture);
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
@@ -45,7 +46,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("displays on tap any expectation-progress indicator", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.fixture("q2-1-p1.json").then((desiredServerResponse) => {
@@ -62,7 +63,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("displays when lesson is completed", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
@@ -75,7 +76,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("hides text for expectations that have not been completed", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
@@ -85,7 +86,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows no progress for expectations that have not been completed", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
     cy.get("[data-cy=target-0-0]").trigger("mouseover").click();
@@ -95,7 +96,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows text for expectations that have been completed", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
@@ -114,7 +115,7 @@ describe("Expectation summary pop-up", () => {
   });
 
   it("shows progress for expectations that have been completed", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
