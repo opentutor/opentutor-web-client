@@ -53,6 +53,11 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "What are the challenges to demonstrating integrity in a group?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("PLACEHOLDER");
     cy.get("[data-cy=submit-button]", { timeout: 15000 })
       .should("not.be.disabled")

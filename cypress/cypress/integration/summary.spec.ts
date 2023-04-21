@@ -67,6 +67,11 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]", { timeout: 15000 })
       .should("not.be.disabled")
@@ -100,6 +105,11 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]", { timeout: 15000 })
@@ -119,6 +129,11 @@ describe("Expectation summary pop-up", () => {
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json");
     cyVisitWithTestingParam(cy, "/?lesson=q2&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "With a DC input source, does current flow in the same or the opposite direction of the diode arrow?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("fake answer");
     cy.get("[data-cy=submit-button]").should("be.visible");
     cy.get("[data-cy=submit-button]", { timeout: 15000 })
