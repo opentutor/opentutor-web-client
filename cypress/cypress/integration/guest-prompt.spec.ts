@@ -4,27 +4,32 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cyMockDialog, cySetup } from "../support/functions";
+import { cyMockDefault, cyMockDialog, cySetup } from "../support/functions";
 
 describe("Guest prompt", () => {
   it("appears when no guest param", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
     cy.get("[data-cy=guest-prompt]");
+    cy.wait("@FetchLessonInfo");
   });
 
   it("does not appear when guest param", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=guest-prompt]").should("not.exist");
+    cy.wait("@FetchLessonInfo");
   });
 
   it("sets guest name", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
+    cy.wait("@FetchLessonInfo");
+    cy.wait("@FetchLessonInfo");
+    cy.wait("@FetchLessonInfo");
     cy.get("[data-cy=guest-prompt-input]").should("be.visible");
     cy.get("[data-cy=guest-prompt-input]").type("username");
     cy.get("[data-cy=guest-prompt-input-send]").should("be.visible");
@@ -34,7 +39,7 @@ describe("Guest prompt", () => {
   });
 
   it("no input defaults to 'guest'", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1");
     cy.get("[data-cy=guest-prompt-input-send]").should("be.visible");

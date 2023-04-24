@@ -6,18 +6,18 @@ The full terms of this copyright and license should always be found in the root 
 */
 // import { cyMockDialog, cySetup } from "../support/functions";
 import { addCmi5LaunchParams, cyMockCmi5Initialize } from "../support/cmi5";
-import { cyMockDialog, cySetup } from "../support/functions";
+import { cyMockDefault, cyMockDialog, cySetup } from "../support/functions";
 
 describe("Cmi5 integration", () => {
   it("does not show Guest Prompt when cmi5 launch params present", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));
     cy.get("[data-cy=guest-prompt]").should("not.exist");
   });
 
   it("completes cmi5 initialization when launch params present", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockCmi5Initialize(cy);
     cy.visit(addCmi5LaunchParams("/?lesson=q1"));

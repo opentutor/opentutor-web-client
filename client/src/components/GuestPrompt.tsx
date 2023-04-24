@@ -5,10 +5,17 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import React, { useState } from "react";
-import { Modal, Button, Paper, InputBase, Backdrop } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  Modal,
+  Button,
+  Paper,
+  InputBase,
+  Backdrop,
+  Theme,
+} from "@mui/material";
+import { makeStyles } from "tss-react/mui";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({ name: { GuestPrompt } })((theme: Theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
@@ -35,7 +42,7 @@ interface GuestPromptArgs {
   submit: (name: string) => void;
 }
 export default function GuestPrompt(args: GuestPromptArgs): JSX.Element {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [name, setName] = useState("");
   const { submit } = args;
 

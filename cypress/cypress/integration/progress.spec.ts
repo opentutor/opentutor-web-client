@@ -36,6 +36,11 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-2-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-2-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
+      cy.wait(4000);
+      cy.get("[data-cy=chat-msg-2]").should(
+        "have.text",
+        "Why might you allow bad behavior in a group that you normally would not allow yourself to do?"
+      );
       cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
       cy.get("[data-cy=submit-button]").click();
       cy.get(
@@ -62,6 +67,16 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q1-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q1", "q1-1-p2.json");
       cy.visit("/?lesson=q1&guest=guest");
+      cy.wait(4000);
+      cy.get("[data-cy=chat-msg-1]").should(
+        "have.text",
+        "When you correct somone's behavior, you may get them in trouble or negatively impact your relationship with them."
+      );
+      cy.wait(4000);
+      cy.get("[data-cy=chat-msg-2]").should(
+        "have.text",
+        "However, integrity means speaking out even when it is unpopular."
+      );
       cy.get("[data-cy=outlined-multiline-static]").type("short fake answer");
       cy.get("[data-cy=submit-button]", { timeout: 15000 })
         .should("not.be.disabled")
@@ -106,6 +121,11 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-2-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-2-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
+      cy.wait(4000);
+      cy.get("[data-cy=chat-msg-2]").should(
+        "have.text",
+        "Why might you allow bad behavior in a group that you normally would not allow yourself to do?"
+      );
       cy.get("[data-cy=outlined-multiline-static]").type("Peer pressure");
       cy.get("[data-cy=submit-button]", { timeout: 15000 })
         .should("not.be.disabled")
@@ -125,6 +145,11 @@ describe("Expectation-progress Indicators", () => {
     cy.fixture("q2-1-p2.json").then((desiredServerResponse) => {
       cyMockSession(cy, "q2", "q2-1-p2.json");
       cy.visit("/?lesson=q2&guest=guest");
+      cy.wait(4000);
+      cy.get("[data-cy=chat-msg-1]").should(
+        "have.text",
+        "Let's try a different problem."
+      );
       cy.get("[data-cy=outlined-multiline-static]").type("very short answer");
       cy.get("[data-cy=submit-button]", { timeout: 15000 })
         .should("not.be.disabled")

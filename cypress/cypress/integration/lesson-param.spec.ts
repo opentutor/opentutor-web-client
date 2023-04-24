@@ -49,6 +49,8 @@ describe("Lesson query parameter", () => {
       cyMockSession(cy, x.lesson, x.fixtureLessonContinue);
       cy.fixture(x.fixtureLessonContinue).then((expectedServerResponse) => {
         cy.visit(`/?lesson=${x.lesson}&guest=guest`); // change URL to match your dev URLs
+        cy.wait(4000);
+        cy.get("[data-cy=chat-msg-1]").should("not.have.text", "...");
         cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
         cy.get("[data-cy=submit-button]", { timeout: 15000 })
           .should("not.be.disabled")

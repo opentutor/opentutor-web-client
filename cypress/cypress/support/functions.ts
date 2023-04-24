@@ -82,8 +82,8 @@ export function cyMockDefault(
 ) {
   const gqlQueries = args?.gqlQueries || [];
   cySetup(cy);
-
-  cyInterceptGraphQL(cy, [...gqlQueries]);
+  cyMockXapi(cy);
+  cyInterceptGraphQL(cy, [...gqlQueries, mockGQL("FetchLessonInfo", {})]);
 }
 
 interface MockGraphQLQuery {
@@ -142,4 +142,28 @@ export function cyMockSession(cy, lesson: string, fixture: string) {
 
 export function cyVisitWithTestingParam(cy, url, options = {}) {
   cy.visit(`${url}${url.indexOf("?") == -1 ? "?" : "&"}testing=true`, options);
+}
+
+export function cyMockXapi(
+  cy,
+  params: {
+    statusCode?: number;
+  } = {}
+): void {
+  params = params || {};
+  cy.intercept("/cmi5/xapi/**", (req) => {
+    req.alias = "cmi5/xapi";
+    req.reply(
+      staticResponse({
+        statusCode: params.statusCode || 200,
+        body: {
+          data: {},
+          errors: null,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
+  });
 }

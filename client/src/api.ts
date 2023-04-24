@@ -21,7 +21,7 @@ function ensureEndSlashIfExists(u?: string): string | null {
 
 const DIALOG_ENDPOINT =
   ensureEndSlashIfExists(process.env.DIALOG_ENDPOINT) || "/dialog/";
-const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql/";
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
 
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
@@ -51,7 +51,8 @@ export async function createSession(
 ): Promise<AxiosResponse<DialogResponse>> {
   try {
     return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.log(error.response);
     return error.response;
   }
@@ -72,7 +73,8 @@ export async function continueSession(props: {
         username: props.username,
       }
     );
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     return error.response;
   }
 }

@@ -4,11 +4,16 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import { cyMockDialog, cyMockSession, cySetup } from "../support/functions";
+import {
+  cyMockDefault,
+  cyMockDialog,
+  cyMockSession,
+  cySetup,
+} from "../support/functions";
 
 describe("Input field", () => {
   it("disables send button when no input", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
     cy.get("[data-cy=outlined-multiline-static]", { timeout: 15000 }).should(
@@ -18,14 +23,17 @@ describe("Input field", () => {
   });
 
   it("hides send button, enables continue, and hides summary button when session finished", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockSession(cy, "q1", "q1-1-p2.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(4000);
+    cy.get("[data-cy=chat-msg-1]").should(
+      "have.text",
+      "What are the challenges to demonstrating integrity in a group?"
+    );
     cy.get("[data-cy=outlined-multiline-static]").type("fake short answer.");
-    cy.get("[data-cy=submit-button]", { timeout: 15000 })
-      .should("not.be.disabled")
-      .click();
+    cy.get("[data-cy=submit-button]").should("not.be.disabled").click();
     cy.get("[data-cy=submit-button]").should("not.exist");
     cy.get("[data-cy=continue-button]").should("be.visible");
     cy.get("[data-cy=continue-button]").should("not.be.disabled");
@@ -35,20 +43,22 @@ describe("Input field", () => {
   });
 
   it("enables send button when input and session not finished", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cy.visit("/?lesson=q1&guest=guest");
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").type("hi");
     cy.get("[data-cy=outlined-multiline-static]").should("not.be.disabled");
     cy.get("[data-cy=submit-button]").should("not.be.disabled");
   });
 
   it("can send input with button", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "some fake answer";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
     cy.get("[data-cy=submit-button]").should("be.visible");
@@ -64,16 +74,16 @@ describe("Input field", () => {
   });
 
   it("can send input with enter", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "another fake answer";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
-    cy.get("[data-cy=submit-button]").should("not.be.disabled", {
-      timeout: 15000,
-    });
+    cy.wait(5000);
+    cy.get("[data-cy=submit-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
@@ -84,16 +94,15 @@ describe("Input field", () => {
   });
 
   it("ensure can send same input twice in a row", () => {
-    cySetup(cy);
+    cyMockDefault(cy);
     cyMockDialog(cy, "q2", "q2-1-p1.json");
     cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
     cy.visit("/?lesson=q2&guest=guest");
     const userInput = "answer we will repeat";
+    cy.wait(4000);
     cy.get("[data-cy=outlined-multiline-static]").should("be.visible");
     cy.get("[data-cy=outlined-multiline-static]").type(userInput);
-    cy.get("[data-cy=submit-button]").should("not.be.disabled", {
-      timeout: 15000,
-    });
+    cy.get("[data-cy=submit-button]").should("not.be.disabled");
     cy.get("[data-cy=outlined-multiline-static]").type("{enter}");
     cy.get("[data-cy=chat-msg-2]").should("contain", userInput);
     cy.wait("@session");
