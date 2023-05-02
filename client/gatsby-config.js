@@ -8,7 +8,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        allowList: ["DIALOG_ENDPOINT", "OPENTUTOR_CLIENT_VERSION"],
+        allowList: [
+          "DIALOG_ENDPOINT",
+          "GRAPHQL_ENDPOINT",
+          "OPENTUTOR_CLIENT_VERSION",
+        ],
       },
     },
     `gatsby-plugin-typescript`,

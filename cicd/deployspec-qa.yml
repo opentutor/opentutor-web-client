@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  variables:
+    GRAPHQL_ENDPOINT: 'https://opentutor.info/graphql'
+    DIALOG_ENDPOINT: 'https://opentutor.info/dialog'
+  parameter-store:
+    S3_DEPLOY_BUCKET_QA: "/qa-opentutor/s3-websites/NAME"
+    CDN_ID_QA: "/qa-opentutor/CLOUDFRONT_DISTRIBUTION_ID"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - n 18
+
+  build:
+    commands:
+      - cd client && npm run build
+      - echo Deploying to $S3_DEPLOY_BUCKET_QA
+      - aws s3 sync ./public s3://$S3_DEPLOY_BUCKET_QA/admin
+      - aws cloudfront create-invalidation --distribution-id $CDN_ID_QA --paths "/admin*"
