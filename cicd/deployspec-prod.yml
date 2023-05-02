@@ -19,5 +19,5 @@ phases:
     commands:
       - cd client && npm run build
       - echo Deploying to $S3_DEPLOY_BUCKET_PROD
-      - aws s3 sync ./public s3://$S3_DEPLOY_BUCKET_PROD/admin
-      - aws cloudfront create-invalidation --distribution-id $CDN_ID_PROD --paths "/admin*"
+      - aws s3 sync ./public s3://$S3_DEPLOY_BUCKET_PROD/tutor
+      - aws cloudfront create-invalidation --distribution-id $CDN_ID_PROD --paths "/tutor*"
