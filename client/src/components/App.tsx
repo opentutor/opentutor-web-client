@@ -149,7 +149,20 @@ function App(props: {
   };
 
   const onSummaryCloseRequested = (): void => {
-    const sendResults = sessionSummary.sendResultsPending;
+    setSessionSummary({
+      ...sessionSummary,
+      showSummary: false,
+    });
+  };
+
+  const onSummarySubmitRequested = (): void => {
+    if (sessionAlive || !Cmi5.isCmiAvailable) {
+      setSessionSummary({
+        ...sessionSummary,
+        showSummary: false,
+      });
+      return;
+    }
     setSessionSummary((sessionSummary) => {
       return {
         ...sessionSummary,
@@ -157,9 +170,7 @@ function App(props: {
         sendResultsPending: false,
       };
     });
-    if (sendResults) {
-      sendCmi5Results();
-    }
+    sendCmi5Results();
   };
 
   const handleErrorOpen = (): void => {
@@ -341,10 +352,11 @@ function App(props: {
       </div>
       <SummaryPopup
         open={sessionSummary.showSummary}
-        onCloseRequested={onSummaryCloseRequested}
+        showSubmit={Cmi5.isCmiAvailable && !sessionAlive}
         message={sessionSummary.summaryMessage || ""}
-        buttonText={"Close"}
         targets={targets}
+        onCloseRequested={onSummaryCloseRequested}
+        onSubmitRequested={onSummarySubmitRequested}
       />
       <ErrorPopup
         open={errorOpen}
