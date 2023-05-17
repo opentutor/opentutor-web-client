@@ -33,12 +33,13 @@ const DialogActions = styled(MuiDialogActions)(({ theme }) => ({
 
 export default function SummaryPopup(props: {
   open: boolean;
-  onCloseRequested: () => void;
   message: string;
-  buttonText: string;
   targets: Target[];
+  showSubmit: boolean;
+  onCloseRequested: () => void;
+  onSubmitRequested: () => void;
 }): JSX.Element {
-  const { open, onCloseRequested, buttonText, targets } = props;
+  const { open, onCloseRequested, targets } = props;
   const [tranState, setTranState] = useState("summary-popup-trans-none");
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -81,14 +82,18 @@ export default function SummaryPopup(props: {
         <SummaryIndicator targets={targets} />
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={onCloseRequested}
-          color="primary"
-          variant="contained"
-          // style={{ marginRight: 10, marginBottom: 5, marginTop: 5 }}
-        >
-          {buttonText}
+        <Button onClick={onCloseRequested} color="primary" variant="contained">
+          Close
         </Button>
+        {props.showSubmit ? (
+          <Button
+            onClick={props.onSubmitRequested}
+            color="primary"
+            variant="contained"
+          >
+            Submit
+          </Button>
+        ) : undefined}
       </DialogActions>
     </Dialog>
   );
