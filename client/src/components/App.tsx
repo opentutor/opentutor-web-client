@@ -123,7 +123,6 @@ function App(props: {
             1000 // at least 1 second
           )
         : undefined,
-      sendResultsPending: true,
       score:
         session.dialogState.expectationData.reduce(
           (total: number, exp: ExpectationData) => {
@@ -138,7 +137,19 @@ function App(props: {
     if (!Cmi5.isCmiAvailable) {
       return;
     }
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        sendResultsPending: true,
+      };
+    });
     await Cmi5.instance.moveOn({ score: sessionSummary.score || 0 });
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        sendResultsPending: false,
+      };
+    });
   }
 
   const onSummaryOpenRequested = (): void => {
@@ -149,27 +160,19 @@ function App(props: {
   };
 
   const onSummaryCloseRequested = (): void => {
-    setSessionSummary({
-      ...sessionSummary,
-      showSummary: false,
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        showSummary: false,
+      };
     });
   };
 
   const onSummarySubmitRequested = (): void => {
     if (sessionAlive || !Cmi5.isCmiAvailable) {
-      setSessionSummary({
-        ...sessionSummary,
-        showSummary: false,
-      });
       return;
     }
-    setSessionSummary((sessionSummary) => {
-      return {
-        ...sessionSummary,
-        showSummary: false,
-        sendResultsPending: false,
-      };
-    });
+    onSummaryCloseRequested();
     sendCmi5Results();
   };
 
@@ -279,8 +282,20 @@ function App(props: {
   }, [messageQueue, messageQueueTimer]);
 
   React.useEffect(() => {
-    if (!sessionAlive && messageQueue.length === 0 && !messageQueueTimer) {
-      handleSessionDone(session);
+    if (!sessionAlive) {
+      setSessionSummary({
+        ...sessionSummary,
+        score:
+          session.dialogState.expectationData.reduce(
+            (total: number, exp: ExpectationData) => {
+              return total + (exp.satisfied ? 1 : exp.score);
+            },
+            0
+          ) / targets.length,
+      });
+      if (messageQueue.length === 0 && !messageQueueTimer) {
+        handleSessionDone(session);
+      }
     }
   }, [sessionAlive, messageQueue, messageQueueTimer]);
 
@@ -353,6 +368,7 @@ function App(props: {
       <SummaryPopup
         open={sessionSummary.showSummary}
         showSubmit={Cmi5.isCmiAvailable && !sessionAlive}
+        sendResultsPending={sessionSummary.sendResultsPending}
         message={sessionSummary.summaryMessage || ""}
         targets={targets}
         onCloseRequested={onSummaryCloseRequested}
