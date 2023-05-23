@@ -14,9 +14,9 @@ import MuiDialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { SummaryIndicator } from "components/TargetIndicator";
 import { Target } from "types";
-import { useMediaQuery } from "@mui/material";
 
 const DialogContent = styled(MuiDialogContent)(({ theme }) => ({
   root: {
@@ -33,12 +33,14 @@ const DialogActions = styled(MuiDialogActions)(({ theme }) => ({
 
 export default function SummaryPopup(props: {
   open: boolean;
-  onCloseRequested: () => void;
   message: string;
-  buttonText: string;
   targets: Target[];
+  showSubmit: boolean;
+  sendResultsPending: boolean | undefined;
+  onCloseRequested: () => void;
+  onSubmitRequested: () => void;
 }): JSX.Element {
-  const { open, onCloseRequested, buttonText, targets } = props;
+  const { open, onCloseRequested, targets, sendResultsPending } = props;
   const [tranState, setTranState] = useState("summary-popup-trans-none");
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -55,7 +57,6 @@ export default function SummaryPopup(props: {
       fullScreen={fullScreen}
     >
       <div data-cy={tranState} />
-
       <MuiDialogTitle
         id="customized-dialog-title"
         data-cy="customized-dialog-title"
@@ -76,20 +77,40 @@ export default function SummaryPopup(props: {
           </IconButton>
         ) : null}
       </MuiDialogTitle>
-
       <DialogContent dividers>
         <SummaryIndicator targets={targets} />
       </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={onCloseRequested}
-          color="primary"
-          variant="contained"
-          // style={{ marginRight: 10, marginBottom: 5, marginTop: 5 }}
-        >
-          {buttonText}
-        </Button>
-      </DialogActions>
+      {sendResultsPending === undefined ? (
+        <DialogActions>
+          <Button
+            onClick={onCloseRequested}
+            color="primary"
+            variant="contained"
+          >
+            Close
+          </Button>
+          {props.showSubmit ? (
+            <Button
+              onClick={props.onSubmitRequested}
+              color="primary"
+              variant="contained"
+            >
+              Submit
+            </Button>
+          ) : undefined}
+        </DialogActions>
+      ) : (
+        <DialogActions style={{ justifyContent: "center" }}>
+          {sendResultsPending === true ? (
+            <CircularProgress style={{ marginRight: 10 }} size={20} />
+          ) : null}
+          <Typography>
+            {sendResultsPending === true
+              ? "Sending results..."
+              : "Results sent!"}
+          </Typography>
+        </DialogActions>
+      )}
     </Dialog>
   );
 }

@@ -8,7 +8,6 @@ import {
   cyMockDefault,
   cyMockDialog,
   cyMockSession,
-  cySetup,
 } from "../support/functions";
 
 describe("Input field", () => {
@@ -37,9 +36,7 @@ describe("Input field", () => {
     cy.get("[data-cy=submit-button]").should("not.exist");
     cy.get("[data-cy=continue-button]").should("be.visible");
     cy.get("[data-cy=continue-button]").should("not.be.disabled");
-    cy.get("[data-cy=outlined-multiline-static]").within(($el) => {
-      cy.get("textarea").should("be.disabled");
-    });
+    cy.get("[data-cy=outlined-multiline-static]").should("not.exist");
   });
 
   it("enables send button when input and session not finished", () => {

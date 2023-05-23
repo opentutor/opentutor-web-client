@@ -123,7 +123,6 @@ function App(props: {
             1000 // at least 1 second
           )
         : undefined,
-      sendResultsPending: true,
       score:
         session.dialogState.expectationData.reduce(
           (total: number, exp: ExpectationData) => {
@@ -138,7 +137,19 @@ function App(props: {
     if (!Cmi5.isCmiAvailable) {
       return;
     }
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        sendResultsPending: true,
+      };
+    });
     await Cmi5.instance.moveOn({ score: sessionSummary.score || 0 });
+    setSessionSummary((sessionSummary) => {
+      return {
+        ...sessionSummary,
+        sendResultsPending: false,
+      };
+    });
   }
 
   const onSummaryOpenRequested = (): void => {
@@ -149,17 +160,20 @@ function App(props: {
   };
 
   const onSummaryCloseRequested = (): void => {
-    const sendResults = sessionSummary.sendResultsPending;
     setSessionSummary((sessionSummary) => {
       return {
         ...sessionSummary,
         showSummary: false,
-        sendResultsPending: false,
       };
     });
-    if (sendResults) {
-      sendCmi5Results();
+  };
+
+  const onSummarySubmitRequested = (): void => {
+    if (sessionAlive || !Cmi5.isCmiAvailable) {
+      return;
     }
+    onSummaryCloseRequested();
+    sendCmi5Results();
   };
 
   const handleErrorOpen = (): void => {
@@ -268,8 +282,20 @@ function App(props: {
   }, [messageQueue, messageQueueTimer]);
 
   React.useEffect(() => {
-    if (!sessionAlive && messageQueue.length === 0 && !messageQueueTimer) {
-      handleSessionDone(session);
+    if (!sessionAlive) {
+      setSessionSummary({
+        ...sessionSummary,
+        score:
+          session.dialogState.expectationData.reduce(
+            (total: number, exp: ExpectationData) => {
+              return total + (exp.satisfied ? 1 : exp.score);
+            },
+            0
+          ) / targets.length,
+      });
+      if (messageQueue.length === 0 && !messageQueueTimer) {
+        handleSessionDone(session);
+      }
     }
   }, [sessionAlive, messageQueue, messageQueueTimer]);
 
@@ -341,10 +367,12 @@ function App(props: {
       </div>
       <SummaryPopup
         open={sessionSummary.showSummary}
-        onCloseRequested={onSummaryCloseRequested}
+        showSubmit={Cmi5.isCmiAvailable && !sessionAlive}
+        sendResultsPending={sessionSummary.sendResultsPending}
         message={sessionSummary.summaryMessage || ""}
-        buttonText={"Close"}
         targets={targets}
+        onCloseRequested={onSummaryCloseRequested}
+        onSubmitRequested={onSummarySubmitRequested}
       />
       <ErrorPopup
         open={errorOpen}

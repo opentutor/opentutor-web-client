@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   variables:
-    GRAPHQL_ENDPOINT: 'https://opentutor.info/graphql'
-    DIALOG_ENDPOINT: 'https://opentutor.info/dialog'
+    GRAPHQL_ENDPOINT: 'https://api-qa.opentutor.info/graphql/graphql'
+    DIALOG_ENDPOINT: 'https://api-qa.opentutor.info/dialog'
   parameter-store:
     S3_DEPLOY_BUCKET_QA: "/qa-opentutor/s3-websites/NAME"
     CDN_ID_QA: "/qa-opentutor/CLOUDFRONT_DISTRIBUTION_ID"
