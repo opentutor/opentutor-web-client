@@ -9,7 +9,7 @@ import Cmi5 from "@xapi/cmi5";
 import clsx from "clsx";
 import { useTheme } from "@mui/material/styles";
 import readTime from "reading-time";
-import { createSession, fetchLesson } from "api";
+import { createSession, fetchLesson, warmupLessonLambda } from "api";
 import ChatThread from "components/ChatThread";
 import ChatForm from "components/ChatForm";
 import { TargetIndicator } from "components/TargetIndicator";
@@ -179,6 +179,10 @@ function App(props: {
   const handleErrorOpen = (): void => {
     setErrorOpen(true);
   };
+
+  React.useEffect(() => {
+    warmupLessonLambda(lesson);
+  }, []);
 
   React.useEffect(() => {
     let mounted = true;

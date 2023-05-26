@@ -4,6 +4,7 @@ env:
   variables:
     GRAPHQL_ENDPOINT: 'https://api-dev.opentutor.info/graphql/graphql'
     DIALOG_ENDPOINT: 'https://api-dev.opentutor.info/dialog'
+    CLASSIFIER_ENTRYPOINT: 'https://api-dev.opentutor.info/classifier'
   parameter-store:
     S3_DEPLOY_BUCKET_DEV: "/dev-opentutor/s3-websites/NAME"
     CDN_ID_DEV: "/dev-opentutor/CLOUDFRONT_DISTRIBUTION_ID"
