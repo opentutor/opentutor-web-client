@@ -12,6 +12,7 @@ module.exports = {
           "DIALOG_ENDPOINT",
           "GRAPHQL_ENDPOINT",
           "OPENTUTOR_CLIENT_VERSION",
+          "CLASSIFIER_ENTRYPOINT",
         ],
       },
     },
