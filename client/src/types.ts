@@ -117,3 +117,7 @@ export interface SessionSummary {
   sendResultsPending?: boolean;
   score?: number;
 }
+
+export interface WarmupLambdaResponse {
+  ping: string;
+}

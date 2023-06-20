@@ -5,7 +5,13 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import axios, { AxiosResponse } from "axios";
-import { Lesson, FetchLesson, DialogResponse, SessionData } from "types";
+import {
+  Lesson,
+  FetchLesson,
+  DialogResponse,
+  SessionData,
+  WarmupLambdaResponse,
+} from "types";
 
 interface GQLResponse<T> {
   errors?: { message: string }[];
@@ -22,6 +28,8 @@ function ensureEndSlashIfExists(u?: string): string | null {
 const DIALOG_ENDPOINT =
   ensureEndSlashIfExists(process.env.DIALOG_ENDPOINT) || "/dialog/";
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
+const CLASSIFIER_ENTRYPOINT =
+  process.env.CLASSIFIER_ENTRYPOINT || "/classifier";
 
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
@@ -51,6 +59,24 @@ export async function createSession(
 ): Promise<AxiosResponse<DialogResponse>> {
   try {
     return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error.response);
+    return error.response;
+  }
+}
+
+export async function warmupLessonLambda(
+  lesson: string
+): Promise<AxiosResponse<WarmupLambdaResponse>> {
+  try {
+    return await axios.post<WarmupLambdaResponse>(
+      `${CLASSIFIER_ENTRYPOINT}/evaluate`,
+      {
+        lesson: lesson,
+        ping: true,
+      }
+    );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error.response);
