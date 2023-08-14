@@ -187,7 +187,7 @@ function App(props: {
   React.useEffect(() => {
     let mounted = true;
     const fetchData = async (): Promise<void> => {
-      const response = await createSession(lesson || "");
+      const response = await createSession(lesson || "", username);
       if (!mounted) {
         return;
       }
