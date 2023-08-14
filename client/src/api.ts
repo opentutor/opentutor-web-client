@@ -26,10 +26,10 @@ function ensureEndSlashIfExists(u?: string): string | null {
 }
 
 const DIALOG_ENDPOINT =
-  ensureEndSlashIfExists(process.env.DIALOG_ENDPOINT) || "/dialog/";
-const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
+  ensureEndSlashIfExists(process.env.DIALOG_ENDPOINT) || "https://api-dev.opentutor.info/dialog/";
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "https://api-dev.opentutor.info/graphql/graphql";
 const CLASSIFIER_ENTRYPOINT =
-  process.env.CLASSIFIER_ENTRYPOINT || "/classifier";
+  process.env.CLASSIFIER_ENTRYPOINT || "https://api-dev.opentutor.info/classifier";
 
 export async function fetchLesson(lessonId: string): Promise<Lesson> {
   const result = await axios.post<GQLResponse<FetchLesson>>(GRAPHQL_ENDPOINT, {
