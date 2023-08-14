@@ -55,10 +55,13 @@ export async function fetchLesson(lessonId: string): Promise<Lesson> {
 }
 
 export async function createSession(
-  lesson: string
+  lesson: string,
+  username: string
 ): Promise<AxiosResponse<DialogResponse>> {
   try {
-    return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {});
+    return await axios.post<DialogResponse>(`${DIALOG_ENDPOINT}${lesson}`, {
+      username: username,
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error.response);
