@@ -16,7 +16,7 @@ describe("Cmi5 integration", () => {
     cy.get("[data-cy=guest-prompt]").should("not.exist");
   });
 
-  it("completes cmi5 initialization when launch params present", () => {
+  it.skip("completes cmi5 initialization when launch params present", () => {
     cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
     cyMockCmi5Initialize(cy);

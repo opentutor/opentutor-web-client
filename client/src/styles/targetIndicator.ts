@@ -4,20 +4,46 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-export function isTesting(): boolean {
-  return (
-    window &&
-    Boolean(new URLSearchParams(window.location.search).get("testing"))
-  );
-}
+import { makeStyles } from "tss-react/mui";
+import { Theme } from "@mui/material";
 
-export const shouldDisplayPortrait = (): boolean =>
-  typeof window !== "undefined" && window.matchMedia
-    ? window.matchMedia && window.matchMedia("(max-width: 400px)").matches
-    : false;
-
-export function isNoHeader(): boolean {
-  return typeof window !== "undefined"
-    ? Boolean(new URL(location.href).searchParams.get("noheader"))
-    : false;
-}
+export const targetIndicatorStyles = makeStyles()((theme: Theme) => ({
+  placeholder: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingTop: 22,
+    color: theme.palette.background.default,
+  },
+  released: {
+    marginTop: "-30",
+    transform: "translate(0%, -60%)",
+    padding: 10,
+    height: 10,
+    width: "140%",
+  },
+  censored: {
+    borderRadius: 10,
+    background: "#929fad",
+    padding: 10,
+    height: 10,
+    width: "150%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  targetGrid: { width: "100%", padding: 10, boxSizing: "border-box" },
+  targetItem: {
+    width: "100%",
+    display: "flex",
+    padding: 5,
+    boxSizing: "border-box",
+    alignItems: "center",
+  },
+  inProgress: {
+    color: "#DC143C",
+  },
+  complete: {
+    color: "#3CB371",
+  },
+}));

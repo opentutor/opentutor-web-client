@@ -6,18 +6,11 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React from "react";
 import Cmi5 from "@xapi/cmi5";
-import clsx from "clsx";
 import { useTheme } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 import readTime from "reading-time";
 import { createSession, fetchLesson, warmupLessonLambda } from "api";
-import ChatThread from "components/ChatThread";
-import ChatForm from "components/ChatForm";
-import { TargetIndicator } from "components/TargetIndicator";
-import SurveySays from "components/SurveySays";
-import SummaryPopup from "components/SummaryPopup";
-import ErrorPopup from "components/ErrorPopup";
 import { errorForStatus } from "components/ErrorConfig";
-import { makeStyles } from "tss-react/mui";
 import {
   ChatMsg,
   DialogData,
@@ -30,46 +23,43 @@ import {
   Target,
 } from "types";
 import withLocation from "wrap-with-location";
-import LessonMedia from "./LessonMedia";
-import HeaderBar from "./HeaderBar";
-import { isTesting } from "utils";
-import { Theme, useMediaQuery } from "@mui/material";
+import { isTesting, shouldDisplayPortrait } from "utils";
+import Mobile from "./views/Mobile";
+import Desktop from "./views/Desktop";
 
-const useStyles = makeStyles({ name: { App } })((theme: Theme) => ({
-  foreground: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  appRoot: {
-    width: "100%",
-    boxSizing: "border-box",
-  },
-  appRootDefault: {
-    height: "calc(100% - 64px)",
-  },
-  appRootSuperDenseHeader: {
-    height: "calc(100% - 30px)",
-  },
-  appRootNoHeader: {
-    height: "calc(100% - 0px)",
-  },
-  buildInfo: {
-    padding: 5,
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "70%",
-    backgroundColor: theme.palette.primary.main,
-    textAlign: "left",
-  },
-}));
+export interface AppProps {
+  noheader: string;
+  isMobile: boolean;
+  showHeader: boolean;
+  lessonFormat: string;
+  hasMedia: boolean;
+  targets: Target[];
+  messages: ChatMsg[];
+  messageQueue: ChatMsg[];
+  lesson: string;
+  username: string;
+  session: SessionData;
+  sessionAlive: boolean;
+  sessionSummary: SessionSummary;
+  errorOpen: boolean;
+  errorProps: ErrorData;
+  setErrorOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSessionAlive: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionData>>;
+  setMessages: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
+  setMessageQueue: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
+  setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
+  onSummaryOpenRequested: () => void;
+  onSummaryCloseRequested: () => void;
+  onSummarySubmitRequested: () => void;
+  handleErrorOpen: () => void;
+  handleSessionDone: (session: SessionData) => void;
+}
 
 function App(props: {
   search: { lesson: string; guest: string; actor: string; noheader: string };
 }): JSX.Element {
-  const { classes: styles } = useStyles();
   const { lesson, guest, actor, noheader } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
@@ -104,6 +94,9 @@ function App(props: {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const matchesMobile = useMediaQuery("(max-width : 600px)", {
+    noSsr: true,
+  });
 
   function handleSessionDone(session: SessionData): void {
     setSessionSummary({
@@ -314,76 +307,69 @@ function App(props: {
   }
 
   return (
-    <>
-      <div className={styles.foreground}>
-        {noheader ? (
-          <div id="invisible-header"></div>
-        ) : (
-          <HeaderBar superDense={isMobile} />
-        )}
-        <div
-          id="app-content"
-          className={clsx({
-            [styles.appRoot]: true,
-            [styles.appRootDefault]: showHeader && !isMobile,
-            [styles.appRootSuperDenseHeader]: showHeader && isMobile,
-            [styles.appRootNoHeader]: !showHeader,
-          })}
-        >
-          <LessonMedia lessonFormat={lessonFormat} />
-          {lessonFormat === LessonFormat.SURVEY_SAYS ? (
-            <>
-              <SurveySays hasMedia={hasMedia} targets={targets} />
-            </>
-          ) : (
-            <>
-              <TargetIndicator
-                targets={targets}
-                showSummary={onSummaryOpenRequested}
-              />
-            </>
-          )}
-          <ChatThread
-            messages={messages}
-            messageQueue={messageQueue}
-            hasMedia={hasMedia}
-            lessonFormat={lessonFormat}
-            expectationCount={targets.length}
-          />
-          <ChatForm
-            lesson={lesson}
-            username={username}
-            messages={messages}
-            messageQueue={messageQueue}
-            setMessages={setMessages}
-            setMessageQueue={setMessageQueue}
-            setTargets={setTargets}
-            session={session}
-            setSession={setSession}
-            setErrorProps={setErrorProps}
-            handleErrorOpen={handleErrorOpen}
-            handleSessionDone={handleSessionDone}
-            sessionAlive={sessionAlive}
-            setSessionAlive={setSessionAlive}
-            onSummaryOpenRequested={onSummaryOpenRequested}
-          />
-        </div>
-      </div>
-      <SummaryPopup
-        open={sessionSummary.showSummary}
-        showSubmit={Cmi5.isCmiAvailable && !sessionAlive}
-        sendResultsPending={sessionSummary.sendResultsPending}
-        message={sessionSummary.summaryMessage || ""}
-        targets={targets}
-        onCloseRequested={onSummaryCloseRequested}
-        onSubmitRequested={onSummarySubmitRequested}
-      />
-      <ErrorPopup
-        open={errorOpen}
-        setOpen={setErrorOpen}
-        errorProps={errorProps}
-      />
-    </>
+    <div>
+      {shouldDisplayPortrait() || isMobile || matchesMobile ? (
+        <Mobile
+          noheader={noheader}
+          isMobile={isMobile}
+          showHeader={showHeader}
+          lessonFormat={lessonFormat}
+          hasMedia={hasMedia}
+          targets={targets}
+          messages={messages}
+          messageQueue={messageQueue}
+          lesson={lesson}
+          username={username}
+          session={session}
+          sessionAlive={sessionAlive}
+          sessionSummary={sessionSummary}
+          errorOpen={errorOpen}
+          errorProps={errorProps}
+          setErrorOpen={setErrorOpen}
+          setSessionAlive={setSessionAlive}
+          setErrorProps={setErrorProps}
+          setSession={setSession}
+          setMessages={setMessages}
+          setMessageQueue={setMessageQueue}
+          setTargets={setTargets}
+          onSummaryOpenRequested={onSummaryOpenRequested}
+          onSummaryCloseRequested={onSummaryCloseRequested}
+          onSummarySubmitRequested={onSummarySubmitRequested}
+          handleErrorOpen={handleErrorOpen}
+          handleSessionDone={handleSessionDone}
+        />
+      ) : (
+        <Desktop
+          noheader={noheader}
+          isMobile={isMobile}
+          showHeader={showHeader}
+          lessonFormat={lessonFormat}
+          hasMedia={hasMedia}
+          targets={targets}
+          messages={messages}
+          messageQueue={messageQueue}
+          lesson={lesson}
+          username={username}
+          session={session}
+          sessionAlive={sessionAlive}
+          sessionSummary={sessionSummary}
+          errorOpen={errorOpen}
+          errorProps={errorProps}
+          setErrorOpen={setErrorOpen}
+          setSessionAlive={setSessionAlive}
+          setErrorProps={setErrorProps}
+          setSession={setSession}
+          setMessages={setMessages}
+          setMessageQueue={setMessageQueue}
+          setTargets={setTargets}
+          onSummaryOpenRequested={onSummaryOpenRequested}
+          onSummaryCloseRequested={onSummaryCloseRequested}
+          onSummarySubmitRequested={onSummarySubmitRequested}
+          handleErrorOpen={handleErrorOpen}
+          handleSessionDone={handleSessionDone}
+        />
+      )}
+    </div>
   );
 }
 

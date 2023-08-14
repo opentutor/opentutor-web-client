@@ -14,10 +14,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Theme,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { makeStyles } from "tss-react/mui";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HelpIcon from "@mui/icons-material/Help";
@@ -25,54 +24,16 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import BlockIcon from "@mui/icons-material/Block";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import { ChatMsg, ChatMsgType, LessonFormat } from "types";
-import { isTesting } from "utils";
+import { isNoHeader, isTesting, shouldDisplayPortrait } from "utils";
+import {
+  chatThreadStylesDesktop,
+  chatThreadStylesMobile,
+} from "styles/chatThread";
 
 function calcBoardHeight(expectationCount: number) {
   // 46px per target, 31px for question, 16*2px padding, 5*2 border, 10*2px padding
   return expectationCount * 46 + 31 + 32 + 10 + 20;
 }
-
-const useStyles = makeStyles({ name: { ChatThread } })((theme: Theme) => ({
-  root: {
-    width: "auto",
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  bodyRoot: {
-    paddingTop: 10,
-    width: "90%",
-    maxWidth: 400,
-    marginLeft: "50%",
-    paddingBottom: 10,
-    transform: "translateX(-50%)",
-    boxSizing: "border-box",
-  },
-  bodyDefaultNoMedia: {
-    height: "calc(100% - 60px - 95px)",
-  },
-  bodyDefaultMedia: {
-    height: "calc(65% - 60px - 95px)",
-  },
-  avatar: {
-    color: "#fff",
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-  },
-  icon: {
-    position: "absolute",
-    right: -40,
-  },
-  gray: {},
-  red: {
-    background: "#DC143C",
-  },
-  green: {
-    background: "#3CB371",
-  },
-  yellow: {
-    background: "yellow",
-  },
-}));
 
 export default function ChatThread(props: {
   messages: ChatMsg[];
@@ -81,29 +42,35 @@ export default function ChatThread(props: {
   lessonFormat: string;
   expectationCount: number;
 }): JSX.Element {
-  const { classes: styles } = useStyles();
+  const matchesMobile = useMediaQuery("(max-width : 600px)", { noSsr: true });
+  const { classes: stylesDesktop } = chatThreadStylesDesktop({
+    expectationCount: props.expectationCount,
+  });
+  const { classes: stylesMobile } = chatThreadStylesMobile({
+    expectationCount: props.expectationCount,
+  });
 
   const chatIcon = (type: string): JSX.Element | undefined => {
     let icon = undefined;
-    let color = styles.gray;
+    let color = stylesDesktop.gray;
 
     if (type === ChatMsgType.MainQuestion || type === "hint") {
       icon = <HelpIcon />;
     } else if (type === ChatMsgType.FeedbackPositive) {
       icon = <CheckCircleIcon />;
-      color = styles.green;
+      color = stylesDesktop.green;
     } else if (type === ChatMsgType.FeedbackNegative) {
       icon = <CancelIcon />;
-      color = styles.red;
+      color = stylesDesktop.red;
     } else if (type === ChatMsgType.FeedbackNeutral) {
       icon = <ImportExportIcon />;
-      color = styles.yellow;
+      color = stylesDesktop.yellow;
     } else if (type === ChatMsgType.Encouragement) {
       icon = <FlashOnIcon />;
-      color = styles.green;
+      color = stylesDesktop.green;
     } else if (type === ChatMsgType.Profanity) {
       icon = <BlockIcon />;
-      color = styles.red;
+      color = stylesDesktop.red;
     } else if (type === ChatMsgType.Queue) {
       icon = <Typography>{props.messageQueue.length}</Typography>;
     }
@@ -112,9 +79,11 @@ export default function ChatThread(props: {
       return undefined;
     }
     return (
-      <div className={styles.icon}>
+      <div className={stylesDesktop.icon}>
         <ListItemAvatar>
-          <Avatar className={[styles.avatar, color].join(" ")}>{icon}</Avatar>
+          <Avatar className={[stylesDesktop.avatar, color].join(" ")}>
+            {icon}
+          </Avatar>
         </ListItemAvatar>
       </div>
     );
@@ -153,13 +122,37 @@ export default function ChatThread(props: {
     <div
       data-cy="chat-thread"
       className={clsx({
-        [styles.bodyRoot]: true,
-        [styles.bodyDefaultNoMedia]:
+        [stylesDesktop.bodyRoot]: true,
+        [stylesDesktop.bodyDefaultNoMedia]:
           (props.lessonFormat || LessonFormat.DEFAULT) ==
             LessonFormat.DEFAULT && !props.hasMedia,
-        [styles.bodyDefaultMedia]:
+        [stylesMobile.bodyDefaultMediaMobile]:
+          (shouldDisplayPortrait() || matchesMobile) &&
           (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT && props.hasMedia,
+            LessonFormat.DEFAULT &&
+          props.hasMedia,
+        [stylesDesktop.bodyDefaultMedia]:
+          !shouldDisplayPortrait() &&
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.DEFAULT &&
+          props.hasMedia,
+        [stylesDesktop.bodySurveySaysNoMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && !props.hasMedia,
+        [stylesDesktop.bodySurveySaysMedia]:
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS && props.hasMedia,
+        [stylesMobile.bodySurveySaysMediaMobile]:
+          (shouldDisplayPortrait() || matchesMobile) &&
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS &&
+          props.hasMedia,
+        [stylesMobile.noHeader_BodySurveySaysMediaMobile]:
+          (shouldDisplayPortrait() || matchesMobile) &&
+          isNoHeader() &&
+          (props.lessonFormat || LessonFormat.DEFAULT) ==
+            LessonFormat.SURVEY_SAYS &&
+          props.hasMedia,
       })}
       style={
         (props.lessonFormat || LessonFormat.DEFAULT) ==
@@ -179,7 +172,12 @@ export default function ChatThread(props: {
           : {}
       }
     >
-      <List data-cy="thread" id="thread" disablePadding={true}>
+      <List
+        data-cy="thread"
+        id="thread"
+        disablePadding={true}
+        className={stylesDesktop.chatThreadList}
+      >
         {msgs.map((message, i) => {
           return (
             <ListItem
@@ -188,11 +186,23 @@ export default function ChatThread(props: {
               disableGutters={false}
               className={message.senderId}
               classes={{
-                root: styles.root,
+                root: stylesDesktop.root,
               }}
-              style={{ paddingRight: chatIcon(message.type) ? 24 : 16 }}
+              style={{
+                paddingRight: chatIcon(message.type) ? 24 : 16,
+                height: shouldDisplayPortrait() ? "auto" : "auto",
+                width: shouldDisplayPortrait()
+                  ? "90% !important"
+                  : "100% !important",
+                maxWidth: shouldDisplayPortrait()
+                  ? "90% !important"
+                  : "100% !important",
+                marginRight: "20px",
+              }}
             >
-              <ListItemText primary={message.text} />
+              <div style={{ padding: "10px 20px 10px 10px" }}>
+                <ListItemText primary={message.text} />
+              </div>
               {chatIcon(message.type)}
             </ListItem>
           );
