@@ -52,6 +52,7 @@
     "develop": "npx gatsby develop",
     "format": "prettier --write '**/*.{js,jsx,json,ts,tsx}'",
     "start": "npm run develop",
+    "ci": "npm ci",
     "serve": "gatsby serve --prefix-paths",
     "deps:update": "ncu -u",
     "test": "echo 'all tests currently cypress'",

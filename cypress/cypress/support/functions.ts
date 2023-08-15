@@ -151,7 +151,7 @@ export function cyMockXapi(
   } = {}
 ): void {
   params = params || {};
-  cy.intercept("/cmi5/xapi/**", (req) => {
+  cy.intercept("**/xapi/**", (req) => {
     req.alias = "cmi5/xapi";
     req.reply(
       staticResponse({
