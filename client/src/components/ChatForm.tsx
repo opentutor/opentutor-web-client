@@ -191,10 +191,11 @@ const ChatForm = (props: {
 const useStyles = makeStyles({ name: { ChatForm } })(() => ({
   chatboxRoot: {
     width: "90%",
-    maxWidth: 400,
+    maxWidth: "90%",
     marginLeft: "auto",
     marginRight: "auto",
     position: "relative",
+    marginTop: 10,
   },
   button: {
     // transition: 'color .01s',

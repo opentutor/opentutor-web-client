@@ -8,7 +8,6 @@ import {
   cyMockDefault,
   cyMockDialog,
   cyMockImage,
-  cySetup,
   mockGQL,
 } from "../support/functions";
 import { lessonInfo } from "../fixtures/lesson-graphql-default";

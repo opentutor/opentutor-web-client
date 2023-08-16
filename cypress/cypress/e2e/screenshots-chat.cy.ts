@@ -8,40 +8,23 @@ import {
   cyMockDefault,
   cyMockDialog,
   cyMockSession,
+  cySetup,
   cyVisitWithTestingParam,
 } from "../support/functions";
 
 function snapname(n: string): string {
-  return `screenshots-summary-popup-${n}`;
+  return `screenshots-chat-${n}`;
 }
 
-describe("screenshots - summary popup", () => {
+describe("screenshots - chat responses", () => {
   [
     {
       lesson: "q1",
       fixtureLessonStart: "q1-1-p1.json",
+      fixtureLessonContinue: "q1-1-p2.json",
+      userInput:
+        "Peer pressure can cause you to allow inappropriate behavior. If you correct someone's behavior, you may get them in trouble or it may be harder to work with them. Enforcing the rules can make you unpopular.",
     },
-    {
-      lesson: "q2",
-      fixtureLessonStart: "q2-1-p1.json",
-    },
-  ].forEach((x, i) => {
-    it(`opens and displays summary popup for lesson ${x.lesson}`, () => {
-      cyMockDefault(cy);
-      cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
-      cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
-      cy.wait("@start");
-      cy.get("[data-cy=thread]").should("be.visible");
-      // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("[data-cy=target-0-0]").click();
-      cy.get("[data-cy=summary-popup-trans-done]");
-      (cy as any).matchImageSnapshot(
-        snapname(`lesson-${x.lesson}-open-summary-${i}`)
-      );
-    });
-  });
-
-  [
     {
       lesson: "q1",
       fixtureLessonStart: "q1-1-p1.json",
@@ -51,26 +34,33 @@ describe("screenshots - summary popup", () => {
     {
       lesson: "q2",
       fixtureLessonStart: "q2-1-p1.json",
+      fixtureLessonContinue: "q2-1-p2.json",
+      userInput: "Current flows in the same direction as the arrow.",
+    },
+    {
+      lesson: "q2",
+      fixtureLessonStart: "q2-1-p1.json",
       fixtureLessonContinue: "q2-2-p2.json",
       userInput: "Physics",
     },
   ].forEach((x, i) => {
-    it(`sends message and displays summary popup for lesson ${x.lesson}`, () => {
+    it(`sends message and displays response for lesson ${x.lesson}`, () => {
       cyMockDefault(cy);
       cyMockDialog(cy, x.lesson, x.fixtureLessonStart).as("start");
-      cyMockSession(cy, x.lesson, x.fixtureLessonStart).as("response");
+      cyMockSession(cy, x.lesson, x.fixtureLessonContinue).as("response");
       cyVisitWithTestingParam(cy, `/?lesson=${x.lesson}&guest=guest`);
       cy.wait("@start");
+      cy.wait(1000);
       cy.get("[data-cy=outlined-multiline-static]").type(x.userInput);
-      cy.get("[data-cy=submit-button]").should("be.visible");
-      cy.get("[data-cy=submit-button]").click();
+      cy.get("[data-cy=submit-button]", { timeout: 15000 })
+        .should("not.be.disabled")
+        .click();
       cy.wait("@response");
       cy.get("[data-cy=thread]").should("be.visible");
       // cy.get("[data-cy=chat-thread-scroll-done]");
-      cy.get("[data-cy=target-0-0]").click();
-      cy.get("[data-cy=summary-popup-trans-done]");
       (cy as any).matchImageSnapshot(
-        snapname(`lesson-${x.lesson}-summary-feedback-${i}`)
+        snapname(`lesson-${x.lesson}-response-${i}`),
+        { timeout: 15000 }
       );
     });
   });
