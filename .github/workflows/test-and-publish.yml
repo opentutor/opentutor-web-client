@@ -5,9 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: "18.13"
+          node-version: 18.13
       - name: Install
         run: npm ci
       - name: Run format test
@@ -26,24 +26,31 @@ jobs:
     name: test e2e
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: build + run app in docker-compose
-        run: docker-compose up -d
-      - name: check services running
-        run: docker ps
-      - name: cypress - run tests
-        run: make test-e2e-exec
-      - name: cypress failed - retrieve image diffs
-        run: |
-          make test-e2e-image-snapshots-copy
-          mkdir -p cypress/cypress/snapshots/snapshots/__diff_output__
-        if: ${{ failure() }}
-      - name: cypress failed - upload image-diff artifacts2
-        uses: actions/upload-artifact@v1
-        if: ${{ failure() }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
         with:
-          name: snapshot_failed_diffs
-          path: cypress/cypress/snapshots/snapshots/__diff_output__
+          node-version: 18.13
+      - name: Install client
+        run: cd client && npm ci --legacy-peer-deps
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: cypress
+          install: true
+          runTests: true
+          install-command: npm ci --legacy-peer-deps
+          build: npm run --prefix ../client build
+          start: npm run --prefix ../client start
+          wait-on: 'npx wait-on --timeout 60000 http://localhost:8000'
+      # - name: If Cypress failed, retrieve image diffs
+      #   run: make test-e2e-image-snapshots-copy && mkdir -p client/cypress/snapshots/snapshot_failed_diffs
+      #   if: ${{ failure() }}
+      # - name: If Cypress failed, upload image-diff artifacts
+      #   uses: actions/upload-artifact@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     name: snapshot_failed_diffs
+      #     path: client/cypress/snapshots
   publish-check:
     name: publish check
     needs:

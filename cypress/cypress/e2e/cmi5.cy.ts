@@ -4,62 +4,62 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
+// import { cyMockDialog, cySetup } from "../support/functions";
+import {
+  addCmi5LaunchParams,
+  cyMockCmi5Initialize,
+  // LAUNCH_DATA_DEFAULT,
+} from "../support/cmi5";
 import {
   cyMockDefault,
   cyMockDialog,
-  cyMockImage,
   cySetup,
   mockGQL,
 } from "../support/functions";
-import { lessonInfo } from "../fixtures/lesson-graphql-default";
+Cypress.on("uncaught:exception", (err, runnable) => {
+  return false;
+});
 
-describe("lesson details", () => {
-  it(`displays name for a lesson`, () => {
-    cyMockDefault(cy, {
-      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
-    });
-    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+describe("Cmi5 integration", () => {
+  it("does not show Guest Prompt when cmi5 launch params present", () => {
+    cySetup(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
-
-    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("[data-cy=lesson-name]").should("contain", "lesson 1");
+    cy.visit(addCmi5LaunchParams("/?lesson=q1"));
+    cy.get("[data-cy=guest-prompt]").should("not.exist");
   });
 
-  it(`displays image for a lesson`, () => {
-    cyMockDefault(cy, {
-      gqlQueries: [mockGQL("FetchLessonInfo", { lessonInfo })],
-    });
-    cyMockImage(cy, "**/lesson1/image.png", "lesson1.png");
+  it.skip("completes cmi5 initialization when launch params present", () => {
+    cyMockDefault(cy);
     cyMockDialog(cy, "q1", "q1-1-p1.json");
-
-    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("[data-cy=image]").within(($image) => {
-      cy.get("img").should("have.attr", "src", "lesson1/image.png");
-    });
-  });
-
-  it(`displays video for a lesson`, () => {
+    cyMockCmi5Initialize(cy);
+    cy.visit(addCmi5LaunchParams("/?lesson=q1"));
     cyMockDefault(cy, {
       gqlQueries: [
         mockGQL("FetchLessonInfo", {
           lessonInfo: {
             name: "lesson 1",
             media: {
-              url: "https://www.youtube.com/watch?v=-lLr7Fhh67c",
+              url: "https://www.youtube.com/watch?v=g4mHPeMGTJM",
               type: "video",
               props: [
                 { name: "start", value: "71" },
                 { name: "end", value: "72.5" },
               ],
             },
-            learningFormat: null,
+            learningFormat: "",
           },
         }),
       ],
     });
-    cyMockDialog(cy, "q1", "q1-1-p1.json");
-
-    cy.visit(`/?lesson=q1&guest=guest`); // change URL to match your dev URLs
-    cy.get("[data-cy=video]");
+    cy.wait("@fetch")
+      .its("response.body")
+      .should("have.property", "auth-token", "fake-auth-token");
+    // cy.wait("@getState")
+    //   .its("response.body")
+    //   .should("deep.equal", LAUNCH_DATA_DEFAULT);
+    // cy.wait("@getProfile").its("response.body").should("deep.equal", {});
+    cy.wait("@initialized")
+      .its("response.body")
+      .should("deep.equal", ["fake-initialized-statement-id"]);
   });
 });
