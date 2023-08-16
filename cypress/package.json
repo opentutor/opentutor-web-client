@@ -22,6 +22,6 @@
     "cy:verify": "npx cypress verify"
   },
   "devDependencies": {
-    "@simonsmith/cypress-image-snapshot": "^7.0.0"
+    "@simonsmith/cypress-image-snapshot": "^8.0.2"
   }
 }
