@@ -179,13 +179,16 @@ function App(props: {
 
   React.useEffect(() => {
     let mounted = true;
+    if (!username) {
+      return;
+    }
     const fetchData = async (): Promise<void> => {
       const response = await createSession(lesson || "", username);
       if (!mounted) {
         return;
       }
       if (response.status !== 200) {
-        setErrorProps(errorForStatus(response.status));
+        setErrorProps(errorForStatus(response.status, `${response.data}`));
         handleErrorOpen();
       } else {
         const dialogData = response.data as DialogData;
@@ -216,7 +219,7 @@ function App(props: {
     return () => {
       mounted = false;
     };
-  }, []); //Watches for vars in array to make updates. If none only updates on comp. mount
+  }, [username]); //Watches for vars in array to make updates. If none only updates on comp. mount
 
   React.useEffect(() => {
     let mounted = true;

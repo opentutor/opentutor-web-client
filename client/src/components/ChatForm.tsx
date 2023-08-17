@@ -12,14 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
-import {
-  ChatMsg,
-  DialogData,
-  DialogError,
-  ErrorData,
-  SessionData,
-  Target,
-} from "types";
+import { ChatMsg, DialogData, ErrorData, SessionData, Target } from "types";
 
 interface OutboundChat {
   text: string;
@@ -51,7 +44,7 @@ const ChatForm = (props: {
   });
 
   useEffect(() => {
-    if (!props.sessionAlive) {
+    if (!props.sessionAlive || !outboundChat.text) {
       return;
     }
     async function fetchData(): Promise<void> {
@@ -64,7 +57,7 @@ const ChatForm = (props: {
         });
         if (response.status !== 200) {
           props.setErrorProps(
-            errorForStatus(response.status, (response.data as DialogError).data)
+            errorForStatus(response.status, `${response.data}`)
           );
           props.handleErrorOpen();
         } else {
