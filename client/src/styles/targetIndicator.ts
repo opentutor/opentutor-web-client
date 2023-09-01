@@ -4,28 +4,46 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-// ***********************************************************
-// This example plugins/index.js can be used to load plugins
-//
-// You can change the location of this file or turn off loading
-// the plugins file with the 'pluginsFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/plugins-guide
-// ***********************************************************
+import { makeStyles } from "tss-react/mui";
+import { Theme } from "@mui/material";
 
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
-
-/// <reference types="cypress" />
-
-/**
- * @type {Cypress.PluginConfig}
- */
-const {
-  addMatchImageSnapshotPlugin,
-} = require("cypress-image-snapshot/plugin");
-
-module.exports = (on, config) => {
-  addMatchImageSnapshotPlugin(on, config);
-};
+export const targetIndicatorStyles = makeStyles()((theme: Theme) => ({
+  placeholder: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingTop: 22,
+    color: theme.palette.background.default,
+  },
+  released: {
+    marginTop: "-30",
+    transform: "translate(0%, -60%)",
+    padding: 10,
+    height: 10,
+    width: "140%",
+  },
+  censored: {
+    borderRadius: 10,
+    background: "#929fad",
+    padding: 10,
+    height: 10,
+    width: "150%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  targetGrid: { width: "100%", padding: 10, boxSizing: "border-box" },
+  targetItem: {
+    width: "100%",
+    display: "flex",
+    padding: 5,
+    boxSizing: "border-box",
+    alignItems: "center",
+  },
+  inProgress: {
+    color: "#DC143C",
+  },
+  complete: {
+    color: "#3CB371",
+  },
+}));

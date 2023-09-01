@@ -6,70 +6,31 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React from "react";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
-import { makeStyles } from "tss-react/mui";
 import { Grid, Typography } from "@mui/material";
 import TargetIcon from "components/TargetIcon";
 import LockIcon from "@mui/icons-material/Lock";
 import { Target } from "types";
-
-const usePlaceholderStyles = makeStyles({ name: { TargetIndicator } })(
-  (theme) => ({
-    placeholder: {
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingBottom: 10,
-      paddingTop: 22,
-      color: theme.palette.background.default,
-    },
-  })
-);
-
-const useStyles = makeStyles({ name: { SummaryIndicator } })(() => ({
-  released: {
-    marginTop: "-30",
-    transform: "translate(0%, -60%)",
-    padding: 10,
-    height: 10,
-    width: "140%",
-  },
-  censored: {
-    borderRadius: 10,
-    background: "#929fad",
-    padding: 10,
-    height: 10,
-    width: "150%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  targetGrid: { width: "100%", padding: 10, boxSizing: "border-box" },
-  targetItem: {
-    width: "100%",
-    display: "flex",
-    padding: 5,
-    boxSizing: "border-box",
-    alignItems: "center",
-  },
-  inProgress: {
-    color: "#DC143C",
-  },
-  complete: {
-    color: "#3CB371",
-  },
-}));
+import { targetIndicatorStyles } from "styles/targetIndicator";
 
 export function TargetIndicator(props: {
   targets: Target[];
   showSummary: () => void;
 }): JSX.Element {
-  const { classes: styles } = usePlaceholderStyles();
+  const { classes: styles } = targetIndicatorStyles();
   if (props.targets.length === 0) {
     return (
       <TrackChangesIcon id={`placeholder`} className={styles.placeholder} />
     );
   }
   return (
-    <div data-cy="targets">
+    <div
+      data-cy="targets"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {props.targets.map((target, index) => {
         return (
           <TargetIcon
@@ -85,7 +46,7 @@ export function TargetIndicator(props: {
 }
 
 export function SummaryIndicator(props: { targets: Target[] }): JSX.Element {
-  const { classes: styles } = useStyles();
+  const { classes: styles } = targetIndicatorStyles();
   return (
     <Grid container className={styles.targetGrid} data-cy="summary-targets">
       {props.targets.map((target, index) => {

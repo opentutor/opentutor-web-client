@@ -105,6 +105,9 @@ export function cyInterceptGraphQL(cy, mocks: MockGraphQLQuery[]): void {
   }
   cy.intercept("/graphql", (req) => {
     const { body } = req;
+    if (!body.query) {
+      return;
+    }
     const queryBody = body.query.replace(/\s+/g, " ").replace("\n", "").trim();
     let handled = false;
     for (const mock of mocks) {
@@ -151,7 +154,7 @@ export function cyMockXapi(
   } = {}
 ): void {
   params = params || {};
-  cy.intercept("/cmi5/xapi/**", (req) => {
+  cy.intercept("**/xapi/**", (req) => {
     req.alias = "cmi5/xapi";
     req.reply(
       staticResponse({

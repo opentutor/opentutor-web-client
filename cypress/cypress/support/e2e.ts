@@ -4,10 +4,16 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-declare namespace Cypress {
-  interface Chainable<Subject = any> {
-    matchImageSnapshot(value: string): Chainable<void>;
-    type(value: string): Chainable<void>;
-  }
-  interface cy extends Chainable<undefined> {}
-}
+import "cypress-fill-command";
+import { addMatchImageSnapshotCommand } from "@simonsmith/cypress-image-snapshot/command";
+
+addMatchImageSnapshotCommand();
+
+// can also add any default options to be used
+// by all instances of `matchImageSnapshot`
+addMatchImageSnapshotCommand({
+  customDiffDir: Cypress.env("CYPRESS_SNAPSHOT_DIFF_DIR"),
+  comparisonMethod: "ssim",
+  failureThreshold: 0.01,
+  failureThresholdType: "percent",
+});

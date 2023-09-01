@@ -9,23 +9,28 @@ import ReactPlayer from "react-player/youtube";
 import clsx from "clsx";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ReplayIcon from "@mui/icons-material/Replay";
-import { makeStyles } from "tss-react/mui";
-import { IconButton } from "@mui/material";
-import { Typography } from "@mui/material";
+import { IconButton, Typography, useMediaQuery } from "@mui/material";
 import { fetchLesson } from "api";
 import { Lesson, LessonFormat, Media, MediaType } from "types";
 import withLocation from "wrap-with-location";
 import ImageDialog from "./ImageDialog";
+import {
+  lessonMediaStylesDesktop,
+  lessonMediaStylesMobile,
+} from "styles/lessonMedia";
+import { shouldDisplayPortrait } from "utils";
 
 const LessonMedia = (props: {
   search: { lesson: string };
   lessonFormat: string;
 }): JSX.Element => {
-  const { classes: styles } = useStyles();
+  const { classes: stylesDesktop } = lessonMediaStylesDesktop();
+  const { classes: stylesMobile } = lessonMediaStylesMobile();
   const { lesson } = props.search;
   const [media, setMedia] = React.useState<Media | undefined>(undefined);
   const [isVideoOver, setIsVideoOver] = React.useState(false);
   const [fullscreenImage, setFullscreenImage] = React.useState(false);
+  const matchesMobile = useMediaQuery("(max-width : 600px)", { noSsr: true });
 
   const handleImageExpand = (): void => {
     setFullscreenImage(true);
@@ -62,18 +67,28 @@ const LessonMedia = (props: {
       <>
         <div
           className={clsx({
-            [styles.mediaRoot]: true,
-            [styles.mediaDefault]:
+            [stylesDesktop.mediaRoot]: true,
+            [stylesMobile.mediaDefaultMobile]:
+              (shouldDisplayPortrait() || matchesMobile) &&
               (props.lessonFormat || LessonFormat.DEFAULT) ==
-              LessonFormat.DEFAULT,
-            [styles.mediaSurveySays]:
+                LessonFormat.DEFAULT,
+            [stylesDesktop.mediaDefault]:
+              !shouldDisplayPortrait() &&
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+                LessonFormat.DEFAULT,
+
+            [stylesDesktop.mediaSurveySays]:
               (props.lessonFormat || LessonFormat.DEFAULT) ==
               LessonFormat.SURVEY_SAYS,
+            [stylesMobile.mediaSurveySaysMobile]:
+              (shouldDisplayPortrait() || matchesMobile) &&
+              (props.lessonFormat || LessonFormat.DEFAULT) ==
+                LessonFormat.SURVEY_SAYS,
           })}
         >
           <div
             data-cy="image"
-            className={styles.scroll}
+            className={stylesDesktop.scroll}
             onClick={handleImageExpand}
           >
             <div style={{ height: "100%", width: "100%" }}>
@@ -86,7 +101,7 @@ const LessonMedia = (props: {
                 }}
               />
             </div>
-            <ZoomInIcon className={styles.innerZoomOverlay} />
+            <ZoomInIcon className={stylesDesktop.innerZoomOverlay} />
           </div>
         </div>
         <ImageDialog
@@ -101,13 +116,23 @@ const LessonMedia = (props: {
     return (
       <div
         className={clsx({
-          [styles.mediaRoot]: true,
-          [styles.mediaDefault]:
+          [stylesDesktop.mediaRoot]: true,
+          [stylesMobile.mediaDefaultMobile]:
+            (shouldDisplayPortrait() || matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.DEFAULT,
-          [styles.mediaSurveySays]:
+              LessonFormat.DEFAULT,
+          [stylesDesktop.mediaDefault]:
+            (!shouldDisplayPortrait() || !matchesMobile) &&
             (props.lessonFormat || LessonFormat.DEFAULT) ==
-            LessonFormat.SURVEY_SAYS,
+              LessonFormat.DEFAULT,
+          [stylesDesktop.mediaSurveySays]:
+            (!shouldDisplayPortrait() || !matchesMobile) &&
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.SURVEY_SAYS,
+          [stylesMobile.mediaSurveySaysMobile]:
+            (shouldDisplayPortrait() || matchesMobile) &&
+            (props.lessonFormat || LessonFormat.DEFAULT) ==
+              LessonFormat.SURVEY_SAYS,
         })}
       >
         <div
@@ -140,7 +165,6 @@ const LessonMedia = (props: {
                 },
               }}
               onProgress={(player) => {
-                console.log(player);
                 if (
                   player.playedSeconds >
                   (media.props
@@ -174,7 +198,6 @@ const LessonMedia = (props: {
                     }}
                     onClick={() => {
                       setIsVideoOver(false);
-                      console.log(videoPlayer);
                       videoPlayer.current.seekTo(
                         media.props
                           ? parseFloat(getProp(media.props, "start")) || 0
@@ -199,71 +222,5 @@ const LessonMedia = (props: {
     return <></>;
   }
 };
-
-const useStyles = makeStyles({ name: { LessonMedia } })((theme) => ({
-  scroll: {
-    backgroundColor: theme.palette.primary.dark,
-    position: "relative",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    overflow: "auto",
-    whiteSpace: "nowrap",
-  },
-  image: {
-    position: "relative",
-    top: 0,
-    left: 0,
-    minWidth: 400,
-  },
-  innerZoomOverlay: {
-    position: "absolute",
-    zIndex: 1,
-    bottom: 0,
-    right: 0,
-    height: 50,
-    width: 50,
-    color: "white",
-  },
-  centerLock: {
-    position: "absolute",
-    top: "50%",
-    left: "calc(50% + 0px)",
-    transform: "translate(-50%, -50%)",
-  },
-  released: {
-    marginTop: "-30",
-    transform: "translate(0%, -60%)",
-    padding: 10,
-    height: 10,
-    width: "140%",
-  },
-  censored: {
-    borderRadius: 10,
-    background: theme.palette.primary.main,
-    color: "white",
-    padding: 10,
-    height: 10,
-    width: "calc(100% - 20px)",
-    position: "relative",
-    borderColor: "orange",
-    borderWidth: 2,
-    borderStyle: "solid",
-  },
-  survey: {
-    padding: theme.spacing(2),
-    maxWidth: 500,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  mediaRoot: {},
-  mediaDefault: {
-    height: "35%",
-  },
-  mediaSurveySays: {
-    height: "30%",
-  },
-}));
 
 export default withLocation(LessonMedia);

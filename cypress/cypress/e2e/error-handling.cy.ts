@@ -53,6 +53,7 @@ describe("Error popup", () => {
       })
     );
     cy.visit("/?lesson=q1&guest=guest");
+    cy.viewport("macbook-13");
     cy.wait(4000);
     cy.get("[data-cy=chat-msg-1]").should(
       "have.text",
