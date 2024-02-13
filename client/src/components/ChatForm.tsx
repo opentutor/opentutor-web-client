@@ -187,9 +187,13 @@ const ChatForm = (props: {
           label="Chat with OpenTutor"
           multiline
           minRows={2}
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            backgroundColor: listening ? "rgba(26, 107, 155, 0.1)" : "white",
+          }}
           value={chat}
           autoComplete="off"
+          disabled={listening}
           onChange={(e): void => setChat(e.target.value)}
           onKeyPress={onKeyPress}
         />
@@ -198,9 +202,9 @@ const ChatForm = (props: {
             <InputAdornment position="start">
               <IconButton color="primary" edge="start" onClick={toggleSTT}>
                 {listening ? (
-                  <Mic color="secondary" />
+                  <Mic color="primary" />
                 ) : (
-                  <MicOutlined color="primary" />
+                  <MicOutlined style={{ color: "gray" }} />
                 )}
               </IconButton>
             </InputAdornment>
@@ -214,7 +218,11 @@ const ChatForm = (props: {
             endIcon={<Send />}
             onClick={handleClick}
             key={`${chat.trim().length === 0 || !props.sessionAlive}`}
-            disabled={chat.trim().length === 0 || props.messageQueue.length > 0}
+            disabled={
+              chat.trim().length === 0 ||
+              props.messageQueue.length > 0 ||
+              listening
+            }
           >
             Send
           </Button>
