@@ -32,6 +32,7 @@ export const chatThreadStylesDesktop = makeStyles<{
     paddingBottom: 0,
   },
   bodyRoot: {
+    flexGrow: 1,
     paddingTop: 10,
     width: "90%",
     maxWidth: "96%",

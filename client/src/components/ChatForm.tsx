@@ -6,10 +6,18 @@ The full terms of this copyright and license should always be found in the root 
 */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "tss-react/mui";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import { ArrowForward, Mic, MicOutlined, Send } from "@mui/icons-material";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import { ChatMsg, DialogData, ErrorData, SessionData, Target } from "types";
@@ -42,6 +50,18 @@ const ChatForm = (props: {
     text: "",
     seq: 0,
   });
+  const [stt, setSTT] = React.useState<string>("");
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition();
+
+  React.useEffect(() => {
+    setChat(chat + transcript.substr(stt.length));
+    setSTT(transcript);
+  }, [transcript]);
 
   useEffect(() => {
     if (!props.sessionAlive || !outboundChat.text) {
@@ -124,6 +144,18 @@ const ChatForm = (props: {
     handleClick(e);
   }
 
+  function toggleSTT() {
+    if (listening) {
+      SpeechRecognition.stopListening();
+      resetTranscript();
+      setSTT("");
+    } else {
+      resetTranscript();
+      setSTT("");
+      SpeechRecognition.startListening();
+    }
+  }
+
   if (!props.sessionAlive) {
     return (
       <Button
@@ -132,7 +164,7 @@ const ChatForm = (props: {
         color="primary"
         size="small"
         className={styles.button}
-        endIcon={<ArrowForwardIcon />}
+        endIcon={<ArrowForward />}
         onClick={props.onSummaryOpenRequested}
         disabled={props.sessionAlive}
         key={`${props.sessionAlive}`}
@@ -143,23 +175,36 @@ const ChatForm = (props: {
   }
 
   return (
-    <form
+    <FormControl
       data-cy="chat-form"
-      noValidate
-      autoComplete="off"
-      style={{ height: 95 }}
+      variant="outlined"
+      style={{ height: 95, width: "100%" }}
     >
       <div className={styles.chatboxRoot}>
-        <TextField
+        <InputLabel>Chat with OpenTutor</InputLabel>
+        <OutlinedInput
           data-cy="outlined-multiline-static"
           label="Chat with OpenTutor"
           multiline
           minRows={2}
-          variant="outlined"
-          style={{ width: "100%", marginTop: 10 }}
+          style={{ width: "100%" }}
           value={chat}
+          autoComplete="off"
           onChange={(e): void => setChat(e.target.value)}
           onKeyPress={onKeyPress}
+          startAdornment={
+            browserSupportsSpeechRecognition ? (
+              <InputAdornment position="start">
+                <IconButton color="primary" edge="end" onClick={toggleSTT}>
+                  {listening ? (
+                    <Mic color="secondary" />
+                  ) : (
+                    <MicOutlined color="primary" />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ) : undefined
+          }
         />
         <div className={styles.innerOverlayBottomRight}>
           <Button
@@ -168,7 +213,7 @@ const ChatForm = (props: {
             color="primary"
             size="small"
             className={styles.button}
-            endIcon={<SendIcon />}
+            endIcon={<Send />}
             onClick={handleClick}
             key={`${chat.trim().length === 0 || !props.sessionAlive}`}
             disabled={chat.trim().length === 0 || props.messageQueue.length > 0}
@@ -177,7 +222,7 @@ const ChatForm = (props: {
           </Button>
         </div>
       </div>
-    </form>
+    </FormControl>
   );
 };
 
