@@ -57,6 +57,8 @@ export const appStylesDesktop = makeStyles()((theme: Theme) => ({
     alignItems: "center",
   },
   chatThreadInputFormContainer: {
+    display: "flex",
+    flexDirection: "column",
     position: "relative",
     width: "40%",
     height: "100%",
@@ -82,6 +84,8 @@ export const appStylesMobile = makeStyles()((theme) => ({
     flexDirection: "column",
   },
   appRoot: {
+    display: "flex",
+    flexDirection: "column",
     width: "100%",
     boxSizing: "border-box",
   },
