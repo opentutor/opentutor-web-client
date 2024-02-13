@@ -187,26 +187,28 @@ const ChatForm = (props: {
           label="Chat with OpenTutor"
           multiline
           minRows={2}
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            backgroundColor: listening ? "rgba(26, 107, 155, 0.1)" : "white",
+          }}
           value={chat}
           autoComplete="off"
+          disabled={listening}
           onChange={(e): void => setChat(e.target.value)}
           onKeyPress={onKeyPress}
-          startAdornment={
-            browserSupportsSpeechRecognition ? (
-              <InputAdornment position="start">
-                <IconButton color="primary" edge="end" onClick={toggleSTT}>
-                  {listening ? (
-                    <Mic color="secondary" />
-                  ) : (
-                    <MicOutlined color="primary" />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ) : undefined
-          }
         />
         <div className={styles.innerOverlayBottomRight}>
+          {browserSupportsSpeechRecognition ? (
+            <InputAdornment position="start">
+              <IconButton color="primary" edge="start" onClick={toggleSTT}>
+                {listening ? (
+                  <Mic color="primary" />
+                ) : (
+                  <MicOutlined style={{ color: "gray" }} />
+                )}
+              </IconButton>
+            </InputAdornment>
+          ) : undefined}
           <Button
             data-cy="submit-button"
             variant="contained"
@@ -216,7 +218,11 @@ const ChatForm = (props: {
             endIcon={<Send />}
             onClick={handleClick}
             key={`${chat.trim().length === 0 || !props.sessionAlive}`}
-            disabled={chat.trim().length === 0 || props.messageQueue.length > 0}
+            disabled={
+              chat.trim().length === 0 ||
+              props.messageQueue.length > 0 ||
+              listening
+            }
           >
             Send
           </Button>
@@ -239,6 +245,9 @@ const useStyles = makeStyles({ name: { ChatForm } })(() => ({
     // transition: 'color .01s',
   },
   innerOverlayBottomRight: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     position: "absolute",
     zIndex: 1,
     bottom: 7,
