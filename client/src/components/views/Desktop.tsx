@@ -19,19 +19,17 @@ import { LessonFormat } from "types";
 import { isNoHeader, shouldDisplayPortrait } from "utils";
 import { appStylesDesktop } from "styles/app";
 import { AppProps } from "components/App";
+import withLocation from "wrap-with-location";
 
-export default function Desktop(props: AppProps): JSX.Element {
+function Desktop(props: AppProps): JSX.Element {
   const { classes: styles } = appStylesDesktop();
   const {
-    noheader,
     isMobile,
-    showHeader,
     lessonFormat,
     hasMedia,
     targets,
     messages,
     messageQueue,
-    lesson,
     username,
     session,
     sessionAlive,
@@ -51,6 +49,7 @@ export default function Desktop(props: AppProps): JSX.Element {
     handleErrorOpen,
     handleSessionDone,
   } = props;
+  const { lesson, noheader } = props.search;
 
   return (
     <>
@@ -64,9 +63,9 @@ export default function Desktop(props: AppProps): JSX.Element {
           id="app-content"
           className={clsx({
             [styles.appRoot]: true,
-            [styles.appRootDefault]: showHeader && !isMobile,
-            [styles.appRootSuperDenseHeader]: showHeader && isMobile,
-            [styles.appRootNoHeader]: !showHeader,
+            [styles.appRootDefault]: !noheader && !isMobile,
+            [styles.appRootSuperDenseHeader]: !noheader && isMobile,
+            [styles.appRootNoHeader]: noheader,
           })}
         >
           {lessonFormat === LessonFormat.SURVEY_SAYS ? (
@@ -102,7 +101,6 @@ export default function Desktop(props: AppProps): JSX.Element {
                   expectationCount={targets.length}
                 />
                 <ChatForm
-                  lesson={lesson}
                   username={username}
                   messages={messages}
                   messageQueue={messageQueue}
@@ -172,3 +170,5 @@ export default function Desktop(props: AppProps): JSX.Element {
     </>
   );
 }
+
+export default withLocation(Desktop);

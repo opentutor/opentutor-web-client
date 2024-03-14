@@ -28,9 +28,11 @@ import Mobile from "./views/Mobile";
 import Desktop from "./views/Desktop";
 
 export interface AppProps {
-  noheader: string;
+  search: {
+    noheader: string;
+    lesson: string;
+  };
   isMobile: boolean;
-  showHeader: boolean;
   lessonFormat: string;
   hasMedia: boolean;
   targets: Target[];
@@ -58,9 +60,9 @@ export interface AppProps {
 }
 
 function App(props: {
-  search: { lesson: string; guest: string; actor: string; noheader: string };
+  search: { lesson: string; guest: string; actor: string };
 }): JSX.Element {
-  const { lesson, guest, actor, noheader } = props.search;
+  const { lesson, guest, actor } = props.search;
   const username = actor ? JSON.parse(actor).name : guest;
   const [sessionSummary, setSessionSummary] = React.useState<SessionSummary>({
     showSummary: false,
@@ -304,24 +306,16 @@ function App(props: {
     setMessageQueueTimer(0);
   }
 
-  let showHeader = true;
-  if (noheader !== undefined) {
-    showHeader = false;
-  }
-
   return (
     <div>
       {shouldDisplayPortrait() || isMobile || matchesMobile ? (
         <Mobile
-          noheader={noheader}
           isMobile={isMobile}
-          showHeader={showHeader}
           lessonFormat={lessonFormat}
           hasMedia={hasMedia}
           targets={targets}
           messages={messages}
           messageQueue={messageQueue}
-          lesson={lesson}
           username={username}
           session={session}
           sessionAlive={sessionAlive}
@@ -343,15 +337,12 @@ function App(props: {
         />
       ) : (
         <Desktop
-          noheader={noheader}
           isMobile={isMobile}
-          showHeader={showHeader}
           lessonFormat={lessonFormat}
           hasMedia={hasMedia}
           targets={targets}
           messages={messages}
           messageQueue={messageQueue}
-          lesson={lesson}
           username={username}
           session={session}
           sessionAlive={sessionAlive}

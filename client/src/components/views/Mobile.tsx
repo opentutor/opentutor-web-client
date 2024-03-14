@@ -18,19 +18,17 @@ import HeaderBar from "components/HeaderBar";
 import { LessonFormat } from "types";
 import { appStylesMobile } from "styles/app";
 import { AppProps } from "components/App";
+import withLocation from "wrap-with-location";
 
-export default function Mobile(props: AppProps): JSX.Element {
+function Mobile(props: AppProps): JSX.Element {
   const { classes: styles } = appStylesMobile();
   const {
-    noheader,
     isMobile,
-    showHeader,
     lessonFormat,
     hasMedia,
     targets,
     messages,
     messageQueue,
-    lesson,
     username,
     session,
     sessionAlive,
@@ -50,6 +48,7 @@ export default function Mobile(props: AppProps): JSX.Element {
     handleErrorOpen,
     handleSessionDone,
   } = props;
+  const { noheader } = props.search;
 
   return (
     <>
@@ -63,9 +62,9 @@ export default function Mobile(props: AppProps): JSX.Element {
           id="app-content"
           className={clsx({
             [styles.appRoot]: true,
-            [styles.appRootDefault]: showHeader && !isMobile,
-            [styles.appRootSuperDenseHeader]: showHeader && isMobile,
-            [styles.appRootNoHeader]: !showHeader,
+            [styles.appRootDefault]: !noheader && !isMobile,
+            [styles.appRootSuperDenseHeader]: !noheader && isMobile,
+            [styles.appRootNoHeader]: noheader,
           })}
         >
           <LessonMedia lessonFormat={lessonFormat} />
@@ -89,7 +88,6 @@ export default function Mobile(props: AppProps): JSX.Element {
             expectationCount={targets.length}
           />
           <ChatForm
-            lesson={lesson}
             username={username}
             messages={messages}
             messageQueue={messageQueue}
@@ -124,3 +122,5 @@ export default function Mobile(props: AppProps): JSX.Element {
     </>
   );
 }
+
+export default withLocation(Mobile);

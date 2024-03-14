@@ -4,7 +4,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -21,6 +21,7 @@ import { ArrowForward, Mic, MicOutlined, Send } from "@mui/icons-material";
 import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import { ChatMsg, DialogData, ErrorData, SessionData, Target } from "types";
+import withLocation from "wrap-with-location";
 
 interface OutboundChat {
   text: string;
@@ -28,19 +29,19 @@ interface OutboundChat {
 }
 
 const ChatForm = (props: {
-  lesson: string;
+  search: { lesson: string; nostt: string };
   username: string;
   messages: { senderId: string; type: string; text: string }[];
   messageQueue: { senderId: string; type: string; text: string }[];
+  session: SessionData;
+  sessionAlive: boolean;
   setMessages: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
   setMessageQueue: React.Dispatch<React.SetStateAction<ChatMsg[]>>;
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
-  session: SessionData;
   setSession: React.Dispatch<React.SetStateAction<SessionData>>;
   setErrorProps: React.Dispatch<React.SetStateAction<ErrorData>>;
   handleErrorOpen: () => void;
   handleSessionDone: (session: SessionData) => void;
-  sessionAlive: boolean;
   setSessionAlive: React.Dispatch<React.SetStateAction<boolean>>;
   onSummaryOpenRequested: () => void;
 }): JSX.Element => {
@@ -63,14 +64,14 @@ const ChatForm = (props: {
     setSTT(transcript);
   }, [transcript]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!props.sessionAlive || !outboundChat.text) {
       return;
     }
     async function fetchData(): Promise<void> {
       if (props.session.sessionHistory !== "") {
         const response = await continueSession({
-          lesson: props.lesson,
+          lesson: props.search.lesson,
           username: props.username,
           session: props.session,
           outboundChat: outboundChat.text,
@@ -198,7 +199,7 @@ const ChatForm = (props: {
           onKeyPress={onKeyPress}
         />
         <div className={styles.innerOverlayBottomRight}>
-          {browserSupportsSpeechRecognition ? (
+          {browserSupportsSpeechRecognition && !props.search.nostt ? (
             <InputAdornment position="start">
               <IconButton color="primary" edge="start" onClick={toggleSTT}>
                 {listening ? (
@@ -255,4 +256,4 @@ const useStyles = makeStyles({ name: { ChatForm } })(() => ({
   },
 }));
 
-export default ChatForm;
+export default withLocation(ChatForm);
