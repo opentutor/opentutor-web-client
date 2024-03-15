@@ -9,12 +9,14 @@ import React, { useEffect, useState } from "react";
 import Cmi5 from "@xapi/cmi5";
 import App from "components/App";
 import GuestPrompt from "components/GuestPrompt";
-import withLocation from "wrap-with-location";
 
-const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
-  const [guest, setGuest] = useState(props.search.guest);
+const IndexPage = (): JSX.Element => {
+  const [guest, setGuest] = useState<string>();
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const guest = urlParams.get("guest");
+    setGuest(guest || undefined);
     if (Cmi5.isCmiAvailable) {
       Cmi5.instance.initialize();
     }
@@ -54,4 +56,4 @@ const IndexPage = (props: { search: { guest: string } }): JSX.Element => {
   );
 };
 
-export default withLocation(IndexPage);
+export default IndexPage;
