@@ -97,10 +97,10 @@ export default function TargetIcon(props: {
                 [styles.circleProgress]: true,
                 [styles.completeSatisfied]:
                   props.target.status === "complete" &&
-                  props.target.score === 1,
+                  props.target.achieved,
                 [styles.completeUnsatisfied]:
                   props.target.status === "complete" &&
-                  props.target.score !== 1,
+                  !props.target.achieved,
                 [styles.default]: props.target.status !== "complete",
               })}
             />
