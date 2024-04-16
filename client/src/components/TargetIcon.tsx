@@ -96,11 +96,9 @@ export default function TargetIcon(props: {
               className={clsx({
                 [styles.circleProgress]: true,
                 [styles.completeSatisfied]:
-                  props.target.status === "complete" &&
-                  props.target.score === 1,
+                  props.target.status === "complete" && props.target.achieved,
                 [styles.completeUnsatisfied]:
-                  props.target.status === "complete" &&
-                  props.target.score !== 1,
+                  props.target.status === "complete" && !props.target.achieved,
                 [styles.default]: props.target.status !== "complete",
               })}
             />
