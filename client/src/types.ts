@@ -81,6 +81,7 @@ export interface SessionData {
   previousSystemResponse: string[];
   dialogState: DialogState;
   hash: string;
+  score: number;
 }
 
 export interface DialogMsg {
