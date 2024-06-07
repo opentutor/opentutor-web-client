@@ -108,7 +108,10 @@ const ChatForm = (props: {
           if (dialogData.completed) {
             props.setSessionAlive(false);
           }
-          props.setSession(dialogData.sessionInfo);
+          props.setSession({
+            ...dialogData.sessionInfo,
+            score: dialogData.score,
+          });
         }
       }
     }

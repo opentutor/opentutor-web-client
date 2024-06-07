@@ -15,7 +15,6 @@ import {
   ChatMsg,
   DialogData,
   ErrorData,
-  ExpectationData,
   Lesson,
   LessonFormat,
   SessionData,
@@ -81,6 +80,7 @@ function App(props: {
       hints: false,
     },
     hash: "",
+    score: 0,
   });
   const [messages, setMessages] = React.useState<ChatMsg[]>([]);
   const [messageQueue, setMessageQueue] = React.useState<ChatMsg[]>([]);
@@ -118,13 +118,7 @@ function App(props: {
             1000 // at least 1 second
           )
         : undefined,
-      score:
-        session.dialogState.expectationData.reduce(
-          (total: number, exp: ExpectationData) => {
-            return total + (exp.satisfied ? 1 : exp.score);
-          },
-          0
-        ) / targets.length,
+      score: session.score,
     });
   }
 
@@ -194,7 +188,10 @@ function App(props: {
         handleErrorOpen();
       } else {
         const dialogData = response.data as DialogData;
-        setSession(dialogData.sessionInfo);
+        setSession({
+          ...dialogData.sessionInfo,
+          score: dialogData.score,
+        });
         setMessageQueue([
           ...messageQueue,
           ...dialogData.response.map((msg) => {
@@ -287,13 +284,7 @@ function App(props: {
     if (!sessionAlive) {
       setSessionSummary({
         ...sessionSummary,
-        score:
-          session.dialogState.expectationData.reduce(
-            (total: number, exp: ExpectationData) => {
-              return total + (exp.satisfied ? 1 : exp.score);
-            },
-            0
-          ) / targets.length,
+        score: session.score,
       });
       if (messageQueue.length === 0 && !messageQueueTimer) {
         handleSessionDone(session);
