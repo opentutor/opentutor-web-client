@@ -11,6 +11,8 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import {
   Button,
+  DialogActions,
+  Divider,
   FormControl,
   IconButton,
   InputAdornment,
@@ -162,19 +164,25 @@ const ChatForm = (props: {
 
   if (!props.sessionAlive) {
     return (
-      <Button
-        data-cy="continue-button"
-        variant="contained"
-        color="primary"
-        size="small"
-        className={styles.button}
-        endIcon={<ArrowForward />}
-        onClick={props.onSummaryOpenRequested}
-        disabled={props.sessionAlive}
-        key={`${props.sessionAlive}`}
+      <DialogActions
+        style={{
+          borderTopColor: "#e4e4e4",
+          borderTopStyle: "solid",
+          borderTopWidth: 1,
+        }}
       >
-        Complete
-      </Button>
+        <Button
+          data-cy="continue-button"
+          color="primary"
+          variant="contained"
+          endIcon={<ArrowForward />}
+          onClick={props.onSummaryOpenRequested}
+          disabled={props.sessionAlive}
+          key={`${props.sessionAlive}`}
+        >
+          Complete
+        </Button>
+      </DialogActions>
     );
   }
 
