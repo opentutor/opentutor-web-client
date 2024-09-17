@@ -12,7 +12,6 @@ import SpeechRecognition, {
 import {
   Button,
   DialogActions,
-  Divider,
   FormControl,
   IconButton,
   InputAdornment,
