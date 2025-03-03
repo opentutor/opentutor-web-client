@@ -292,6 +292,16 @@ function App(props: {
     }
   }, [sessionAlive, messageQueue, messageQueueTimer]);
 
+  React.useEffect(() => {
+    if (
+      !sessionAlive &&
+      sessionSummary.score !== undefined &&
+      sessionSummary.sendResultsPending === undefined
+    ) {
+      sendCmi5Results();
+    }
+  }, [sessionAlive, sessionSummary.score]);
+
   async function queue(ms: number): Promise<void> {
     await new Promise((res) => setTimeout(res, ms));
     setMessageQueueTimer(0);
