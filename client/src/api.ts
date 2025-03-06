@@ -5,6 +5,7 @@ Permission to use, copy, modify, and distribute this software and its documentat
 The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 */
 import axios, { AxiosResponse } from "axios";
+import { MAX_INPUT_LENGTH } from "components/ChatForm";
 import {
   Lesson,
   FetchLesson,
@@ -98,7 +99,7 @@ export async function continueSession(props: {
       `${DIALOG_ENDPOINT}${props.lesson}/session`,
       {
         sessionInfo: props.session,
-        message: props.outboundChat,
+        message: props.outboundChat.slice(0, MAX_INPUT_LENGTH),
         username: props.username,
       }
     );
