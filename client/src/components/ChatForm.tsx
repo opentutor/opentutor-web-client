@@ -13,6 +13,7 @@ import {
   Button,
   DialogActions,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -23,11 +24,14 @@ import { continueSession } from "api";
 import { errorForStatus } from "components/ErrorConfig";
 import { ChatMsg, DialogData, ErrorData, SessionData, Target } from "types";
 import withLocation from "wrap-with-location";
+import { TextTruncationPopop } from "./Chat/text-truncation-warning";
 
 interface OutboundChat {
   text: string;
   seq: number;
 }
+
+export const MAX_INPUT_LENGTH = 300;
 
 const ChatForm = (props: {
   search: { lesson: string; nostt: string };
@@ -53,12 +57,15 @@ const ChatForm = (props: {
     seq: 0,
   });
   const [stt, setSTT] = React.useState<string>("");
+  const textWillTruncate = chat.length > MAX_INPUT_LENGTH;
   const {
     transcript,
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
   } = useSpeechRecognition();
+
+  const [showTruncationPopup, setShowTruncationPopup] = useState(false);
 
   React.useEffect(() => {
     setChat(chat + transcript.substr(stt.length));
@@ -121,6 +128,14 @@ const ChatForm = (props: {
 
   function handleClick(e: React.SyntheticEvent<Element>): void {
     e.preventDefault();
+    if (textWillTruncate) {
+      setShowTruncationPopup(true);
+      return;
+    }
+    sendMessage();
+  }
+
+  function sendMessage(): void {
     if (chat.length > 0) {
       props.setMessages([
         ...props.messages,
@@ -136,6 +151,10 @@ const ChatForm = (props: {
 
   function onKeyPress(e: React.KeyboardEvent<Element>): void {
     if (e.key !== "Enter") {
+      return;
+    }
+    if (showTruncationPopup) {
+      setShowTruncationPopup(true);
       return;
     }
     e.preventDefault();
@@ -186,60 +205,80 @@ const ChatForm = (props: {
   }
 
   return (
-    <FormControl
-      data-cy="chat-form"
-      variant="outlined"
-      style={{ height: 95, width: "100%" }}
-    >
-      <div className={styles.chatboxRoot}>
-        <InputLabel>Chat with OpenTutor</InputLabel>
-        <OutlinedInput
-          data-cy="outlined-multiline-static"
-          label="Chat with OpenTutor"
-          multiline
-          minRows={2}
-          style={{
-            width: "100%",
-            backgroundColor: listening ? "rgba(26, 107, 155, 0.1)" : "white",
+    <>
+      <FormControl
+        data-cy="chat-form"
+        variant="outlined"
+        style={{ height: 95, width: "100%" }}
+      >
+        <TextTruncationPopop
+          willTruncate={showTruncationPopup}
+          onYes={() => {
+            setShowTruncationPopup(false);
+            sendMessage();
           }}
-          value={chat}
-          autoComplete="off"
-          disabled={listening}
-          onChange={(e): void => setChat(e.target.value)}
-          onKeyPress={onKeyPress}
+          onNo={() => setShowTruncationPopup(false)}
         />
-        <div className={styles.innerOverlayBottomRight}>
-          {browserSupportsSpeechRecognition && !props.search.nostt ? (
-            <InputAdornment position="start">
-              <IconButton color="primary" edge="start" onClick={toggleSTT}>
-                {listening ? (
-                  <Mic color="primary" />
-                ) : (
-                  <MicOutlined style={{ color: "gray" }} />
-                )}
-              </IconButton>
-            </InputAdornment>
-          ) : undefined}
-          <Button
-            data-cy="submit-button"
-            variant="contained"
-            color="primary"
-            size="small"
-            className={styles.button}
-            endIcon={<Send />}
-            onClick={handleClick}
-            key={`${chat.trim().length === 0 || !props.sessionAlive}`}
-            disabled={
-              chat.trim().length === 0 ||
-              props.messageQueue.length > 0 ||
-              listening
-            }
-          >
-            Send
-          </Button>
+        <div className={styles.chatboxRoot}>
+          <InputLabel>Chat with OpenTutor</InputLabel>
+          <OutlinedInput
+            data-cy="outlined-multiline-static"
+            label="Chat with OpenTutor"
+            multiline
+            minRows={2}
+            style={{
+              width: "100%",
+              backgroundColor: listening ? "rgba(26, 107, 155, 0.1)" : "white",
+              paddingBottom: "40px",
+            }}
+            value={chat}
+            error={textWillTruncate}
+            autoComplete="off"
+            disabled={listening}
+            onChange={(e): void => setChat(e.target.value)}
+            onKeyPress={onKeyPress}
+          />
+          {textWillTruncate && (
+            <FormHelperText
+              data-cy="text-truncation-warning"
+              style={{ color: "red" }}
+            >
+              Your message will be truncated to 300 characters.
+            </FormHelperText>
+          )}
+          <div className={styles.innerOverlayBottomRight}>
+            {browserSupportsSpeechRecognition && !props.search.nostt ? (
+              <InputAdornment position="start">
+                <IconButton color="primary" edge="start" onClick={toggleSTT}>
+                  {listening ? (
+                    <Mic color="primary" />
+                  ) : (
+                    <MicOutlined style={{ color: "gray" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ) : undefined}
+            <Button
+              data-cy="submit-button"
+              variant="contained"
+              color="primary"
+              size="small"
+              className={styles.button}
+              endIcon={<Send />}
+              onClick={handleClick}
+              key={`${chat.trim().length === 0 || !props.sessionAlive}`}
+              disabled={
+                chat.trim().length === 0 ||
+                props.messageQueue.length > 0 ||
+                listening
+              }
+            >
+              Send
+            </Button>
+          </div>
         </div>
-      </div>
-    </FormControl>
+      </FormControl>
+    </>
   );
 };
 
@@ -261,8 +300,8 @@ const useStyles = makeStyles({ name: { ChatForm } })(() => ({
     alignItems: "center",
     position: "absolute",
     zIndex: 1,
-    bottom: 7,
-    right: 7,
+    bottom: 30,
+    right: 10,
   },
 }));
 

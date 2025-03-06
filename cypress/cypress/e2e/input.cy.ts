@@ -111,3 +111,109 @@ describe("Input field", () => {
     cy.get("[data-cy=chat-msg-5]").should("contain", "some server response.");
   });
 });
+
+describe("Limit text input", () => {
+  it("show truncation warning when input too long", () => {
+    cyMockDefault(cy);
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2.json").as("session");
+    cy.visit("/?lesson=q2&guest=guest");
+    cy.get("[data-cy=text-truncation-warning]").should("not.exist");
+    const userInput = "a".repeat(301);
+    cy.get("[data-cy=outlined-multiline-static]").type(userInput, {
+      delay: 0,
+    });
+    cy.get("[data-cy=outlined-multiline-static]").should(
+      "contain.text",
+      userInput
+    );
+    cy.get("[data-cy=text-truncation-warning]").should("exist");
+  });
+
+  it("tooltip popup if submitted with truncation warning", () => {
+    cyMockDefault(cy);
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
+    cy.visit("/?lesson=q2&guest=guest");
+    const userInput = "a".repeat(301);
+    cy.get("[data-cy=outlined-multiline-static]").type(userInput, {
+      delay: 0,
+    });
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=text-truncation-popup]").should("exist");
+    cy.get("[data-cy=text-truncation-popup]").should(
+      "contain.text",
+      "Your message will be truncated to 300 characters."
+    );
+    cy.get("[data-cy=text-truncation-popup]").should(
+      "contain.text",
+      "Are you sure you want to submit this message?"
+    );
+  });
+
+  it("clicking no on popup does not send message", () => {
+    cyMockDefault(cy);
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
+    cy.visit("/?lesson=q2&guest=guest");
+    const userInput = "a".repeat(301);
+    cy.get("[data-cy=outlined-multiline-static]").type(userInput, {
+      delay: 0,
+    });
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=text-truncation-popup]").should("exist");
+    cy.get("[data-cy=text-truncation-popup]").within(() => {
+      cy.get("[data-cy=text-truncation-popup-no]").click();
+    });
+    cy.get("[data-cy=text-truncation-popup]").should("not.exist");
+    cy.get("[data-cy=outlined-multiline-static]").should(
+      "contain.text",
+      userInput
+    );
+    cy.get("[data-cy=thread]").should("not.contain.text", userInput);
+  });
+
+  it("clicking yes on popup sends message", () => {
+    cyMockDefault(cy);
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
+    cy.visit("/?lesson=q2&guest=guest");
+    const userInput = "a".repeat(301);
+    cy.get("[data-cy=outlined-multiline-static]").type(userInput, {
+      delay: 0,
+    });
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=text-truncation-popup]").should("exist");
+    cy.get("[data-cy=text-truncation-popup]").within(() => {
+      cy.get("[data-cy=text-truncation-popup-yes]").click();
+    });
+    cy.get("[data-cy=text-truncation-popup]").should("not.exist");
+    cy.get("[data-cy=chat-msg-2]").should("contain.text", userInput);
+    cy.wait("@session");
+    cy.get("[data-cy=chat-msg-3]").should(
+      "contain.text",
+      "some server response."
+    );
+  });
+
+  it("actually truncates message", () => {
+    cyMockDefault(cy);
+    cyMockDialog(cy, "q2", "q2-1-p1.json");
+    cyMockSession(cy, "q2", "q2-1-p2-no-completion").as("session");
+    cy.visit("/?lesson=q2&guest=guest");
+    const userInput = "a".repeat(305);
+    cy.get("[data-cy=outlined-multiline-static]").type(userInput, {
+      delay: 0,
+    });
+    cy.get("[data-cy=submit-button]").click();
+    cy.get("[data-cy=text-truncation-popup]").should("exist");
+    cy.get("[data-cy=text-truncation-popup]").within(() => {
+      cy.get("[data-cy=text-truncation-popup-yes]").click();
+    });
+    cy.wait("@session").then((data) => {
+      const payload = data.request.body;
+      console.log(payload);
+      expect(payload.message).to.equal(userInput.slice(0, 300));
+    });
+  });
+});
