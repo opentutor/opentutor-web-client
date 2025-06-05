@@ -51,6 +51,20 @@ function Desktop(props: AppProps): JSX.Element {
   } = props;
   const { lesson, noheader } = props.search;
 
+  const targetIndicator =
+    lessonFormat === LessonFormat.SURVEY_SAYS ? (
+      <>
+        <SurveySays hasMedia={hasMedia} targets={targets} />
+      </>
+    ) : (
+      <>
+        <TargetIndicator
+          targets={targets}
+          showSummary={onSummaryOpenRequested}
+        />
+      </>
+    );
+
   return (
     <>
       <div className={styles.foreground}>
@@ -68,18 +82,6 @@ function Desktop(props: AppProps): JSX.Element {
             [styles.appRootNoHeader]: noheader,
           })}
         >
-          {lessonFormat === LessonFormat.SURVEY_SAYS ? (
-            <>
-              <SurveySays hasMedia={hasMedia} targets={targets} />
-            </>
-          ) : (
-            <>
-              <TargetIndicator
-                targets={targets}
-                showSummary={onSummaryOpenRequested}
-              />
-            </>
-          )}
           {hasMedia ? (
             <div
               className={clsx({
@@ -90,6 +92,7 @@ function Desktop(props: AppProps): JSX.Element {
               })}
             >
               <div className={styles.videoContainer}>
+                {targetIndicator}
                 <LessonMedia lessonFormat={lessonFormat} />
               </div>
               <div className={styles.chatThreadInputFormContainer}>
@@ -123,8 +126,10 @@ function Desktop(props: AppProps): JSX.Element {
               className={clsx({
                 [styles.hasNoMediaContainerMobile]: shouldDisplayPortrait(),
                 [styles.hasNoMediaContainer]: !shouldDisplayPortrait(),
+                [styles.hasNoMediaHeaderContainerMobile]: noheader,
               })}
             >
+              {targetIndicator}
               <ChatThread
                 messages={messages}
                 messageQueue={messageQueue}

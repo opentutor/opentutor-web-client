@@ -47,12 +47,13 @@ export const appStylesDesktop = makeStyles()((theme: Theme) => ({
   noHeader_middleAppContent: {
     display: "flex",
     width: "100%",
-    height: "calc(100% - 150px)",
+    height: "calc(100% - 0px)",
   },
   videoContainer: {
     width: "60%",
     height: "100%",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -70,6 +71,11 @@ export const appStylesDesktop = makeStyles()((theme: Theme) => ({
   },
   hasNoMediaContainerMobile: {
     height: "75%",
+    width: "90%",
+    margin: "auto",
+  },
+  hasNoMediaHeaderContainerMobile: {
+    height: "100%",
     width: "90%",
     margin: "auto",
   },
