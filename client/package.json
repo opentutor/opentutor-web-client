@@ -9,7 +9,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.1",
     "@xapi/cmi5": "^1.1.2",
-    "axios": "^1.7.9",
+    "axios": "^1.8.3",
     "gatsby": "^5.14.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
